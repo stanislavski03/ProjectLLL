@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
         float scaledMoveSpeed = _moveSpeed * Time.deltaTime;
         Vector3 offset = new Vector3(_moveDirection.x, 0f, _moveDirection.y) * scaledMoveSpeed;
 
-        transform.Translate(offset);
+        transform.Translate(offset, Space.World);
     }
 
     private void OnClick(InputAction.CallbackContext context)

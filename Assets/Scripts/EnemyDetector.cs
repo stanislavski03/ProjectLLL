@@ -6,16 +6,17 @@ using Unity.Mathematics;
 public class EnemyDetector : MonoBehaviour
 {
     public Camera mainCamera;
+    [SerializeField] private float _rotationSpeed = 20f;
 
 
     private Enemy[] visibleEnemies;
-    
+
 
     private void Update()
     {
         FindVisibleEnemies();
 
-        LookAtEnemy();
+        LookAtEnemy(GetClosestEnemy());
     }
 
     private void FindVisibleEnemies()
@@ -35,7 +36,6 @@ public class EnemyDetector : MonoBehaviour
 
         visibleEnemies = visibleEnemiesList.ToArray();
 
-        Debug.Log($"Видимых врагов: {visibleEnemies.Length}");
     }
 
     private bool IsInCameraView(Vector3 worldPosition)
@@ -57,18 +57,46 @@ public class EnemyDetector : MonoBehaviour
         return visibleEnemies;
     }
 
-    private void LookAtEnemy()
+    public Enemy GetClosestEnemy()
     {
-        float minDistance = 9999999f;//ЭТО НАДО ПЕРЕДЕЛАТЬ!!!
-        Enemy[] enemies = GetVisibleEnemies();
-        foreach (Enemy enemy in enemies)
+        if (GetVisibleEnemies().Length != 0)
         {
-            
-            Vector3 enemyPosition = enemy.GetComponent<Transform>().position;
-            float distance = Vector3.Distance(transform.position, enemyPosition);
-            if (minDistance < distance)
-                minDistance = distance;
+            float minDistance = Mathf.Infinity;
+            Enemy[] enemies = GetVisibleEnemies();
+            Enemy closestEnemy = null;
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy == null) continue;
+
+                Vector3 enemyPosition = enemy.transform.position;
+                float distance = Vector3.Distance(transform.position, enemyPosition);
+
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestEnemy = enemy;
+                }
+            }
+            return closestEnemy;
         }
-        Debug.Log(minDistance);
+        return null;
+
+    }
+
+
+
+    private void LookAtEnemy(Enemy closestEnemy)
+    {
+        if (closestEnemy == null) return;
+
+        Vector3 direction = closestEnemy.transform.position - transform.position;
+        direction.y = 0;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
+                _rotationSpeed * Time.deltaTime);
+        }
     }
 }
