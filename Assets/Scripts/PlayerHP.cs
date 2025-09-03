@@ -1,18 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerHP : MonoBehaviour
 {
     [SerializeField] private float _maxHP = 100;
 
-    [SerializeField] private float _freezeDef = 100;
-    [SerializeField] private float _fireDef = 100;
-    [SerializeField] private float _electroDef = 100;
+    [SerializeField] private float _freezeDef = 0;
+    [SerializeField] private float _fireDef = 0;
+    [SerializeField] private float _electroDef = 0;
 
     private float _currentHP;
 
+    public event Action<float> Changed;
 
+    public float MaxHP => _maxHP;
     private void OnEnable()
     {
         _currentHP = _maxHP;
@@ -23,19 +27,20 @@ public class PlayerHP : MonoBehaviour
         switch (damageType)
         {
             case 0:
-                _currentHP -= damageAmmount * _freezeDef / 100;
+                _currentHP -= damageAmmount * (_freezeDef / 100);
                 break;
             case 1:
-                _currentHP -= damageAmmount * _fireDef / 100;
+                _currentHP -= damageAmmount * (_fireDef / 100);
                 break;
             case 2:
-                _currentHP -= damageAmmount * _electroDef / 100;
+                _currentHP -= damageAmmount * (_electroDef / 100);
                 break;
             default:
                 _currentHP -= damageAmmount;
                 break;
         }
         _currentHP -= damageAmmount;
+        Changed?.Invoke(_currentHP);
         if (_currentHP <= 0) Death();
     }
 
@@ -43,12 +48,14 @@ public class PlayerHP : MonoBehaviour
     public void Damage(float damageAmmount)
     {
         _currentHP -= damageAmmount;
+        Changed?.Invoke(_currentHP);
         if (_currentHP <= 0) Death();
     }
 
     public void Heal(float healAmmount)
     {
         _currentHP += healAmmount;
+        Changed?.Invoke(_currentHP);
     }
 
 
@@ -57,4 +64,11 @@ public class PlayerHP : MonoBehaviour
         Debug.Log("HOLY, HE'S DEAD!");
         Destroy(gameObject);
     }
+
+
+    //Использовал для проверки урона и типов урона
+    //private void OnMouseDown()
+    //{
+    //    Damage(10, 0);
+    //}
 }
