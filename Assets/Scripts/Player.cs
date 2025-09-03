@@ -6,16 +6,27 @@ using UnityEngine.InputSystem.Interactions;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
+    [SerializeField] private Transform _bulletPrefab;
+    [SerializeField] private Transform _bulletSpawn;
+    [SerializeField] private float _shootSpeed;
 
     private PlayerInput _playerInput;
 
     private Vector2 _moveDirection;
 
+    private EnemyDetector _enemyDetector;
+
     private void Awake()
     {
         _playerInput = new PlayerInput();
+        _enemyDetector = GetComponent<EnemyDetector>();
 
         _playerInput.Player.Click.performed += OnClick;
+    }
+
+    private void Start()
+    {
+        InvokeRepeating(nameof(ShootClosestEnemy), 0f, 0.5f);
     }
 
     private void Update()
@@ -54,8 +65,30 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void ShootClosestEnemy()
+    {
+        Enemy closestEnemy = _enemyDetector.GetClosestEnemy();
+        if (closestEnemy != null)
+        {
+            Shoot(closestEnemy);
+        }
+    }
+
     private void StartHeavyAttack()
     {
         Debug.Log("Heavy Attack");
     }
+
+    private void Shoot(Enemy enemy)
+{
+    GameObject bulletObj = BulletPool.Instance.GetBullet();
+    bulletObj.transform.position = _bulletSpawn.position;
+    bulletObj.transform.rotation = _bulletSpawn.rotation;
+    
+    Bullet bulletController = bulletObj.GetComponent<Bullet>();
+    if (bulletController != null)
+    {
+        bulletController.ResetBullet(enemy.transform, _shootSpeed);
+    }
+}
 }
