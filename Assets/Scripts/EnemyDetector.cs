@@ -7,16 +7,26 @@ public class EnemyDetector : MonoBehaviour
 {
     public Camera mainCamera;
     [SerializeField] private float _rotationSpeed = 20f;
+    [SerializeField] private GameObject _menuCamera;
 
 
     private Enemy[] visibleEnemies;
 
+    private void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
 
     private void Update()
     {
         FindVisibleEnemies();
 
         LookAtEnemy(GetClosestEnemy());
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
 
     private void FindVisibleEnemies()
@@ -97,6 +107,25 @@ public class EnemyDetector : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
                 _rotationSpeed * Time.deltaTime);
+        }
+    }
+    
+    private void LookAtMenuCamera()
+    {
+        transform.LookAt(_menuCamera.transform.position);
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
+
+        if (enabled)
+        {
+
+        }
+        else
+        {
+            // Invoke(nameof(LookAtMenuCamera), 2f);
         }
     }
 }

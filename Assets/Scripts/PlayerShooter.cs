@@ -13,11 +13,18 @@ public class PlayerShooter : MonoBehaviour
     private void Awake()
     {
         _enemyDetector = GetComponent<EnemyDetector>();
+
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
     private void Start()
     {
         InvokeRepeating(nameof(ShootClosestEnemy), 1f, 0.5f);
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
 
     private void ShootClosestEnemy()
@@ -30,15 +37,30 @@ public class PlayerShooter : MonoBehaviour
     }
 
     private void Shoot(Enemy enemy)
-{
-    GameObject bulletObj = BulletPool.Instance.GetBullet();
-    bulletObj.transform.position = _bulletSpawn.position;
-    bulletObj.transform.rotation = _bulletSpawn.rotation;
-    
-    Bullet bulletController = bulletObj.GetComponent<Bullet>();
-    if (bulletController != null)
     {
-        bulletController.ResetBullet(enemy.transform, _shootSpeed);
+        GameObject bulletObj = BulletPool.Instance.GetBullet();
+        bulletObj.transform.position = _bulletSpawn.position;
+        bulletObj.transform.rotation = _bulletSpawn.rotation;
+
+        Bullet bulletController = bulletObj.GetComponent<Bullet>();
+        if (bulletController != null)
+        {
+            bulletController.ResetBullet(enemy.transform, _shootSpeed);
+        }
     }
-}
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
+
+        if (enabled)
+        {
+            InvokeRepeating(nameof(ShootClosestEnemy), 1f, 0.5f);
+        }
+        else
+        {
+            CancelInvoke(nameof(ShootClosestEnemy));
+        }
+
+    }
 }
