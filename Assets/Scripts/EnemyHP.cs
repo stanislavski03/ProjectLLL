@@ -7,9 +7,9 @@ public class EnemyHP : MonoBehaviour
 
     [SerializeField] private float _maxHP = 100;
 
-    [SerializeField] private float _freezeDef = 100;
-    [SerializeField] private float _fireDef = 100;
-    [SerializeField] private float _electroDef = 100;
+    [SerializeField] private float _freezeDef = 0;
+    [SerializeField] private float _fireDef = 0;
+    [SerializeField] private float _electroDef = 0;
 
     private float _currentHP;
 
