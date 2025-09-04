@@ -39,6 +39,10 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.TryGetComponent(out EnemyHP enemy))
+        {
+            enemy.Damage(10);
+        }
         if (collision.gameObject.CompareTag("Enemy"))
         {
             ReturnToPool();
