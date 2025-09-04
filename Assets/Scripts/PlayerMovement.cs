@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
         _enemyDetector = GetComponent<EnemyDetector>();
 
         _playerInput.Player.Click.performed += OnClick;
+
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
     private void Update()
@@ -36,6 +38,11 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         _playerInput.Disable();
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
 
     private void Move()
@@ -60,5 +67,10 @@ public class PlayerMovement : MonoBehaviour
     private void StartHeavyAttack()
     {
         Debug.Log("Heavy Attack");
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
     }
 }
