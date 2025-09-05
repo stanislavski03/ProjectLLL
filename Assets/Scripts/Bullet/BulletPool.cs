@@ -38,11 +38,12 @@ public class BulletPool : MonoBehaviour
         else
         {
             GameObject bullet = Instantiate(bulletPrefab, transform);
+            //bullet.SetActive(true);
             return bullet;
         }
     }
     
-    public void ReturnBullet(GameObject bullet)
+    public void GetBulletBackToPool(GameObject bullet)
     {
         bullet.SetActive(false);
         bulletPool.Enqueue(bullet);

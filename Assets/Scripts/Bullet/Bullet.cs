@@ -52,16 +52,18 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out EnemyHP enemy))
         {
             enemy.Damage(10);
-        }
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
             ReturnToPool();
         }
+
+        //if (collision.gameObject.CompareTag("Enemy"))
+        //{
+        //    ReturnToPool();
+        //}
     }
 
     private void ReturnToPool()
     {
-        BulletPool.Instance.ReturnBullet(gameObject);
+        BulletPool.Instance.GetBulletBackToPool(gameObject);
     }
 
     public void ResetBullet(Transform newTarget, float newSpeed)
@@ -72,16 +74,16 @@ public class Bullet : MonoBehaviour
         Invoke(nameof(ReturnToPool), lifetime);
     }
 
-    public void SetDirection(Vector3 direction, float bulletSpeed)
-    {
-        _direction = direction.normalized;
-        speed = bulletSpeed;
+    //public void SetDirection(Vector3 direction, float bulletSpeed)
+    //{
+    //    _direction = direction.normalized;
+    //    speed = bulletSpeed;
 
-        if (_direction != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(_direction);
-        }
-    }
+    //    if (_direction != Vector3.zero)
+    //    {
+    //        transform.rotation = Quaternion.LookRotation(_direction);
+    //    }
+    //}
     
     private void OnGameStateChanged(GameState newGameState)
     {
