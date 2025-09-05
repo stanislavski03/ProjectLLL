@@ -48,12 +48,10 @@ public class EnemyMeleeDmg : MonoBehaviour
         if (enabled)
         {
             StartCoroutine(DamageCooldown());
-            Debug.Log("StartCoroutine");
         }
         else
         {
             StopCoroutine(DamageCooldown());
-            Debug.Log("StopCoroutine");
         }
     }
 }

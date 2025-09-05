@@ -6,13 +6,17 @@ public class BulletEnemy : MonoBehaviour
 {
     public float speed = 10f;
     public float lifetime = 3f;
+    [SerializeField] private float _damage = 10f;
 
     private Transform _playerTransform;
+    private PlayerHP _playerHP;
     private Vector3 _direction;
 
     private void Awake()
     {
         _playerTransform = GameObject.FindWithTag("Player").transform;
+        _playerHP = _playerTransform.GetComponent<PlayerHP>();
+
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
@@ -54,18 +58,19 @@ public class BulletEnemy : MonoBehaviour
         {
             enemy.Damage(10);
         }
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Player"))
         {
+            _playerHP.Damage(_damage);
             ReturnToPool();
         }
     }
 
     private void ReturnToPool()
     {
-        BulletPool.Instance.ReturnBullet(gameObject);
+        BulletEnemyPool.Instance.ReturnBulletEnemy(gameObject);
     }
 
-    public void ResetBullet(Transform newTarget, float newSpeed)
+    public void ResetBulletEnemy(Transform newTarget, float newSpeed)
     {
         _playerTransform = newTarget;
         speed = newSpeed;

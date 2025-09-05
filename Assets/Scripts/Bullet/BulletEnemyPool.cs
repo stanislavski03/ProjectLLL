@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ public class BulletEnemyPool : MonoBehaviour
         Instance = this;
         InitializePool();
     }
-    
+
     private void InitializePool()
     {
         for (int i = 0; i < poolSize; i++)
@@ -37,7 +36,7 @@ public class BulletEnemyPool : MonoBehaviour
         }
         else
         {
-            GameObject bulletEnemy = Instantiate(bulletEnemyPrefab);
+            GameObject bulletEnemy = Instantiate(bulletEnemyPrefab, transform);
             return bulletEnemy;
         }
     }
