@@ -8,15 +8,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _moveSpeed;
 
     private PlayerInput _playerInput;
-
     private Vector2 _moveDirection;
-
     private EnemyDetector _enemyDetector;
+    private Rigidbody rb;
 
     private void Awake()
     {
         _playerInput = new PlayerInput();
         _enemyDetector = GetComponent<EnemyDetector>();
+        rb = GetComponent<Rigidbody>();
 
         _playerInput.Player.Click.performed += OnClick;
 
@@ -72,5 +72,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnGameStateChanged(GameState newGameState)
     {
         enabled = newGameState == GameState.Gameplay;
+
+        if (enabled)
+        {
+            rb.isKinematic = false;
+        }
+        else
+        {
+            rb.isKinematic = true;
+        }
     }
 }

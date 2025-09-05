@@ -10,6 +10,11 @@ public class Bullet : MonoBehaviour
 
     private Vector3 _direction;
 
+    private void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
     private void OnEnable()
     {
         Invoke(nameof(ReturnToPool), lifetime);
@@ -35,6 +40,11 @@ public class Bullet : MonoBehaviour
         {
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
+    }
+
+    void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -71,5 +81,10 @@ public class Bullet : MonoBehaviour
         {
             transform.rotation = Quaternion.LookRotation(_direction);
         }
+    }
+    
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.Gameplay;
     }
 }
