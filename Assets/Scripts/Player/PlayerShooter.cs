@@ -7,6 +7,7 @@ public class PlayerShooter : MonoBehaviour
     [SerializeField] private Transform _bulletPrefab;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private float _shootSpeed;
+    [SerializeField] private float _bulletSpawnCooldown = 0.5f;
 
     private EnemyDetector _enemyDetector;
 
@@ -19,7 +20,7 @@ public class PlayerShooter : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(ShootClosestEnemy), 1f, 0.5f);
+        InvokeRepeating(nameof(ShootClosestEnemy), 1f, _bulletSpawnCooldown);
     }
 
     void OnDestroy()

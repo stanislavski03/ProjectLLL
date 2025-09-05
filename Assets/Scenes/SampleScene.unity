@@ -517,6 +517,7 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 296896064360066382, guid: 9dee57f6df009434db65f2497bd772b8, type: 3}
   _bulletSpawn: {fileID: 1327622522}
   _shootSpeed: 10
+  _bulletSpawnCooldown: 0.5
 --- !u!114 &423367932
 MonoBehaviour:
   m_ObjectHideFlags: 0

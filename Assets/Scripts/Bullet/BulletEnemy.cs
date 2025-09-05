@@ -11,6 +11,7 @@ public class BulletEnemy : MonoBehaviour
     private Transform _playerTransform;
     private PlayerHP _playerHP;
     private Vector3 _direction;
+    private bool _isInitialized = false;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class BulletEnemy : MonoBehaviour
 
     private void OnEnable()
     {
+        _isInitialized = false;
         Invoke(nameof(ReturnToPool), lifetime);
     }
 
@@ -32,19 +34,13 @@ public class BulletEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (_playerTransform != null)
+        if (!_isInitialized && _playerTransform != null)
         {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                _playerTransform.position,
-                speed * Time.deltaTime
-            );
-            transform.LookAt(_playerTransform);
+            _direction = (_playerTransform.position - transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(_direction);
+            _isInitialized = true;
         }
-        else
-        {
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        }
+        transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
     }
 
     void OnDestroy()
@@ -70,23 +66,23 @@ public class BulletEnemy : MonoBehaviour
         BulletEnemyPool.Instance.ReturnBulletEnemy(gameObject);
     }
 
-    public void ResetBulletEnemy(Transform newTarget, float newSpeed)
+    public void ResetBulletEnemy(float newSpeed)
     {
-        _playerTransform = newTarget;
         speed = newSpeed;
         CancelInvoke();
         Invoke(nameof(ReturnToPool), lifetime);
+        _isInitialized = false;
     }
 
     public void SetDirection(Vector3 direction, float bulletSpeed)
     {
         _direction = direction.normalized;
         speed = bulletSpeed;
+        transform.rotation = Quaternion.LookRotation(_direction);
+        _isInitialized = true;
 
-        if (_direction != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(_direction);
-        }
+        CancelInvoke();
+        Invoke(nameof(ReturnToPool), lifetime);
     }
     
     private void OnGameStateChanged(GameState newGameState)
