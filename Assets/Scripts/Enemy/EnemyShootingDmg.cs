@@ -1,76 +1,118 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyShootingDmg : MonoBehaviour
 {
-    [SerializeField] private Transform _bulletPrefab;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private float _bulletSpawnCooldown = 1f;
     [SerializeField] private float _shootSpeed = 5f;
+    [SerializeField] private float _playerDetectionRange = 10f;
 
     private Transform _playerTransform;
-    private EnemyMovement _enemyMovementController;
-    private bool shootFlag = false;
+    private Coroutine _shootingCoroutine;
+    private bool _isShooting = false;
 
     private void Awake()
     {
-        _enemyMovementController = GetComponent<EnemyMovement>();
-
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-    }
-
-    private void Update()
-    {
-        if (Vector3.Distance(transform.position, _playerTransform.position) <= _enemyMovementController._playerRange)
-        {
-            if (shootFlag) return;
-            InvokeRepeating(nameof(ShootInPlayer), 1f, _bulletSpawnCooldown);
-            shootFlag = true;
-        }
-        else
-        {
-            if (!shootFlag) return;
-            CancelInvoke(nameof(ShootInPlayer));
-            shootFlag = false;
-        }
     }
 
     private void OnEnable()
     {
-        _playerTransform = GameObject.FindWithTag("Player").transform;
+        _playerTransform = GameObject.FindWithTag("Player")?.transform;
     }
 
-    void OnDestroy()
+    private void Update()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        if (_playerTransform == null) return;
+        
+        float distance = Vector3.Distance(transform.position, _playerTransform.position);
+        bool shouldShoot = distance <= _playerDetectionRange;
+
+        if (shouldShoot && !_isShooting)
+        {
+            StartShooting();
+        }
+        else if (!shouldShoot && _isShooting)
+        {
+            StopShooting();
+        }
     }
 
-    private void ShootInPlayer()
+    private void StartShooting()
     {
+        if (_shootingCoroutine != null)
+            StopCoroutine(_shootingCoroutine);
+            
+        _shootingCoroutine = StartCoroutine(ShootingRoutine());
+        _isShooting = true;
+    }
+
+    private void StopShooting()
+    {
+        if (_shootingCoroutine != null)
+            StopCoroutine(_shootingCoroutine);
+            
+        _shootingCoroutine = null;
+        _isShooting = false;
+    }
+
+    private IEnumerator ShootingRoutine()
+    {
+        yield return new WaitForSeconds(1f); // Начальная задержка
+        
+        while (true)
+        {
+            if (_playerTransform != null)
+            {
+                ShootAtPlayer();
+            }
+            yield return new WaitForSeconds(_bulletSpawnCooldown);
+        }
+    }
+
+    private void ShootAtPlayer()
+    {
+        if (_playerTransform == null || BulletEnemyPool.Instance == null) return;
+
         GameObject bulletObj = BulletEnemyPool.Instance.GetBulletEnemy();
+        if (bulletObj == null) return;
+
         bulletObj.transform.position = _bulletSpawn.position;
-        bulletObj.transform.rotation = _bulletSpawn.rotation;
+        
+        Vector3 direction = (_playerTransform.position - _bulletSpawn.position).normalized;
+        bulletObj.transform.rotation = Quaternion.LookRotation(direction);
 
         BulletEnemy bulletController = bulletObj.GetComponent<BulletEnemy>();
         if (bulletController != null)
         {
-            bulletController.ResetBulletEnemy(_shootSpeed);
+            bulletController.Initialize(direction, _shootSpeed);
+        }
+        else
+        {
+            BulletEnemyPool.Instance.ReturnBulletEnemy(bulletObj);
         }
     }
 
     private void OnGameStateChanged(GameState newGameState)
     {
         enabled = newGameState == GameState.Gameplay;
-
-        if (enabled)
+        
+        if (!enabled)
         {
-            InvokeRepeating(nameof(ShootInPlayer), 1f, 0.5f);
+            StopShooting();
         }
-        else
-        {
-            CancelInvoke(nameof(ShootInPlayer));
-        }
+    }
 
+    private void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        StopShooting();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _playerDetectionRange);
     }
 }

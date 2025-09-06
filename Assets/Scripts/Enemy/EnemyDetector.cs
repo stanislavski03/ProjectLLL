@@ -1,16 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.Mathematics;
 
 public class EnemyDetector : MonoBehaviour
 {
     public Camera mainCamera;
     [SerializeField] private float _rotationSpeed = 20f;
     [SerializeField] private GameObject _menuCamera;
+    [SerializeField] private float _updateInterval = 0.2f; // Оптимизация: проверяем реже
 
-
-    private Enemy[] visibleEnemies;
+    private Enemy[] _visibleEnemies;
+    private float _updateTimer;
 
     private void Awake()
     {
@@ -19,7 +18,13 @@ public class EnemyDetector : MonoBehaviour
 
     private void Update()
     {
-        FindVisibleEnemies();
+        _updateTimer -= Time.deltaTime;
+        
+        if (_updateTimer <= 0f)
+        {
+            FindVisibleEnemies();
+            _updateTimer = _updateInterval;
+        }
 
         LookAtEnemy(GetClosestEnemy());
     }
@@ -31,21 +36,18 @@ public class EnemyDetector : MonoBehaviour
 
     private void FindVisibleEnemies()
     {
-
         Enemy[] allEnemies = FindObjectsOfType<Enemy>();
-
         List<Enemy> visibleEnemiesList = new List<Enemy>();
 
         foreach (Enemy enemy in allEnemies)
         {
-            if (IsInCameraView(enemy.transform.position))
+            if (enemy != null && enemy.gameObject.activeInHierarchy && IsInCameraView(enemy.transform.position))
             {
                 visibleEnemiesList.Add(enemy);
             }
         }
 
-        visibleEnemies = visibleEnemiesList.ToArray();
-
+        _visibleEnemies = visibleEnemiesList.ToArray();
     }
 
     private bool IsInCameraView(Vector3 worldPosition)
@@ -53,47 +55,42 @@ public class EnemyDetector : MonoBehaviour
         if (mainCamera == null)
             mainCamera = Camera.main;
 
+        if (mainCamera == null) return false;
+
         Vector3 viewportPoint = mainCamera.WorldToViewportPoint(worldPosition);
 
-        bool inCameraView = viewportPoint.z > 0 &&
-                           viewportPoint.x >= 0 && viewportPoint.x <= 1 &&
-                           viewportPoint.y >= 0 && viewportPoint.y <= 1;
-
-        return inCameraView;
+        return viewportPoint.z > 0 &&
+               viewportPoint.x >= 0 && viewportPoint.x <= 1 &&
+               viewportPoint.y >= 0 && viewportPoint.y <= 1;
     }
 
     public Enemy[] GetVisibleEnemies()
     {
-        return visibleEnemies;
+        return _visibleEnemies ?? new Enemy[0];
     }
 
     public Enemy GetClosestEnemy()
     {
-        if (GetVisibleEnemies().Length != 0)
+        Enemy[] enemies = GetVisibleEnemies();
+        if (enemies.Length == 0) return null;
+
+        float minDistance = Mathf.Infinity;
+        Enemy closestEnemy = null;
+        
+        foreach (Enemy enemy in enemies)
         {
-            float minDistance = Mathf.Infinity;
-            Enemy[] enemies = GetVisibleEnemies();
-            Enemy closestEnemy = null;
-            foreach (Enemy enemy in enemies)
+            if (enemy == null) continue;
+
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance < minDistance)
             {
-                if (enemy == null) continue;
-
-                Vector3 enemyPosition = enemy.transform.position;
-                float distance = Vector3.Distance(transform.position, enemyPosition);
-
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    closestEnemy = enemy;
-                }
+                minDistance = distance;
+                closestEnemy = enemy;
             }
-            return closestEnemy;
         }
-        return null;
-
+        
+        return closestEnemy;
     }
-
-
 
     private void LookAtEnemy(Enemy closestEnemy)
     {
@@ -112,20 +109,19 @@ public class EnemyDetector : MonoBehaviour
     
     private void LookAtMenuCamera()
     {
-        transform.LookAt(_menuCamera.transform.position);
+        if (_menuCamera != null)
+        {
+            transform.LookAt(_menuCamera.transform.position);
+        }
     }
 
     private void OnGameStateChanged(GameState newGameState)
     {
         enabled = newGameState == GameState.Gameplay;
 
-        if (enabled)
+        if (!enabled && _menuCamera != null)
         {
-
-        }
-        else
-        {
-            // Invoke(nameof(LookAtMenuCamera), 2f);
+            LookAtMenuCamera();
         }
     }
 }
