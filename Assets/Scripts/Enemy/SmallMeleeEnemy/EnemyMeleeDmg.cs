@@ -54,4 +54,9 @@ public class EnemyMeleeDmg : MonoBehaviour
             StopCoroutine(DamageCooldown());
         }
     }
+
+    public void ReturnToPool()
+    {
+        EnemyPool.Instance.GetEnemyBackToPool(gameObject);
+    }
 }
