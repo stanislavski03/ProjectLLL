@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7523641453256140439}
   - component: {fileID: -8201640350355134054}
   - component: {fileID: 4969880412356419397}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BulletEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,5 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3bc89fb24a8aa24186f1fcb7c0df6a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  lifetime: 3
+  _speed: 10
+  _lifetime: 3
+  _damage: 10
+  _collisionLayers:
+    serializedVersion: 2
+    m_Bits: 51

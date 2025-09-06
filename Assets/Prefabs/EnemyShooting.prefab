@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8989909693939046531}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BulletEnemySpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 1148379737501150397}
   - component: {fileID: 4034955383255907115}
   - component: {fileID: 1076417519486404512}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyShooting
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -209,9 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ffd2d17f56dbea42a3ac541f687ec1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletPrefab: {fileID: 296896064360066382, guid: a87495b8f1b72164bac7f2aa7ef198ba, type: 3}
   _bulletSpawn: {fileID: 8989909693939046531}
   _bulletSpawnCooldown: 1
-  _damage: 10
   _shootSpeed: 5
-  _damageCooldown: 2
+  _playerDetectionRange: 10

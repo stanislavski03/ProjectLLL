@@ -27,18 +27,20 @@ public class EnemyPool : MonoBehaviour
         }
     }
 
-    public GameObject GetEnemy()
+    public GameObject GetEnemy(Vector3 position)
     {
 
         if (enemyPool.Count > 0)
         {
             GameObject enemy = enemyPool.Dequeue();
             enemy.SetActive(true);
+            enemy.transform.position = new Vector3(position.x, 0.5f, position.z);
             return enemy;
         }
         else
         {
             GameObject enemy = Instantiate(enemyPrefab, transform);
+            enemy.transform.position = new Vector3(position.x, 0.5f, position.z);
             return enemy;
         }
     }
