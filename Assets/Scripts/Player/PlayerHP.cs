@@ -17,6 +17,8 @@ public class PlayerHP : MonoBehaviour
     public event Action<float> Changed;
 
     public float MaxHP => _maxHP;
+    public bool isAlive = true;
+
     private void OnEnable()
     {
         _currentHP = _maxHP;
@@ -66,7 +68,7 @@ public class PlayerHP : MonoBehaviour
     }
 
 
-    //Использовал для проверки урона и типов урона
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     //private void OnMouseDown()
     //{
     //    Damage(10, 0);

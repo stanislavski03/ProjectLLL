@@ -5,45 +5,96 @@ public class BulletEnemyPool : MonoBehaviour
 {
     public static BulletEnemyPool Instance;
     
-    [SerializeField] private GameObject bulletEnemyPrefab;
-    [SerializeField] private int poolSize = 2;
+    [SerializeField] private GameObject _bulletEnemyPrefab;
+    [SerializeField] private int _initialPoolSize = 2;
     
-    private Queue<GameObject> bulletEnemyPool = new Queue<GameObject>();
-    
+    private Queue<GameObject> _bulletPool = new Queue<GameObject>();
+
     private void Awake()
     {
-        Instance = this;
-        InitializePool();
+        if (Instance == null)
+        {
+            Instance = this;
+            InitializePool();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void InitializePool()
     {
-        for (int i = 0; i < poolSize; i++)
+        for (int i = 0; i < _initialPoolSize; i++)
         {
-            GameObject bulletEnemy = Instantiate(bulletEnemyPrefab, transform);
-            bulletEnemy.SetActive(false);
-            bulletEnemyPool.Enqueue(bulletEnemy);
+            CreateNewBullet();
         }
     }
-    
+
+    private GameObject CreateNewBullet()
+    {
+        GameObject bullet = Instantiate(_bulletEnemyPrefab, transform);
+        bullet.SetActive(false);
+        _bulletPool.Enqueue(bullet);
+        return bullet;
+    }
+
     public GameObject GetBulletEnemy()
     {
-        if (bulletEnemyPool.Count > 0)
+        CleanPool();
+        
+        // Ищем первую неактивную пулю в пуле
+        foreach (var bullet in _bulletPool)
         {
-            GameObject bulletEnemy = bulletEnemyPool.Dequeue();
-            bulletEnemy.SetActive(true);
-            return bulletEnemy;
+            if (bullet != null && !bullet.activeInHierarchy)
+            {
+                bullet.SetActive(true);
+                return bullet;
+            }
         }
-        else
-        {
-            GameObject bulletEnemy = Instantiate(bulletEnemyPrefab, transform);
-            return bulletEnemy;
-        }
+        
+        // Если все пули активны - создаем новую
+        return CreateNewBullet();
     }
-    
+
     public void ReturnBulletEnemy(GameObject bulletEnemy)
     {
+        if (bulletEnemy == null) return;
+        
         bulletEnemy.SetActive(false);
-        bulletEnemyPool.Enqueue(bulletEnemy);
+        bulletEnemy.transform.SetParent(transform);
+        bulletEnemy.transform.position = Vector3.zero;
+        bulletEnemy.transform.rotation = Quaternion.identity;
+        
+        _bulletPool.Enqueue(bulletEnemy);
+    }
+
+    private void CleanPool()
+    {
+        // Удаляем уничтоженные объекты
+        Queue<GameObject> cleanPool = new Queue<GameObject>();
+        
+        foreach (var bullet in _bulletPool)
+        {
+            if (bullet != null)
+            {
+                cleanPool.Enqueue(bullet);
+            }
+        }
+        
+        _bulletPool = cleanPool;
+    }
+
+    public int GetActiveCount()
+    {
+        int count = 0;
+        foreach (var bullet in _bulletPool)
+        {
+            if (bullet != null && bullet.activeInHierarchy)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 }

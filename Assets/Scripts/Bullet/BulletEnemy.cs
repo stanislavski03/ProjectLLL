@@ -1,30 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletEnemy : MonoBehaviour
 {
-    public float speed = 10f;
-    public float lifetime = 3f;
+    [SerializeField] private float _speed = 10f;
+    [SerializeField] private float _lifetime = 3f;
     [SerializeField] private float _damage = 10f;
+    [SerializeField] private LayerMask _collisionLayers = Physics.DefaultRaycastLayers;
 
-    private Transform _playerTransform;
-    private PlayerHP _playerHP;
     private Vector3 _direction;
-    private bool _isInitialized = false;
+    private float _currentLifetime;
+    private PlayerHP _playerHP;
 
     private void Awake()
     {
-        _playerTransform = GameObject.FindWithTag("Player").transform;
-        _playerHP = _playerTransform.GetComponent<PlayerHP>();
-
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            _playerHP = player.GetComponent<PlayerHP>();
+        }
+        
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
     private void OnEnable()
     {
-        _isInitialized = false;
-        Invoke(nameof(ReturnToPool), lifetime);
+        _currentLifetime = _lifetime;
+        CancelInvoke();
+        Invoke(nameof(ReturnToPool), _lifetime);
     }
 
     private void OnDisable()
@@ -34,59 +36,76 @@ public class BulletEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (!_isInitialized && _playerTransform != null)
+        if (!enabled) return;
+        
+        _currentLifetime -= Time.deltaTime;
+        if (_currentLifetime <= 0)
         {
-            _direction = (_playerTransform.position - transform.position).normalized;
-            transform.rotation = Quaternion.LookRotation(_direction);
-            _isInitialized = true;
+            ReturnToPool();
+            return;
         }
-        transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
+        
+        transform.Translate(Vector3.forward * _speed * Time.deltaTime, Space.Self);
+        CheckCollision();
     }
 
-    void OnDestroy()
+    private void CheckCollision()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 
+            _speed * Time.deltaTime + 0.1f, _collisionLayers))
+        {
+            HandleCollision(hit.collider);
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent(out EnemyHP enemy))
-        {
-            enemy.Damage(10);
-        }
-        if (collision.gameObject.CompareTag("Player"))
+        HandleCollision(other);
+    }
+
+    private void HandleCollision(Collider collider)
+    {
+        if (collider.CompareTag("Player") && _playerHP != null)
         {
             _playerHP.Damage(_damage);
             ReturnToPool();
         }
+        else if (collider.CompareTag("Environment") || collider.CompareTag("Wall") || collider.CompareTag("Bullet"))
+        {
+            ReturnToPool();
+        }
+    }
+
+    public void Initialize(Vector3 direction, float speed)
+    {
+        _direction = direction.normalized;
+        _speed = speed;
+        transform.rotation = Quaternion.LookRotation(_direction);
+        
+        CancelInvoke();
+        Invoke(nameof(ReturnToPool), _lifetime);
     }
 
     private void ReturnToPool()
     {
-        BulletEnemyPool.Instance.ReturnBulletEnemy(gameObject);
+        if (BulletEnemyPool.Instance != null)
+        {
+            BulletEnemyPool.Instance.ReturnBulletEnemy(gameObject);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
-    public void ResetBulletEnemy(float newSpeed)
-    {
-        speed = newSpeed;
-        CancelInvoke();
-        Invoke(nameof(ReturnToPool), lifetime);
-        _isInitialized = false;
-    }
-
-    public void SetDirection(Vector3 direction, float bulletSpeed)
-    {
-        _direction = direction.normalized;
-        speed = bulletSpeed;
-        transform.rotation = Quaternion.LookRotation(_direction);
-        _isInitialized = true;
-
-        CancelInvoke();
-        Invoke(nameof(ReturnToPool), lifetime);
-    }
-    
     private void OnGameStateChanged(GameState newGameState)
     {
         enabled = newGameState == GameState.Gameplay;
+    }
+
+    private void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
 }
