@@ -591,9 +591,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHP: 100
+  _physicDef: 0
   _freezeDef: 0
   _fireDef: 0
-  _electroDef: 0
+  _energyDef: 0
   isAlive: 1
 --- !u!54 &423367934
 Rigidbody:
@@ -2075,6 +2076,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1649445906}
   - component: {fileID: 1649445905}
+  - component: {fileID: 1649445907}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2112,6 +2114,24 @@ Transform:
   - {fileID: 2131135985}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1649445907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649445904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f4d26f9eb90ca42a4df79a55f44a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageMultiplier: 1
+  _cooldownReduction: 1
+  _areaMultiplier: 1
+  _fireDamageMultiplier: 1
+  _iceDamageMultiplier: 1
+  _energyDamageMultiplier: 1
 --- !u!1 &1799490101
 GameObject:
   m_ObjectHideFlags: 0
@@ -2440,7 +2460,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 2.0739903, z: 0}
-  m_LocalScale: {x: 4.7742, y: 0.05477532, z: 4.7742}
+  m_LocalScale: {x: 5, y: 0.05, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1649445906}
@@ -2457,6 +2477,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d42c2a6765966409e831ceba6f45b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 1649445907}
+  _weaponCooldown: 1
+  _weaponDamage: 10
+  _weaponArea: 8
 --- !u!114 &2131135987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2469,8 +2493,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3043943e046204d9e99e556b267cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damagePeriod: 0.2
-  _damageAmmount: 10
 --- !u!136 &2131135988
 CapsuleCollider:
   m_ObjectHideFlags: 0

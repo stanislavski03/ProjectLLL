@@ -1,61 +1,101 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DamageField : MonoBehaviour
 {
-
-    [SerializeField] private float _damagePeriod = 0.2f;
-    [SerializeField] private float _damageAmmount = 10;
-
+    private DamageFieldTrigger damageFieldTrigger;
+    private float damage;
+    private float cooldown;
     private List<EnemyHP> targets = new List<EnemyHP>();
+    private bool isActive = false;
+
+    private void Awake()
+    {
+        damageFieldTrigger = GetComponent<DamageFieldTrigger>();
+    }
 
     private void OnEnable()
     {
-        StartCoroutine(Damager());
+        // Получаем актуальные значения
+        damage = damageFieldTrigger.GetDamage();
+        cooldown = damageFieldTrigger.GetCooldown();
+
+        if (!isActive)
+        {
+            isActive = true;
+            StartCoroutine(Damager());
+        }
     }
+
     private void OnDisable()
     {
-        StopCoroutine(Damager());
+        isActive = false;
+        StopAllCoroutines();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<EnemyHP>())
+        EnemyHP enemy = other.GetComponent<EnemyHP>();
+        if (enemy != null && !targets.Contains(enemy))
         {
-            targets.Add(other.GetComponent<EnemyHP>());
+            targets.Add(enemy);
+
+            // Автоматически включаем компонент при появлении врагов
+            if (!isActive)
+            {
+                enabled = true;
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<EnemyHP>())
+        EnemyHP enemy = other.GetComponent<EnemyHP>();
+        if (enemy != null && targets.Contains(enemy))
         {
-            targets.Remove(other.GetComponent<EnemyHP>()); 
+            targets.Remove(enemy);
+
+            // Выключаем компонент, если врагов нет
+            if (targets.Count == 0)
+            {
+                enabled = false;
+            }
         }
     }
 
     IEnumerator Damager()
     {
-        while (true)
+        while (isActive)
         {
             if (targets.Count == 0)
             {
                 enabled = false;
-                break;
+                yield break;
             }
-            for (int i = 0; i < targets.Count; i++)
+
+            // Создаем копию списка для безопасной итерации
+            List<EnemyHP> currentTargets = new List<EnemyHP>(targets);
+
+            for (int i = 0; i < currentTargets.Count; i++)
             {
-                
-                targets[i].Damage(_damageAmmount);
-                if (targets[i].GetHP() <= 0)
+                if (currentTargets[i] != null)
                 {
-                    targets.Remove(targets[i]);
+                    currentTargets[i].Damage(damage);
+
+                    // Удаляем мертвых врагов из основного списка
+                    if (currentTargets[i].GetHP() <= 0)
+                    {
+                        targets.Remove(currentTargets[i]);
+                    }
                 }
             }
-            yield return new WaitForSeconds(_damagePeriod);
+
+            yield return new WaitForSeconds(cooldown);
+
+            // Обновляем значения на каждом цикле
+            damage = damageFieldTrigger.GetDamage();
+            cooldown = damageFieldTrigger.GetCooldown();
         }
     }
-
 }
