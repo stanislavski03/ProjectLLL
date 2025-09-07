@@ -43,7 +43,7 @@ public class PlayerHP : MonoBehaviour
         }
         _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, _maxHP);
         Changed?.Invoke(_currentHP);
-        if (_currentHP <= 0) Death();
+        if (_currentHP == 0) Death();
     }
 
 
@@ -51,7 +51,7 @@ public class PlayerHP : MonoBehaviour
     {
         _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, _maxHP);
         Changed?.Invoke(_currentHP);
-        if (_currentHP <= 0) Death();
+        if (_currentHP == 0) Death();
     }
 
     public void Heal(float healAmmount)

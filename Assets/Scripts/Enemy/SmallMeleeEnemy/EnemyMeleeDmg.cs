@@ -22,13 +22,14 @@ public class EnemyMeleeDmg : MonoBehaviour
     private void OnCollisionStay(Collision collision)
     {
         PlayerCheckAndDamage(collision);
+
     }
 
     private void PlayerCheckAndDamage(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent(out PlayerHP player) && _cooldownTimer <= 0)
+        if (collision.gameObject.GetComponent< PlayerHP>() && _cooldownTimer <= 0)
         {
-            player.Damage(_damage);
+            collision.gameObject.GetComponent<PlayerHP>().Damage(_damage);
             StartCoroutine(DamageCooldown());
         }
     }
@@ -43,15 +44,19 @@ public class EnemyMeleeDmg : MonoBehaviour
 
     private void OnGameStateChanged(GameState newGameState)
     {
-        enabled = newGameState == GameState.Gameplay;
-        //ситуативно, если надо чтобы враги не наносили урон сразу как отожмётся пауза
-        if (enabled)
+        if (gameObject.activeSelf)
         {
-            StartCoroutine(DamageCooldown());
-        }
-        else
-        {
-            StopCoroutine(DamageCooldown());
+            enabled = newGameState == GameState.Gameplay;
+            //ситуативно, если надо чтобы враги не наносили урон сразу как отожмётся пауза
+
+            if (enabled)
+            {
+                StartCoroutine(DamageCooldown());
+            }
+            else
+            {
+                StopCoroutine(DamageCooldown());
+            }
         }
     }
 

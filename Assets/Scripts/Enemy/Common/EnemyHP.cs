@@ -12,7 +12,10 @@ public class EnemyHP : MonoBehaviour
     [SerializeField] private float _electroDef = 0;
 
     private float _currentHP;
-
+    public float GetHP()
+    {
+        return _currentHP;
+    }
 
     private void OnEnable()
     {
