@@ -12,11 +12,15 @@ public class EnemyMeleeDmg : MonoBehaviour
     private void Awake()
     {
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        CountdownController.OnCountdownStarted += OnCountdownStarted;
+        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     void OnDestroy()
     {
         GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        CountdownController.OnCountdownStarted -= OnCountdownStarted;
+        CountdownController.OnCountdownFinished -= OnCountdownFinished;
     }
 
     private void OnCollisionStay(Collision collision)
@@ -26,7 +30,7 @@ public class EnemyMeleeDmg : MonoBehaviour
 
     private void PlayerCheckAndDamage(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent(out PlayerHP player) && _cooldownTimer <= 0)
+        if (collision.gameObject.TryGetComponent(out PlayerHP player) && _cooldownTimer <= 0 && enabled)
         {
             player.Damage(_damage);
             StartCoroutine(DamageCooldown());
@@ -38,25 +42,35 @@ public class EnemyMeleeDmg : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
         }
-
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        enabled = newGameState == GameState.Gameplay;
-        //ситуативно, если надо чтобы враги не наносили урон сразу как отожмётся пауза
-        if (enabled)
-        {
-            StartCoroutine(DamageCooldown());
-        }
-        else
-        {
-            StopCoroutine(DamageCooldown());
-        }
     }
 
     public void ReturnToPool()
     {
         EnemyPool.Instance.GetEnemyBackToPool(gameObject);
+    }
+
+    private void OnCountdownStarted()
+    {
+        enabled = false;
+    }
+
+    private void OnCountdownFinished()
+    {
+        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        {
+            enabled = true;
+        }
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        if (newGameState == GameState.Paused)
+        {
+            enabled = false;
+        }
+        else if (newGameState == GameState.Gameplay)
+        {
+            enabled = false;
+        }
     }
 }

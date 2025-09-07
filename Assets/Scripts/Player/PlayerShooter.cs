@@ -16,9 +16,22 @@ public class PlayerShooter : MonoBehaviour
     {
         _enemyDetector = GetComponent<EnemyDetector>();
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        CountdownController.OnCountdownStarted += OnCountdownStarted;
+        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void Start()
+    {
+        StartShooting();
+    }
+
+    private void OnDisable()
+    {
+        if (_shootingCoroutine != null)
+            StopCoroutine(_shootingCoroutine);
+    }
+
+    private void OnEnable()
     {
         StartShooting();
     }
@@ -82,24 +95,11 @@ public class PlayerShooter : MonoBehaviour
         }
     }
 
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        bool isGameplay = newGameState == GameState.Gameplay;
-
-        if (isGameplay)
-        {
-            StartShooting();
-        }
-        else
-        {
-            if (_shootingCoroutine != null)
-                StopCoroutine(_shootingCoroutine);
-        }
-    }
-
     private void OnDestroy()
     {
         GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        CountdownController.OnCountdownStarted -= OnCountdownStarted;
+        CountdownController.OnCountdownFinished -= OnCountdownFinished;
 
         if (_shootingCoroutine != null)
             StopCoroutine(_shootingCoroutine);
@@ -108,5 +108,33 @@ public class PlayerShooter : MonoBehaviour
     public void SetDamageType(int damageType)
     {
         _damageType = Mathf.Clamp(damageType, 0, 2);
+    }
+
+    private void OnCountdownStarted()
+    {
+        enabled = false;
+    }
+
+    private void OnCountdownFinished()
+    {
+        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        {
+            enabled = true;
+            StartShooting();
+        }
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        if (newGameState == GameState.Paused)
+        {
+            enabled = false;
+            if (_shootingCoroutine != null)
+            StopCoroutine(_shootingCoroutine);
+        }
+        else if (newGameState == GameState.Gameplay)
+        {
+            enabled = false;
+        }
     }
 }

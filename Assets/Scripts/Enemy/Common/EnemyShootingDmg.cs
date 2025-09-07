@@ -15,6 +15,8 @@ public class EnemyShootingDmg : MonoBehaviour
     private void Awake()
     {
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        CountdownController.OnCountdownStarted += OnCountdownStarted;
+        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void OnEnable()
@@ -25,7 +27,7 @@ public class EnemyShootingDmg : MonoBehaviour
     private void Update()
     {
         if (_playerTransform == null) return;
-        
+
         float distance = Vector3.Distance(transform.position, _playerTransform.position);
         bool shouldShoot = distance <= _playerDetectionRange;
 
@@ -43,7 +45,7 @@ public class EnemyShootingDmg : MonoBehaviour
     {
         if (_shootingCoroutine != null)
             StopCoroutine(_shootingCoroutine);
-            
+
         _shootingCoroutine = StartCoroutine(ShootingRoutine());
         _isShooting = true;
     }
@@ -52,7 +54,7 @@ public class EnemyShootingDmg : MonoBehaviour
     {
         if (_shootingCoroutine != null)
             StopCoroutine(_shootingCoroutine);
-            
+
         _shootingCoroutine = null;
         _isShooting = false;
     }
@@ -60,7 +62,7 @@ public class EnemyShootingDmg : MonoBehaviour
     private IEnumerator ShootingRoutine()
     {
         yield return new WaitForSeconds(1f); // Начальная задержка
-        
+
         while (true)
         {
             if (_playerTransform != null)
@@ -79,7 +81,7 @@ public class EnemyShootingDmg : MonoBehaviour
         if (bulletObj == null) return;
 
         bulletObj.transform.position = _bulletSpawn.position;
-        
+
         Vector3 direction = (_playerTransform.position - _bulletSpawn.position).normalized;
         bulletObj.transform.rotation = Quaternion.LookRotation(direction);
 
@@ -94,19 +96,11 @@ public class EnemyShootingDmg : MonoBehaviour
         }
     }
 
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        enabled = newGameState == GameState.Gameplay;
-        
-        if (!enabled)
-        {
-            StopShooting();
-        }
-    }
-
     private void OnDestroy()
     {
         GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        CountdownController.OnCountdownStarted -= OnCountdownStarted;
+        CountdownController.OnCountdownFinished -= OnCountdownFinished;
         StopShooting();
     }
 
@@ -114,5 +108,31 @@ public class EnemyShootingDmg : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _playerDetectionRange);
+    }
+
+    private void OnCountdownStarted()
+    {
+        enabled = false;
+    }
+
+    private void OnCountdownFinished()
+    {
+        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        {
+            enabled = true;
+        }
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        if (newGameState == GameState.Paused)
+        {
+            enabled = false;
+            StopShooting();
+        }
+        else if (newGameState == GameState.Gameplay)
+        {
+            enabled = false;
+        }
     }
 }

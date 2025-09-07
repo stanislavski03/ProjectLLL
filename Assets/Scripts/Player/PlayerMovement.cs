@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
         _playerInput.Player.Click.performed += OnClick;
 
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        CountdownController.OnCountdownStarted += OnCountdownStarted;
+        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void Update()
@@ -43,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
     void OnDestroy()
     {
         GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        CountdownController.OnCountdownStarted -= OnCountdownStarted;
+        CountdownController.OnCountdownFinished -= OnCountdownFinished;
     }
 
     private void Move()
@@ -69,17 +73,28 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Heavy Attack");
     }
 
+    private void OnCountdownStarted()
+    {
+        enabled = false;
+    }
+
+    private void OnCountdownFinished()
+    {
+        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        {
+            enabled = true;
+        }
+    }
+
     private void OnGameStateChanged(GameState newGameState)
     {
-        enabled = newGameState == GameState.Gameplay;
-
-        if (enabled)
+        if (newGameState == GameState.Paused)
         {
-            rb.isKinematic = false;
+            enabled = false;
         }
-        else
+        else if (newGameState == GameState.Gameplay)
         {
-            rb.isKinematic = true;
+            enabled = false;
         }
     }
 }

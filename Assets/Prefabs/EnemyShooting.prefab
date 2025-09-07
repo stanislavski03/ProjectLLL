@@ -183,6 +183,8 @@ MonoBehaviour:
   _freezeDef: 0
   _fireDef: 0
   _electroDef: 0
+  _expPrefab: {fileID: 1627554565677760942, guid: 8a648a11417f01b4f93b101ca312f77d, type: 3}
+  _expDropPercent: 50
 --- !u!114 &4034955383255907115
 MonoBehaviour:
   m_ObjectHideFlags: 0

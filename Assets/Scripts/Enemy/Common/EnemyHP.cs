@@ -11,6 +11,9 @@ public class EnemyHP : MonoBehaviour
     [SerializeField] private float _fireDef = 0;
     [SerializeField] private float _electroDef = 0;
 
+    [SerializeField] private GameObject _expPrefab;
+    [SerializeField] private float _expDropPercent = 10;
+
     private float _currentHP;
 
 
@@ -53,6 +56,8 @@ public class EnemyHP : MonoBehaviour
     private void Death()
     {
         Debug.Log("HOLY, HE'S DEAD!");
+        if(Random.Range(1f, 100f) <= _expDropPercent)
+            Instantiate(_expPrefab, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

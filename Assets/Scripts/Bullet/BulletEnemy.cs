@@ -18,8 +18,10 @@ public class BulletEnemy : MonoBehaviour
         {
             _playerHP = player.GetComponent<PlayerHP>();
         }
-        
+
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        CountdownController.OnCountdownStarted += OnCountdownStarted;
+        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void OnEnable()
@@ -37,14 +39,14 @@ public class BulletEnemy : MonoBehaviour
     private void Update()
     {
         if (!enabled) return;
-        
+
         _currentLifetime -= Time.deltaTime;
         if (_currentLifetime <= 0)
         {
             ReturnToPool();
             return;
         }
-        
+
         transform.Translate(Vector3.forward * _speed * Time.deltaTime, Space.Self);
         CheckCollision();
     }
@@ -52,7 +54,7 @@ public class BulletEnemy : MonoBehaviour
     private void CheckCollision()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 
+        if (Physics.Raycast(transform.position, transform.forward, out hit,
             _speed * Time.deltaTime + 0.1f, _collisionLayers))
         {
             HandleCollision(hit.collider);
@@ -82,7 +84,7 @@ public class BulletEnemy : MonoBehaviour
         _direction = direction.normalized;
         _speed = speed;
         transform.rotation = Quaternion.LookRotation(_direction);
-        
+
         CancelInvoke();
         Invoke(nameof(ReturnToPool), _lifetime);
     }
@@ -99,13 +101,35 @@ public class BulletEnemy : MonoBehaviour
         }
     }
 
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        enabled = newGameState == GameState.Gameplay;
-    }
-
     private void OnDestroy()
     {
         GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        CountdownController.OnCountdownStarted -= OnCountdownStarted;
+        CountdownController.OnCountdownFinished -= OnCountdownFinished;
+    }
+    
+    private void OnCountdownStarted()
+    {
+        enabled = false;
+    }
+
+    private void OnCountdownFinished()
+    {
+        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        {
+            enabled = true;
+        }
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        if (newGameState == GameState.Paused)
+        {
+            enabled = false;
+        }
+        else if (newGameState == GameState.Gameplay)
+        {
+            enabled = false;
+        }
     }
 }

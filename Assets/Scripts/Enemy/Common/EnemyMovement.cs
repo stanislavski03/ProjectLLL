@@ -8,11 +8,13 @@ public class EnemyMovement : MonoBehaviour
     public float _playerRange = 1f;
 
     private Transform _playerTransform;
-    
+
 
     private void Awake()
     {
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        CountdownController.OnCountdownStarted += OnCountdownStarted;
+        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void OnEnable()
@@ -23,6 +25,8 @@ public class EnemyMovement : MonoBehaviour
     void OnDestroy()
     {
         GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        CountdownController.OnCountdownStarted -= OnCountdownStarted;
+        CountdownController.OnCountdownFinished -= OnCountdownFinished;
     }
 
     private void FixedUpdate()
@@ -42,8 +46,28 @@ public class EnemyMovement : MonoBehaviour
             transform.position += transform.forward * _speed * Time.fixedDeltaTime;
     }
 
+    private void OnCountdownStarted()
+    {
+        enabled = false;
+    }
+
+    private void OnCountdownFinished()
+    {
+        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        {
+            enabled = true;
+        }
+    }
+
     private void OnGameStateChanged(GameState newGameState)
     {
-        enabled = newGameState == GameState.Gameplay;
+        if (newGameState == GameState.Paused)
+        {
+            enabled = false;
+        }
+        else if (newGameState == GameState.Gameplay)
+        {
+            enabled = false;
+        }
     }
 }

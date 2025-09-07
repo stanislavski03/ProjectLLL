@@ -1,44 +1,59 @@
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float _damage = 10f;
     [SerializeField] private LayerMask _collisionLayers = Physics.DefaultRaycastLayers;
-    
+
     private Transform _target;
     private float _speed;
     private float _lifetime;
     private int _damageType;
     private bool _hasTarget;
     private Vector3 _lastDirection;
-    
+
+    private void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        CountdownController.OnCountdownStarted += OnCountdownStarted;
+        CountdownController.OnCountdownFinished += OnCountdownFinished;
+    }
+
     private void OnEnable()
     {
         CancelInvoke();
         Invoke(nameof(ReturnToPool), _lifetime);
     }
-    
+
     private void OnDisable()
     {
         CancelInvoke();
         _target = null;
         _hasTarget = false;
     }
-    
+
+    private void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+        CountdownController.OnCountdownStarted -= OnCountdownStarted;
+        CountdownController.OnCountdownFinished -= OnCountdownFinished;
+    }
+
     private void Update()
     {
         if (_hasTarget && _target != null && _target.gameObject.activeInHierarchy)
         {
             Vector3 direction = (_target.position - transform.position).normalized;
             transform.position += direction * _speed * Time.deltaTime;
-            
+
             if (direction != Vector3.zero)
             {
                 transform.rotation = Quaternion.LookRotation(direction);
             }
-            
+
             _lastDirection = direction;
-            
+
             CheckCollisionWithRaycast();
         }
         else
@@ -47,7 +62,7 @@ public class Bullet : MonoBehaviour
             CheckCollisionWithRaycast();
         }
     }
-    
+
     private void CheckCollisionWithRaycast()
     {
         RaycastHit hit;
@@ -56,17 +71,17 @@ public class Bullet : MonoBehaviour
             HandleCollision(hit.collider);
         }
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         HandleCollision(other);
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
         HandleCollision(collision.collider);
     }
-    
+
     private void HandleCollision(Collider collider)
     {
         if (collider.CompareTag("Enemy"))
@@ -78,7 +93,7 @@ public class Bullet : MonoBehaviour
             ReturnToPool();
         }
     }
-    
+
     public void ResetBullet(Transform newTarget, float newSpeed, float newLifetime, int damageType)
     {
         _target = newTarget;
@@ -86,7 +101,7 @@ public class Bullet : MonoBehaviour
         _lifetime = newLifetime;
         _damageType = damageType;
         _hasTarget = newTarget != null;
-        
+
         if (_hasTarget)
         {
             _lastDirection = (_target.position - transform.position).normalized;
@@ -97,7 +112,7 @@ public class Bullet : MonoBehaviour
             _lastDirection = transform.forward;
         }
     }
-    
+
     private void ReturnToPool()
     {
         if (BulletPool.Instance != null)
@@ -109,10 +124,35 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + _lastDirection * 2f);
+    }
+
+    private void OnCountdownStarted()
+    {
+        enabled = false;
+    }
+
+    private void OnCountdownFinished()
+    {
+        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        {
+            enabled = true;
+        }
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        if (newGameState == GameState.Paused)
+        {
+            enabled = false;
+        }
+        else if (newGameState == GameState.Gameplay)
+        {
+            enabled = false;
+        }
     }
 }

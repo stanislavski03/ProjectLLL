@@ -1,17 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraChanger : MonoBehaviour
 {
     [SerializeField] private GameObject _gameCamera;
     [SerializeField] private GameObject _menuCamera;
-
-    public Player player;
+    [SerializeField] private float _cameraSwitchDelay = 0.5f;
 
     private void Awake()
     {
-        player = FindObjectOfType<Player>();
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
@@ -22,9 +19,28 @@ public class CameraChanger : MonoBehaviour
 
     private void OnGameStateChanged(GameState newGameState)
     {
-        enabled = newGameState == GameState.Gameplay;
+        if (newGameState == GameState.Gameplay)
+        {
+            StartCoroutine(SwitchToGameCamera());
+        }
+        else
+        {
+            SwitchToMenuCameraImmediately();
+        }
+    }
 
-        _gameCamera.SetActive(!_gameCamera.activeSelf);
-        _menuCamera.SetActive(!_gameCamera.activeSelf);
+    private IEnumerator SwitchToGameCamera()
+    {
+        // Даем камере время на плавный переход
+        yield return new WaitForSeconds(_cameraSwitchDelay);
+        
+        _gameCamera.SetActive(true);
+        _menuCamera.SetActive(false);
+    }
+
+    private void SwitchToMenuCameraImmediately()
+    {
+        _menuCamera.SetActive(true);
+        _gameCamera.SetActive(false);
     }
 }
