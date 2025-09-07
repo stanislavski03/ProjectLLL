@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerShooter : MonoBehaviour
+public class BulletShooter: MonoBehaviour
 {
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private float _shootSpeed = 10f;

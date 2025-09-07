@@ -15,7 +15,10 @@ public class EnemyHP : MonoBehaviour
     [SerializeField] private float _expDropPercent = 10;
 
     private float _currentHP;
-
+    public float GetHP()
+    {
+        return _currentHP;
+    }
 
     private void OnEnable()
     {
