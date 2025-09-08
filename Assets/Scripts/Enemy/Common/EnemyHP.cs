@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EnemyHP : MonoBehaviour
 {
@@ -13,22 +14,38 @@ public class EnemyHP : MonoBehaviour
 
     [SerializeField] private GameObject _expPrefab;
     [SerializeField] private float _expDropPercent = 10;
+    [SerializeField] private float _expAutodropAmount = 10;
+
+    public event Action<float> onDamage;
+
+    private PlayerEXP _playerEXP;
 
     private float _currentHP;
     public float GetHP()
     {
         return _currentHP;
     }
+    public float GetMaxHP()
+    {
+        return _maxHP;
+    }
 
     private void OnEnable()
     {
         _currentHP = _maxHP;
+
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            _playerEXP = player.GetComponent<PlayerEXP>();
+        }
     }
 
     public void Damage(float damageAmmount, int damageType)
     {
-        switch(damageType){
-            case 0: 
+        switch (damageType)
+        {
+            case 0:
                 _currentHP -= damageAmmount * _freezeDef / 100;
                 break;
             case 1:
@@ -37,11 +54,14 @@ public class EnemyHP : MonoBehaviour
             case 2:
                 _currentHP -= damageAmmount * _electroDef / 100;
                 break;
-            default: _currentHP -= damageAmmount;
+            default:
+                _currentHP -= damageAmmount;
                 break;
         }
         _currentHP -= damageAmmount;
-        if (_currentHP <= 0 ) Death();
+        if (_currentHP <= 0) Death();
+        Debug.Log(_currentHP);
+        onDamage?.Invoke(damageAmmount);
     }
 
 
@@ -59,8 +79,9 @@ public class EnemyHP : MonoBehaviour
     private void Death()
     {
         Debug.Log("HOLY, HE'S DEAD!");
-        if(Random.Range(1f, 100f) <= _expDropPercent)
+        if(UnityEngine.Random.Range(1f, 100f) <= _expDropPercent)
             Instantiate(_expPrefab, gameObject.transform.position, Quaternion.identity);
+        _playerEXP.GetEXP(_expAutodropAmount);
         Destroy(gameObject);
     }
 }

@@ -1,16 +1,24 @@
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class BulletShooter: MonoBehaviour
 {
+    [SerializeField] private PlayerStats playerStats;
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private float _shootSpeed = 10f;
     [SerializeField] private float _bulletSpawnCooldown = 0.5f;
     [SerializeField] private float _bulletLifetime = 3f;
+    [SerializeField] private float _weaponDamage = 10;
     [SerializeField] private int _damageType = 0; // 0=freeze, 1=fire, 2=electro
+
+    public event Action<float> _damageChanged;
 
     private EnemyDetector _enemyDetector;
     private Coroutine _shootingCoroutine;
+
+    private float _bulletCooldown;
+    private float _damage;
 
     private void Awake()
     {
@@ -22,17 +30,27 @@ public class BulletShooter: MonoBehaviour
 
     private void Start()
     {
+        CountCooldown(playerStats.GetCooldownReduction());
+        CountDamage(playerStats.GetDamageMultiplier());
+
         StartShooting();
     }
 
     private void OnDisable()
     {
+        playerStats._cooldownReductionChanged -= CountCooldown;
+        playerStats._damageMultiplierChanged -= CountDamage;
+        
+
         if (_shootingCoroutine != null)
             StopCoroutine(_shootingCoroutine);
     }
 
     private void OnEnable()
     {
+        playerStats._cooldownReductionChanged += CountCooldown;
+        playerStats._damageMultiplierChanged += CountDamage;
+
         StartShooting();
     }
 
@@ -49,7 +67,7 @@ public class BulletShooter: MonoBehaviour
         while (true)
         {
             ShootAtVisibleEnemies();
-            yield return new WaitForSeconds(_bulletSpawnCooldown);
+            yield return new WaitForSeconds(_bulletCooldown);
         }
     }
 
@@ -108,6 +126,24 @@ public class BulletShooter: MonoBehaviour
     public void SetDamageType(int damageType)
     {
         _damageType = Mathf.Clamp(damageType, 0, 2);
+    }
+
+
+    private void CountCooldown(float statsValue) 
+    {
+        _bulletCooldown = _bulletSpawnCooldown * statsValue;
+    }
+    private void CountDamage(float statsValue)
+    {
+        _damage = _weaponDamage * statsValue;
+        _damageChanged?.Invoke(_damage);
+    }
+
+
+
+    public float GetDamage(float damage)
+    {
+        return damage;
     }
 
     private void OnCountdownStarted()
