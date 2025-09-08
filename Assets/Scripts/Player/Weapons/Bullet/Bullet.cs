@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float _damage = 10f;
     [SerializeField] private LayerMask _collisionLayers = Physics.DefaultRaycastLayers;
 
     private Transform _target;
     private float _speed;
     private float _lifetime;
     private int _damageType;
+    private float _damage;
     private bool _hasTarget;
     private Vector3 _lastDirection;
+    private BulletShooter _bulletShooter;
 
     private void Awake()
     {
@@ -22,6 +23,12 @@ public class Bullet : MonoBehaviour
 
     private void OnEnable()
     {
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            _bulletShooter = player.GetComponent<BulletShooter>();
+        }
+        _bulletShooter._damageChanged += SetDamage;
         CancelInvoke();
         Invoke(nameof(ReturnToPool), _lifetime);
     }
@@ -130,6 +137,12 @@ public class Bullet : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + _lastDirection * 2f);
     }
+
+    private void SetDamage(float damage)
+    {
+        _damage = damage;
+    }
+
 
     private void OnCountdownStarted()
     {

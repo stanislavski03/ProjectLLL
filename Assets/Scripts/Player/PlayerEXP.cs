@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerEXP : MonoBehaviour
 {
     [SerializeField] private float _maxEXP;
+    [SerializeField] private Image _expProgressBarImage;
 
     public event Action<float> EXPChanged;
     public event Action<float> LVLChanged;
@@ -31,6 +34,9 @@ public class PlayerEXP : MonoBehaviour
             LevelUP();
             LVLChanged?.Invoke(_currentLVL);
         }
+
+        _expProgressBarImage.fillAmount = Mathf.Clamp01(_currentEXP/MaxEXP);
+
         EXPChanged?.Invoke(_currentEXP);
     }
 
