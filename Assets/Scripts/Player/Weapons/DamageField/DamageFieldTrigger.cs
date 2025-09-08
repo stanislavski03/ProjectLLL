@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class DamageFieldTrigger : MonoBehaviour
 {
     [SerializeField] private PlayerStats playerStats;
-    [SerializeField] private float _weaponCooldown = 0.2f;
+    [SerializeField] private float _weaponCooldown = 1;
     [SerializeField] private float _weaponDamage = 10;
     [SerializeField] private float _weaponArea = 8;
 
@@ -13,6 +14,47 @@ public class DamageFieldTrigger : MonoBehaviour
     private float damage;
     private float cooldown;
     private float additionalDamage = 1f; // Инициализируем значением по умолчанию
+
+    private int _currentLevel = 0;
+    private int _maxLevel = 6;
+    public int GetCurrentLevel() => _currentLevel;
+
+    
+
+    public void AddLevel(int value)
+    {
+        for (; value > 0 && _currentLevel <= _maxLevel; value--)
+        {
+            _currentLevel++;
+            switch (_currentLevel) { 
+                case 1: _weaponArea += 2; break;
+                case 2: _weaponDamage += 2; break;
+                case 3: _weaponCooldown -= 0.2f; break;
+                case 4: _weaponArea += 2; break;
+                case 5: _weaponDamage += 5; break;
+                case 6: _weaponCooldown -= 0.2f; break;
+            }
+        }
+    }
+
+    public void ReduceLevel(int value)
+    {
+        for (; value > 0 && _currentLevel > 0; value--)
+        {
+            switch (_currentLevel)
+            {
+                case 1: _weaponArea -= 2; break;
+                case 2: _weaponDamage -= 2; break;
+                case 3: _weaponCooldown += 0.2f; break;
+                case 4: _weaponArea -= 2; break;
+                case 5: _weaponDamage -= 5; break;
+                case 6: _weaponCooldown += 0.2f; break;
+            }
+            _currentLevel--;
+
+        }
+    }
+
 
     private void Start()
     {
