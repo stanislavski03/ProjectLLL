@@ -35,15 +35,31 @@ public class GameStateManager
         OnGameStateChanged?.Invoke(newGameState);
     }
 
+    public void SetLevelUpPause()
+    {
+        if (CurrentGameState == GameState.LevelUpPaused || IsTransitioning)
+            return;
+
+        CurrentGameState = GameState.LevelUpPaused;
+        OnGameStateChanged?.Invoke(GameState.LevelUpPaused);
+    }
+
+    public void ResumeFromLevelUpPause()
+    {
+        if (CurrentGameState != GameState.LevelUpPaused || IsTransitioning)
+            return;
+
+        CurrentGameState = GameState.Gameplay;
+        OnGameStateChanged?.Invoke(GameState.Gameplay);
+    }
+
     public void StartTransition(float duration)
     {
         Instance.IsTransitioning = true;
-        // Можно добавить событие для начала перехода если нужно
     }
 
     public void EndTransition()
     {
         Instance.IsTransitioning = false;
-        // Можно добавить событие для окончания перехода если нужно
     }
 }

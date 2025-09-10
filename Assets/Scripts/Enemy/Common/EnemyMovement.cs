@@ -61,7 +61,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnGameStateChanged(GameState newGameState)
     {
-        if (newGameState == GameState.Paused)
+        if (newGameState == GameState.Paused || newGameState == GameState.LevelUpPaused)
         {
             enabled = false;
         }

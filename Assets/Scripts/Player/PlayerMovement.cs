@@ -88,13 +88,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnGameStateChanged(GameState newGameState)
     {
-        if (newGameState == GameState.Paused)
+        if (newGameState == GameState.Paused || newGameState == GameState.LevelUpPaused)
         {
             enabled = false;
         }
         else if (newGameState == GameState.Gameplay)
         {
-            enabled = false;
+            // Включаемся сразу, если не идет отсчет
+            if (!CountdownController.IsCountdownActive)
+            {
+                enabled = true;
+            }
+            else
+            {
+                enabled = false;
+            }
         }
     }
 }

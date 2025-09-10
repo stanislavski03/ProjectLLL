@@ -9,14 +9,17 @@ public class CountdownController : MonoBehaviour
     [SerializeField] private GameObject _countdownPanel;
     [SerializeField] private float _countdownDuration = 3f;
 
-    public static event Action OnCountdownStarted;  // Новое событие - начало отсчета
-    public static event Action OnCountdownFinished; // Отсчет завершен
+    public static event Action OnCountdownStarted;
+    public static event Action OnCountdownFinished;
     public static bool IsCountdownActive { get; private set; }
+
+    private GameState _previousState; // Запоминаем предыдущее состояние
 
     private void Awake()
     {
         GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
         _countdownPanel.SetActive(false);
+        _previousState = GameStateManager.Instance.CurrentGameState;
     }
 
     private void OnDestroy()
@@ -26,27 +29,39 @@ public class CountdownController : MonoBehaviour
 
     private void OnGameStateChanged(GameState newGameState)
     {
+        // Запоминаем предыдущее состояние перед изменением
+        GameState oldState = _previousState;
+        _previousState = newGameState;
+
         if (newGameState == GameState.Gameplay)
         {
-            StartCoroutine(StartCountdown());
+            // Запускаем отсчет ТОЛЬКО если предыдущее состояние было Paused
+            if (oldState == GameState.Paused)
+            {
+                StartCoroutine(StartCountdown());
+            }
+            else
+            {
+                // Если переходим не из Paused (например из LevelUpPaused), сразу уведомляем о завершении
+                OnCountdownFinished?.Invoke();
+            }
         }
         else if (newGameState == GameState.Paused)
         {
-            // При паузе сразу останавливаем отсчет
             StopAllCoroutines();
             _countdownPanel.SetActive(false);
             IsCountdownActive = false;
-            OnCountdownFinished?.Invoke(); // Уведомляем что отсчет прерван
+            OnCountdownFinished?.Invoke();
         }
+        // LevelUpPaused игнорируем - не делаем ничего
     }
 
     private IEnumerator StartCountdown()
     {
         IsCountdownActive = true;
         _countdownPanel.SetActive(true);
-        OnCountdownStarted?.Invoke(); // Уведомляем о НАЧАЛЕ отсчета
+        OnCountdownStarted?.Invoke();
 
-        // Отсчет 3, 2, 1...
         for (float time = _countdownDuration; time > 0; time--)
         {
             _countdownText.text = Mathf.CeilToInt(time).ToString();
@@ -56,10 +71,9 @@ public class CountdownController : MonoBehaviour
         _countdownText.text = "GO!";
         yield return new WaitForSeconds(0.5f);
         
-        // Завершение отсчета
         _countdownPanel.SetActive(false);
         IsCountdownActive = false;
-        OnCountdownFinished?.Invoke(); // Уведомляем о ЗАВЕРШЕНИИ отсчета
+        OnCountdownFinished?.Invoke();
     }
 
     public void SkipCountdown()

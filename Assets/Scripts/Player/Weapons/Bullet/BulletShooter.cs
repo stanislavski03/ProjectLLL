@@ -162,7 +162,7 @@ public class BulletShooter: MonoBehaviour
 
     private void OnGameStateChanged(GameState newGameState)
     {
-        if (newGameState == GameState.Paused)
+        if (newGameState == GameState.Paused  || newGameState == GameState.LevelUpPaused)
         {
             enabled = false;
             if (_shootingCoroutine != null)
@@ -170,7 +170,14 @@ public class BulletShooter: MonoBehaviour
         }
         else if (newGameState == GameState.Gameplay)
         {
-            enabled = false;
+            if (!CountdownController.IsCountdownActive)
+            {
+                enabled = true;
+            }
+            else
+            {
+                enabled = false;
+            }
         }
     }
 }

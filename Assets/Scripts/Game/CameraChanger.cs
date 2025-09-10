@@ -23,15 +23,15 @@ public class CameraChanger : MonoBehaviour
         {
             StartCoroutine(SwitchToGameCamera());
         }
-        else
+        else if (newGameState == GameState.Paused)
         {
             SwitchToMenuCameraImmediately();
         }
+        // LevelUpPaused - камера не меняется
     }
 
     private IEnumerator SwitchToGameCamera()
     {
-        // Даем камере время на плавный переход
         yield return new WaitForSeconds(_cameraSwitchDelay);
         
         _gameCamera.SetActive(true);

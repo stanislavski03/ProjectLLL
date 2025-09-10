@@ -9,11 +9,17 @@ public class PauseController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             GameState currentGameState = GameStateManager.Instance.CurrentGameState;
-            GameState newGameState = currentGameState == GameState.Gameplay
-                ? GameState.Paused
-                : GameState.Gameplay;
-
-            GameStateManager.Instance.SetState(newGameState);
+            
+            // ESC работает только между Gameplay и Paused
+            if (currentGameState == GameState.Gameplay)
+            {
+                GameStateManager.Instance.SetState(GameState.Paused);
+            }
+            else if (currentGameState == GameState.Paused)
+            {
+                GameStateManager.Instance.SetState(GameState.Gameplay);
+            }
+            // LevelUpPaused игнорируем ESC
         }
     }
 }
