@@ -9,14 +9,12 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInput _playerInput;
     private Vector2 _moveDirection;
-    private EnemyDetector _enemyDetector;
     private Rigidbody rb;
 
     private void Awake()
     {
         _playerInput = new PlayerInput();
-        _enemyDetector = GetComponent<EnemyDetector>();
-        rb = GetComponent<Rigidbody>();
+        rb = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
 
         _playerInput.Player.Click.performed += OnClick;
 
@@ -51,13 +49,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        if (_moveDirection.sqrMagnitude < 0.1f)
-            return;
+        
 
-        float scaledMoveSpeed = _moveSpeed * Time.deltaTime;
+        float scaledMoveSpeed = _moveSpeed;
         Vector3 offset = new Vector3(_moveDirection.x, 0f, _moveDirection.y) * scaledMoveSpeed;
 
-        transform.Translate(offset, Space.World);
+        rb.velocity = offset;
     }
 
     private void OnClick(InputAction.CallbackContext context)
