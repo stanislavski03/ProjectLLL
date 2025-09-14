@@ -33,7 +33,7 @@ public class PlayerEXP : MonoBehaviour
             LVLChanged?.Invoke(_currentLVL);
         }
 
-        _expProgressBarImage.fillAmount = Mathf.Clamp01(_currentEXP/MaxEXP);
+        _expProgressBarImage.fillAmount = Mathf.Clamp01(_currentEXP / MaxEXP);
 
         EXPChanged?.Invoke(_currentEXP);
     }
@@ -41,18 +41,30 @@ public class PlayerEXP : MonoBehaviour
     private void LevelUP()
     {
         _currentLVL += 1;
-        
-        // Ставим принудительную паузу при поднятии уровня
-        GameStateManager.Instance.SetLevelUpPause();
-        
-        // Показываем UI для выбора предметов с анимацией
-        LevelUpController.Instance.OnLevelUp();
+
+        // ВАЖНО: Сначала меняем состояние
+        GameStateManager.Instance.RequestLevelUp();
+
+        // Затем показываем UI (после перехода в LevelUpState)
+        StartCoroutine(ShowLevelUpUIAfterDelay());
     }
-    
-    // Метод для вызова из UI когда игрок выбрал предмет
+
+    private IEnumerator ShowLevelUpUIAfterDelay()
+    {
+        // Ждем один кадр, чтобы состояние успело поменяться
+        yield return null;
+
+        LevelUpController levelUpController = FindObjectOfType<LevelUpController>();
+        if (levelUpController != null && GameStateManager.Instance.IsCurrentState<LevelUpState>())
+        {
+            levelUpController.OnLevelUp();
+        }
+    }
+
+    // В методе выбора предмета:
     public void OnLevelUpItemSelected()
     {
-        // Снимаем принудительную паузу
-        LevelUpController.Instance.ResumePause();
+        // ВАЖНО: Вызываем Resume через GameStateManager
+        GameStateManager.Instance.RequestResume();
     }
 }

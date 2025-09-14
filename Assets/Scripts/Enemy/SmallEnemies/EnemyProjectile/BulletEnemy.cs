@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BulletEnemy : MonoBehaviour
+public class BulletEnemy : MonoBehaviour, IGameplaySystem
 {
     [SerializeField] private float _speed = 10f;
     [SerializeField] private float _lifetime = 3f;
@@ -11,6 +11,8 @@ public class BulletEnemy : MonoBehaviour
     private float _currentLifetime;
     private PlayerHP _playerHP;
 
+    private bool isPaused;
+
     private void Awake()
     {
         GameObject player = GameObject.FindWithTag("Player");
@@ -19,9 +21,6 @@ public class BulletEnemy : MonoBehaviour
             _playerHP = player.GetComponent<PlayerHP>();
         }
 
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        CountdownController.OnCountdownStarted += OnCountdownStarted;
-        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void OnEnable()
@@ -38,7 +37,7 @@ public class BulletEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (!enabled) return;
+        if (isPaused) return;
 
         _currentLifetime -= Time.deltaTime;
         if (_currentLifetime <= 0)
@@ -103,33 +102,19 @@ public class BulletEnemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-        CountdownController.OnCountdownStarted -= OnCountdownStarted;
-        CountdownController.OnCountdownFinished -= OnCountdownFinished;
     }
     
-    private void OnCountdownStarted()
+    public void SetPaused(bool paused)
     {
-        enabled = false;
-    }
-
-    private void OnCountdownFinished()
-    {
-        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        isPaused = paused;
+        
+        if (paused)
+        {
+            enabled = false;
+        }
+        else
         {
             enabled = true;
-        }
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        if (newGameState == GameState.Paused || newGameState == GameState.LevelUpPaused)
-        {
-            enabled = false;
-        }
-        else if (newGameState == GameState.Gameplay)
-        {
-            enabled = false;
         }
     }
 }

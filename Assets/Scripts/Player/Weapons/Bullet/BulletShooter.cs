@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using System;
 
-public class BulletShooter: MonoBehaviour
+public class BulletShooter: MonoBehaviour, IGameplaySystem
 {
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private Transform _bulletSpawn;
@@ -20,12 +20,11 @@ public class BulletShooter: MonoBehaviour
     private float _bulletCooldown;
     private float _damage;
 
+    private bool isPaused;
+
     private void Awake()
     {
         _enemyDetector = GetComponent<EnemyDetector>();
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        CountdownController.OnCountdownStarted += OnCountdownStarted;
-        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void Start()
@@ -115,10 +114,6 @@ public class BulletShooter: MonoBehaviour
 
     private void OnDestroy()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-        CountdownController.OnCountdownStarted -= OnCountdownStarted;
-        CountdownController.OnCountdownFinished -= OnCountdownFinished;
-
         if (_shootingCoroutine != null)
             StopCoroutine(_shootingCoroutine);
     }
@@ -146,38 +141,20 @@ public class BulletShooter: MonoBehaviour
         return damage;
     }
 
-    private void OnCountdownStarted()
+    public void SetPaused(bool paused)
     {
-        enabled = false;
-    }
-
-    private void OnCountdownFinished()
-    {
-        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        isPaused = paused;
+        
+        if (paused)
+        {
+            if (_shootingCoroutine != null)
+                StopCoroutine(_shootingCoroutine);
+            enabled = false;
+        }
+        else
         {
             enabled = true;
             StartShooting();
-        }
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        if (newGameState == GameState.Paused  || newGameState == GameState.LevelUpPaused)
-        {
-            enabled = false;
-            if (_shootingCoroutine != null)
-            StopCoroutine(_shootingCoroutine);
-        }
-        else if (newGameState == GameState.Gameplay)
-        {
-            if (!CountdownController.IsCountdownActive)
-            {
-                enabled = true;
-            }
-            else
-            {
-                enabled = false;
-            }
         }
     }
 }

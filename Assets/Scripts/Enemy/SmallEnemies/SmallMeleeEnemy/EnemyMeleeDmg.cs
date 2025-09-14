@@ -2,29 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMeleeDmg : MonoBehaviour
+public class EnemyMeleeDmg : MonoBehaviour, IGameplaySystem
 {
     [SerializeField] private float _damage = 10f;
     [SerializeField] private float _damageCooldown = 1f;
 
     private float _cooldownTimer = 0;
 
+    private bool isPaused;
+    private bool isDestroyed;
+
     private void Awake()
     {
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        CountdownController.OnCountdownStarted += OnCountdownStarted;
-        CountdownController.OnCountdownFinished += OnCountdownFinished;
+
     }
 
     void OnDestroy()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-        CountdownController.OnCountdownStarted -= OnCountdownStarted;
-        CountdownController.OnCountdownFinished -= OnCountdownFinished;
+        isDestroyed = true;
+        StopAllCoroutines();
     }
 
     private void OnCollisionStay(Collision collision)
     {
+        if (isPaused) return;
+
         PlayerCheckAndDamage(collision);
     }
 
@@ -49,28 +51,19 @@ public class EnemyMeleeDmg : MonoBehaviour
         EnemyPool.Instance.GetEnemyBackToPool(gameObject);
     }
 
-    private void OnCountdownStarted()
+    public void SetPaused(bool paused)
     {
-        enabled = false;
-    }
-
-    private void OnCountdownFinished()
-    {
-        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        if (isDestroyed) return; // Не выполняем если объект уничтожен
+        
+        isPaused = paused;
+        
+        if (paused)
+        {
+            enabled = false;
+        }
+        else
         {
             enabled = true;
-        }
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        if (newGameState == GameState.Paused || newGameState == GameState.LevelUpPaused)
-        {
-            enabled = false;
-        }
-        else if (newGameState == GameState.Gameplay)
-        {
-            enabled = false;
         }
     }
 }

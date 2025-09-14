@@ -168,6 +168,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &126861079
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6738477098125528425, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_Name
+      value: EnemyShooting
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.146529
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.52428055
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8143062995085958904, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 330543ba1d418b2499db4f9c457bc905, type: 3}
 --- !u!1 &208337970
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,12 +692,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423367923}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d33f243172dd906478825ee4e38a1d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 0}
+  playerStats: {fileID: 423367936}
   _bulletSpawn: {fileID: 1327622522}
   _shootSpeed: 10
   _bulletSpawnCooldown: 0.5
@@ -748,6 +805,7 @@ GameObject:
   - component: {fileID: 500826767}
   - component: {fileID: 500826766}
   - component: {fileID: 500826768}
+  - component: {fileID: 500826769}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -767,6 +825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdbd1093a9088054985bb1f04c05d2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
 --- !u!4 &500826767
 Transform:
   m_ObjectHideFlags: 0
@@ -801,6 +860,19 @@ MonoBehaviour:
   _fadeDuration: 0.5
   _buttonDelay: 0.1
   _buttonScaleDuration: 0.3
+--- !u!114 &500826769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500826765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28916d7e1e177de4aa5acd5edf4fe25e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelUpController: {fileID: 500826768}
 --- !u!1 &559402606
 GameObject:
   m_ObjectHideFlags: 3
@@ -2983,9 +3055,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b657db618f0db42a43972ce4054657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _countdownText: {fileID: 2116328038}
-  _countdownPanel: {fileID: 1307579591}
-  _countdownDuration: 3
+  countdownText: {fileID: 2116328038}
+  countdownPanel: {fileID: 1307579591}
+  countdownDuration: 3
 --- !u!4 &1507705997
 Transform:
   m_ObjectHideFlags: 0
@@ -3560,9 +3632,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 500826768}
-        m_TargetAssemblyTypeName: LevelUpController, Assembly-CSharp
-        m_MethodName: ResumePause
+      - m_Target: {fileID: 500826769}
+        m_TargetAssemblyTypeName: GameStateManager, Assembly-CSharp
+        m_MethodName: RequestResume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4166,6 +4238,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyMelee
       objectReference: {fileID: 0}
+    - target: {fileID: 7699647849712147494, guid: 27c76fcff6d87bb4e90b6c7e74a45eec, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4190,3 +4266,4 @@ SceneRoots:
   - {fileID: 1376272622}
   - {fileID: 930512078}
   - {fileID: 1180136817}
+  - {fileID: 126861079}

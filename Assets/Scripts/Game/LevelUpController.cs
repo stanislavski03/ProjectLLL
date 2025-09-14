@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 
-public class LevelUpController : MonoBehaviour
+public class LevelUpController : MonoBehaviour, IPausable
 {
     [SerializeField] private Canvas _lvlUpCanvas;
     [SerializeField] private CanvasGroup _canvasGroup;
@@ -13,38 +13,11 @@ public class LevelUpController : MonoBehaviour
     [SerializeField] private float _buttonDelay = 0.1f;
     [SerializeField] private float _buttonScaleDuration = 0.3f;
 
-    private static LevelUpController _instance;
-    public static LevelUpController Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<LevelUpController>();
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject("LevelUpController");
-                    _instance = obj.AddComponent<LevelUpController>();
-                }
-            }
-            return _instance;
-        }
-    }
+    private bool isPaused;
 
     private void Awake()
     {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Инициализируем DOTween (если еще не инициализирован)
+        // Инициализируем DOTween
         DOTween.Init();
 
         // Скрываем canvas при старте
@@ -52,7 +25,7 @@ public class LevelUpController : MonoBehaviour
         {
             _lvlUpCanvas.enabled = false;
         }
-        
+
         if (_canvasGroup != null)
         {
             _canvasGroup.alpha = 0f;
@@ -64,6 +37,12 @@ public class LevelUpController : MonoBehaviour
         PrepareButtons();
     }
 
+    private void Start()
+    {
+        // Автоматически регистрируемся в системе паузы
+        // GameStateManager найдет нас через интерфейс IPausable
+    }
+
     private void PrepareButtons()
     {
         if (_buttons == null) return;
@@ -73,8 +52,7 @@ public class LevelUpController : MonoBehaviour
             if (button != null)
             {
                 button.localScale = Vector3.zero;
-                
-                // Делаем кнопки неинтерактивными изначально
+
                 Button btnComponent = button.GetComponent<Button>();
                 if (btnComponent != null)
                 {
@@ -84,13 +62,20 @@ public class LevelUpController : MonoBehaviour
         }
     }
 
-    public void ResumePause()
+    // Новый метод для закрытия паузы через UI кнопку
+    public void ResumeGame()
     {
-        // Плавно скрываем UI перед снятием паузы
-        HideLevelUpOptions(() => 
+        Debug.Log("ResumeGame called from UI button");
+
+        // Проверяем, что мы именно в LevelUpState
+        if (GameStateManager.Instance.IsCurrentState<LevelUpState>())
         {
-            GameStateManager.Instance.ResumeFromLevelUpPause();
-        });
+            HideLevelUpOptions(() =>
+            {
+                // ВАЖНО: Вызываем RequestResume у текущего состояния
+                GameStateManager.Instance.RequestResume();
+            });
+        }
     }
 
     public void ShowLevelUpOptions()
@@ -100,14 +85,12 @@ public class LevelUpController : MonoBehaviour
             _lvlUpCanvas.enabled = true;
         }
 
-        // Останавливаем все твины
         DOTween.Kill(_canvasGroup);
         foreach (RectTransform button in _buttons)
         {
             if (button != null) DOTween.Kill(button);
         }
 
-        // Плавное появление canvas группы
         if (_canvasGroup != null)
         {
             _canvasGroup.interactable = true;
@@ -121,13 +104,11 @@ public class LevelUpController : MonoBehaviour
                 })
                 .OnComplete(() =>
                 {
-                    // После появления canvas запускаем анимацию кнопок
                     AnimateButtons();
                 });
         }
         else
         {
-            // Если нет CanvasGroup, просто показываем кнопки
             AnimateButtons();
         }
     }
@@ -137,15 +118,13 @@ public class LevelUpController : MonoBehaviour
         if (_buttons == null || _buttons.Length == 0)
             return;
 
-        // Анимация для каждой кнопки с задержкой
         for (int i = 0; i < _buttons.Length; i++)
         {
             RectTransform button = _buttons[i];
             if (button != null)
             {
-                // Делаем кнопку интерактивной после анимации
                 Button btnComponent = button.GetComponent<Button>();
-                
+
                 button.DOScale(Vector3.one, _buttonScaleDuration)
                     .SetDelay(i * _buttonDelay)
                     .SetEase(Ease.OutBack)
@@ -166,7 +145,6 @@ public class LevelUpController : MonoBehaviour
 
     public void HideLevelUpOptions(System.Action onComplete = null)
     {
-        // Делаем кнопки неинтерактивными сразу
         if (_buttons != null)
         {
             foreach (RectTransform button in _buttons)
@@ -178,15 +156,13 @@ public class LevelUpController : MonoBehaviour
                     {
                         btnComponent.interactable = false;
                     }
-                    
-                    // Плавное скрытие кнопок
+
                     button.DOScale(Vector3.zero, _buttonScaleDuration * 0.7f)
                         .SetEase(Ease.InBack);
                 }
             }
         }
 
-        // Плавное скрытие canvas
         if (_canvasGroup != null)
         {
             _canvasGroup.interactable = false;
@@ -213,6 +189,23 @@ public class LevelUpController : MonoBehaviour
         }
     }
 
+    // Реализация интерфейса IPausable
+    public void SetPaused(bool paused)
+    {
+        isPaused = paused;
+
+        if (paused)
+        {
+            // При паузе скрываем UI (если был показан)
+            HideLevelUpOptions();
+        }
+        else
+        {
+            // При снятии паузы также скрываем на всякий случай
+            HideLevelUpOptions();
+        }
+    }
+
     // Метод для вызова из PlayerEXP при level up
     public void OnLevelUp()
     {
@@ -221,7 +214,6 @@ public class LevelUpController : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Очищаем твины при уничтожении объекта
         if (_canvasGroup != null) DOTween.Kill(_canvasGroup);
         if (_buttons != null)
         {

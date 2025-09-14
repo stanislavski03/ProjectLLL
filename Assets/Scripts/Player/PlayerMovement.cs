@@ -3,30 +3,30 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IGameplaySystem
 {
     [SerializeField] private float _moveSpeed;
 
     private PlayerInput _playerInput;
     private Vector2 _moveDirection;
     private Rigidbody rb;
+    private Vector3 _lastVelocity;
+
+    private bool isPaused;
 
     private void Awake()
     {
         _playerInput = new PlayerInput();
-        rb = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>(); // Используем свой Rigidbody
 
         _playerInput.Player.Click.performed += OnClick;
-
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        CountdownController.OnCountdownStarted += OnCountdownStarted;
-        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void Update()
     {
-        _moveDirection = _playerInput.Player.Move.ReadValue<Vector2>();
+        if (isPaused) return;
 
+        _moveDirection = _playerInput.Player.Move.ReadValue<Vector2>();
         Move();
     }
 
@@ -40,25 +40,19 @@ public class PlayerMovement : MonoBehaviour
         _playerInput.Disable();
     }
 
-    void OnDestroy()
-    {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-        CountdownController.OnCountdownStarted -= OnCountdownStarted;
-        CountdownController.OnCountdownFinished -= OnCountdownFinished;
-    }
-
     private void Move()
     {
-        
+        if (isPaused) return;
 
         float scaledMoveSpeed = _moveSpeed;
         Vector3 offset = new Vector3(_moveDirection.x, 0f, _moveDirection.y) * scaledMoveSpeed;
-
         rb.velocity = offset;
     }
 
     private void OnClick(InputAction.CallbackContext context)
     {
+        if (isPaused) return;
+
         if (context.interaction is MultiTapInteraction || context.interaction is HoldInteraction)
         {
             StartHeavyAttack();
@@ -70,36 +64,22 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Heavy Attack");
     }
 
-    private void OnCountdownStarted()
+    public void SetPaused(bool paused)
     {
-        enabled = false;
-    }
-
-    private void OnCountdownFinished()
-    {
-        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        isPaused = paused;
+        
+        if (paused)
         {
-            enabled = true;
+            // Сохраняем текущую скорость и останавливаем
+            _lastVelocity = rb.velocity;
+            rb.velocity = Vector3.zero;
+            rb.isKinematic = true; // Отключаем физику
         }
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        if (newGameState == GameState.Paused || newGameState == GameState.LevelUpPaused)
+        else
         {
-            enabled = false;
-        }
-        else if (newGameState == GameState.Gameplay)
-        {
-            // Включаемся сразу, если не идет отсчет
-            if (!CountdownController.IsCountdownActive)
-            {
-                enabled = true;
-            }
-            else
-            {
-                enabled = false;
-            }
+            // Восстанавливаем физику и скорость
+            rb.isKinematic = false;
+            rb.velocity = _lastVelocity;
         }
     }
 }

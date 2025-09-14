@@ -60,7 +60,7 @@ public class EnemyHP : MonoBehaviour
         }
         _currentHP -= damageAmmount;
         if (_currentHP <= 0) Death();
-        Debug.Log(_currentHP);
+        // Debug.Log(_currentHP);
         onDamage?.Invoke(damageAmmount);
     }
 

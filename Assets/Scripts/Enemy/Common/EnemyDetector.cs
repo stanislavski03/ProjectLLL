@@ -1,23 +1,27 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class EnemyDetector : MonoBehaviour
+public class EnemyDetector : MonoBehaviour, IGameplaySystem
 {
     public Camera mainCamera;
     [SerializeField] private float _rotationSpeed = 20f;
     [SerializeField] private GameObject _menuCamera;
-    [SerializeField] private float _updateInterval = 0.2f; // Оптимизация: проверяем реже
+    [SerializeField] private float _updateInterval = 0.2f;
 
     private Enemy[] _visibleEnemies;
     private float _updateTimer;
+    private bool isPaused;
 
-    private void Awake()
+    private void Start()
     {
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+        // Автоматически регистрируемся через интерфейс
+        // GameStateManager найдет нас при старте
     }
 
     private void Update()
     {
+        if (isPaused) return;
+        
         _updateTimer -= Time.deltaTime;
         
         if (_updateTimer <= 0f)
@@ -27,11 +31,6 @@ public class EnemyDetector : MonoBehaviour
         }
 
         LookAtEnemy(GetClosestEnemy());
-    }
-
-    void OnDestroy()
-    {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
     }
 
     private void FindVisibleEnemies()
@@ -109,19 +108,24 @@ public class EnemyDetector : MonoBehaviour
     
     private void LookAtMenuCamera()
     {
+        Vector3 lookPosition = new Vector3(_menuCamera.transform.position.x, 1, _menuCamera.transform.position.z);
         if (_menuCamera != null)
         {
-            transform.LookAt(_menuCamera.transform.position);
+            transform.LookAt(lookPosition);
         }
     }
 
-    private void OnGameStateChanged(GameState newGameState)
+    public void SetPaused(bool paused)
     {
-        enabled = newGameState == GameState.Gameplay;
-
-        if (!enabled && _menuCamera != null)
+        isPaused = paused;
+        
+        if (paused)
         {
-            LookAtMenuCamera();
+            // LookAtMenuCamera();
+        }
+        else
+        {
+            FindVisibleEnemies();
         }
     }
 }

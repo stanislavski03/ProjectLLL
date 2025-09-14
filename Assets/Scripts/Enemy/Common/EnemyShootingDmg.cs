@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyShootingDmg : MonoBehaviour
+public class EnemyShootingDmg : MonoBehaviour, IGameplaySystem
 {
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private float _bulletSpawnCooldown = 1f;
@@ -12,11 +12,10 @@ public class EnemyShootingDmg : MonoBehaviour
     private Coroutine _shootingCoroutine;
     private bool _isShooting = false;
 
+    private bool isPaused;
+
     private void Awake()
     {
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        CountdownController.OnCountdownStarted += OnCountdownStarted;
-        CountdownController.OnCountdownFinished += OnCountdownFinished;
     }
 
     private void OnEnable()
@@ -26,6 +25,8 @@ public class EnemyShootingDmg : MonoBehaviour
 
     private void Update()
     {
+        if (isPaused) return;
+
         if (_playerTransform == null) return;
 
         float distance = Vector3.Distance(transform.position, _playerTransform.position);
@@ -75,6 +76,8 @@ public class EnemyShootingDmg : MonoBehaviour
 
     private void ShootAtPlayer()
     {
+        if (isPaused) return;
+
         if (_playerTransform == null || BulletEnemyPool.Instance == null) return;
 
         GameObject bulletObj = BulletEnemyPool.Instance.GetBulletEnemy();
@@ -98,9 +101,6 @@ public class EnemyShootingDmg : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-        CountdownController.OnCountdownStarted -= OnCountdownStarted;
-        CountdownController.OnCountdownFinished -= OnCountdownFinished;
         StopShooting();
     }
 
@@ -110,29 +110,18 @@ public class EnemyShootingDmg : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, _playerDetectionRange);
     }
 
-    private void OnCountdownStarted()
+    public void SetPaused(bool paused)
     {
-        enabled = false;
-    }
-
-    private void OnCountdownFinished()
-    {
-        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        isPaused = paused;
+        
+        if (paused)
+        {
+            StopShooting();
+            enabled = false;
+        }
+        else
         {
             enabled = true;
-        }
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        if (newGameState == GameState.Paused || newGameState == GameState.LevelUpPaused)
-        {
-            enabled = false;
-            StopShooting();
-        }
-        else if (newGameState == GameState.Gameplay)
-        {
-            enabled = false;
         }
     }
 }

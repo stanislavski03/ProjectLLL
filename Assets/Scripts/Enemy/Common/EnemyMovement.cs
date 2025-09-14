@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : MonoBehaviour, IGameplaySystem
 {
     [SerializeField] private float _speed = 3f;
     public float _playerRange = 1f;
 
     private Transform _playerTransform;
 
+    private bool isPaused;
+
 
     private void Awake()
     {
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        CountdownController.OnCountdownStarted += OnCountdownStarted;
-        CountdownController.OnCountdownFinished += OnCountdownFinished;
+
     }
 
     private void OnEnable()
@@ -24,13 +24,12 @@ public class EnemyMovement : MonoBehaviour
 
     void OnDestroy()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-        CountdownController.OnCountdownStarted -= OnCountdownStarted;
-        CountdownController.OnCountdownFinished -= OnCountdownFinished;
     }
 
     private void FixedUpdate()
     {
+        if (isPaused) return;
+        
         LookAt();
         GoFoward();
     }
@@ -46,28 +45,17 @@ public class EnemyMovement : MonoBehaviour
             transform.position += transform.forward * _speed * Time.fixedDeltaTime;
     }
 
-    private void OnCountdownStarted()
+    public void SetPaused(bool paused)
     {
-        enabled = false;
-    }
-
-    private void OnCountdownFinished()
-    {
-        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
+        isPaused = paused;
+        
+        if (paused)
+        {
+            enabled = false;
+        }
+        else
         {
             enabled = true;
-        }
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        if (newGameState == GameState.Paused || newGameState == GameState.LevelUpPaused)
-        {
-            enabled = false;
-        }
-        else if (newGameState == GameState.Gameplay)
-        {
-            enabled = false;
         }
     }
 }

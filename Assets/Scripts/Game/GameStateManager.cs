@@ -1,65 +1,170 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class GameStateManager
+public class GameStateManager : MonoBehaviour
 {
-    private static GameStateManager _instance;
-    public static GameStateManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = new GameStateManager();
+    public static GameStateManager Instance { get; private set; }
 
-            return _instance;
+    private GameState currentState;
+    private bool isTransitioning;
+    private bool escHandledThisFrame = false;
+
+    public event Action<GameState> OnStateChanged;
+
+    [Header("References")]
+    [SerializeField] private LevelUpController levelUpController;
+
+    private List<IPausable> pausableSystems = new List<IPausable>();
+    private List<IGameplaySystem> gameplaySystems = new List<IGameplaySystem>();
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        InitializeStates();
+        FindAllSystems();
+
+        if (levelUpController == null)
+        {
+            levelUpController = FindObjectOfType<LevelUpController>();
         }
     }
 
-    public GameState CurrentGameState { get; private set; }
-    public bool IsTransitioning { get; private set; }
-
-    public delegate void GameStateChangeHandler(GameState newGameState);
-    public event GameStateChangeHandler OnGameStateChanged;
-
-    private GameStateManager()
+    private void FindAllSystems()
     {
-        CurrentGameState = GameState.Gameplay;
+        MonoBehaviour[] allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
+
+        pausableSystems.Clear();
+        gameplaySystems.Clear();
+
+        foreach (var mono in allMonoBehaviours)
+        {
+            if (mono == null) continue;
+
+            if (mono is IPausable pausable)
+            {
+                if (!pausableSystems.Contains(pausable))
+                {
+                    pausableSystems.Add(pausable);
+                }
+            }
+
+            if (mono is IGameplaySystem gameplaySystem)
+            {
+                if (!gameplaySystems.Contains(gameplaySystem))
+                {
+                    gameplaySystems.Add(gameplaySystem);
+                }
+            }
+        }
     }
 
-    public void SetState(GameState newGameState)
+    private void CleanDestroyedSystems()
     {
-        if (newGameState == CurrentGameState || IsTransitioning)
+        pausableSystems.RemoveAll(system => system == null || system.Equals(null));
+        gameplaySystems.RemoveAll(system => system == null || system.Equals(null));
+    }
+
+    public void SetPauseForAllSystems(bool paused)
+    {
+        CleanDestroyedSystems();
+        foreach (var system in pausableSystems)
+        {
+            if (system != null && !system.Equals(null))
+            {
+                system.SetPaused(paused);
+            }
+        }
+    }
+
+    public void SetPauseForGameplaySystems(bool paused)
+    {
+        CleanDestroyedSystems();
+        foreach (var system in gameplaySystems)
+        {
+            if (system != null && !system.Equals(null))
+            {
+                system.SetPaused(paused);
+            }
+        }
+    }
+
+    private void InitializeStates()
+    {
+        SwitchState(new GameplayState());
+    }
+
+    public void SwitchState(GameState newState)
+    {
+        if (isTransitioning || currentState?.GetType() == newState.GetType())
             return;
 
-        CurrentGameState = newGameState;
-        OnGameStateChanged?.Invoke(newGameState);
+        StartCoroutine(TransitionToState(newState));
     }
 
-    public void SetLevelUpPause()
+    private IEnumerator TransitionToState(GameState newState)
     {
-        if (CurrentGameState == GameState.LevelUpPaused || IsTransitioning)
-            return;
+        isTransitioning = true;
+        escHandledThisFrame = true; // Блокируем ESC во время перехода
 
-        CurrentGameState = GameState.LevelUpPaused;
-        OnGameStateChanged?.Invoke(GameState.LevelUpPaused);
+        currentState?.ExitState();
+
+        newState.Initialize(this);
+        newState.EnterState();
+
+        currentState = newState;
+        OnStateChanged?.Invoke(currentState);
+
+        isTransitioning = false;
+        yield return null;
+
+        escHandledThisFrame = false;
     }
 
-    public void ResumeFromLevelUpPause()
+    public LevelUpController GetLevelUpController() => levelUpController;
+
+    private void Update()
     {
-        if (CurrentGameState != GameState.LevelUpPaused || IsTransitioning)
-            return;
+        currentState?.Update();
 
-        CurrentGameState = GameState.Gameplay;
-        OnGameStateChanged?.Invoke(GameState.Gameplay);
+        if (Input.GetKeyDown(KeyCode.Escape) && !escHandledThisFrame)
+        {
+            escHandledThisFrame = true;
+
+            if (isTransitioning)
+            {
+                return;
+            }
+
+            if (currentState?.CanPauseWithESC == true)
+            {
+                if (currentState is GameplayState)
+                {
+                    currentState.RequestPause();
+                }
+                else if (currentState is PausedState)
+                {
+                    currentState.RequestResume();
+                }
+            }
+        }
     }
 
-    public void StartTransition(float duration)
-    {
-        Instance.IsTransitioning = true;
-    }
+    public void RequestPause() => currentState?.RequestPause();
+    public void RequestResume() => currentState?.RequestResume();
+    public void RequestLevelUp() => currentState?.RequestLevelUp();
 
-    public void EndTransition()
-    {
-        Instance.IsTransitioning = false;
-    }
+    public bool IsCurrentState<T>() where T : GameState => currentState is T;
 }

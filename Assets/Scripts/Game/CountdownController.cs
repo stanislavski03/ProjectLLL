@@ -5,82 +5,85 @@ using System;
 
 public class CountdownController : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _countdownText;
-    [SerializeField] private GameObject _countdownPanel;
-    [SerializeField] private float _countdownDuration = 3f;
+    [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private GameObject countdownPanel;
+    [SerializeField] private float countdownDuration = 3f;
 
-    public static event Action OnCountdownStarted;
-    public static event Action OnCountdownFinished;
-    public static bool IsCountdownActive { get; private set; }
+    private Coroutine countdownCoroutine;
+    private Action onCountdownComplete;
 
-    private GameState _previousState; // Запоминаем предыдущее состояние
-
-    private void Awake()
+    private void OnEnable()
     {
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        _countdownPanel.SetActive(false);
-        _previousState = GameStateManager.Instance.CurrentGameState;
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.OnStateChanged += OnStateChanged;
+        }
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        // Запоминаем предыдущее состояние перед изменением
-        GameState oldState = _previousState;
-        _previousState = newGameState;
-
-        if (newGameState == GameState.Gameplay)
+        if (GameStateManager.Instance != null)
         {
-            // Запускаем отсчет ТОЛЬКО если предыдущее состояние было Paused
-            if (oldState == GameState.Paused)
-            {
-                StartCoroutine(StartCountdown());
-            }
-            else
-            {
-                // Если переходим не из Paused (например из LevelUpPaused), сразу уведомляем о завершении
-                OnCountdownFinished?.Invoke();
-            }
+            GameStateManager.Instance.OnStateChanged -= OnStateChanged;
         }
-        else if (newGameState == GameState.Paused)
-        {
-            StopAllCoroutines();
-            _countdownPanel.SetActive(false);
-            IsCountdownActive = false;
-            OnCountdownFinished?.Invoke();
-        }
-        // LevelUpPaused игнорируем - не делаем ничего
-    }
-
-    private IEnumerator StartCountdown()
-    {
-        IsCountdownActive = true;
-        _countdownPanel.SetActive(true);
-        OnCountdownStarted?.Invoke();
-
-        for (float time = _countdownDuration; time > 0; time--)
-        {
-            _countdownText.text = Mathf.CeilToInt(time).ToString();
-            yield return new WaitForSeconds(1f);
-        }
-
-        _countdownText.text = "GO!";
-        yield return new WaitForSeconds(0.5f);
         
-        _countdownPanel.SetActive(false);
-        IsCountdownActive = false;
-        OnCountdownFinished?.Invoke();
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+        }
     }
 
-    public void SkipCountdown()
+    private void OnStateChanged(GameState state)
     {
-        StopAllCoroutines();
-        _countdownPanel.SetActive(false);
-        IsCountdownActive = false;
-        OnCountdownFinished?.Invoke();
+        // Скрываем таймер всегда, кроме CountdownState
+        if (!(state is CountdownState))
+        {
+            if (countdownCoroutine != null)
+            {
+                StopCoroutine(countdownCoroutine);
+                countdownCoroutine = null;
+            }
+            countdownPanel.SetActive(false);
+        }
+    }
+
+    public void StartCountdown(Action onComplete)
+    {
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+        }
+        
+        onCountdownComplete = onComplete;
+        countdownCoroutine = StartCoroutine(CountdownRoutine());
+    }
+
+    private IEnumerator CountdownRoutine()
+    {
+        if (countdownPanel == null || countdownText == null)
+        {
+            onCountdownComplete?.Invoke();
+            yield break;
+        }
+
+        countdownPanel.SetActive(true);
+
+        float timer = countdownDuration;
+        
+        while (timer > 0f)
+        {
+            timer -= Time.unscaledDeltaTime; // Используем unscaled время
+            int seconds = Mathf.CeilToInt(timer);
+            countdownText.text = seconds.ToString();
+            yield return null;
+        }
+
+        countdownText.text = "GO!";
+        yield return new WaitForSecondsRealtime(0.5f); // Realtime чтобы не зависело от Time.timeScale
+
+        countdownPanel.SetActive(false);
+        countdownCoroutine = null;
+        
+        onCountdownComplete?.Invoke();
     }
 }

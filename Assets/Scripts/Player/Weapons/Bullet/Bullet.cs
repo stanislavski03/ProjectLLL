@@ -1,7 +1,7 @@
 using System.Xml.Serialization;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IGameplaySystem
 {
     [SerializeField] private LayerMask _collisionLayers = Physics.DefaultRaycastLayers;
 
@@ -14,11 +14,11 @@ public class Bullet : MonoBehaviour
     private Vector3 _lastDirection;
     private BulletShooter _bulletShooter;
 
+    private bool isPaused;
+
     private void Awake()
     {
-        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
-        CountdownController.OnCountdownStarted += OnCountdownStarted;
-        CountdownController.OnCountdownFinished += OnCountdownFinished;
+
     }
 
     private void OnEnable()
@@ -42,9 +42,7 @@ public class Bullet : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
-        CountdownController.OnCountdownStarted -= OnCountdownStarted;
-        CountdownController.OnCountdownFinished -= OnCountdownFinished;
+
     }
 
     private void Update()
@@ -144,35 +142,17 @@ public class Bullet : MonoBehaviour
     }
 
 
-    private void OnCountdownStarted()
+    public void SetPaused(bool paused)
     {
-        enabled = false;
-    }
-
-    private void OnCountdownFinished()
-    {
-        if (GameStateManager.Instance.CurrentGameState == GameState.Gameplay)
-        {
-            enabled = true;
-        }
-    }
-
-    private void OnGameStateChanged(GameState newGameState)
-    {
-        if (newGameState == GameState.Paused || newGameState == GameState.LevelUpPaused)
+        isPaused = paused;
+        
+        if (paused)
         {
             enabled = false;
         }
-        else if (newGameState == GameState.Gameplay)
+        else
         {
-            if (!CountdownController.IsCountdownActive)
-            {
-                enabled = true;
-            }
-            else
-            {
-                enabled = false;
-            }
+            enabled = true;
         }
     }
 }
