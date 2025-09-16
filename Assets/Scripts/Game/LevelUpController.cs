@@ -17,6 +17,7 @@ public class LevelUpController : MonoBehaviour, IPausable
 
     private void Awake()
     {
+        _lvlUpCanvas.gameObject.SetActive(true);
         // Инициализируем DOTween
         DOTween.Init();
 
