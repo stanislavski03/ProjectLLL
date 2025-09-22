@@ -5,14 +5,16 @@ using UnityEngine.AI;
 
 public class SmallEnemiesMover : MonoBehaviour
 {
-
     [SerializeField] private Transform goal;
+
     private NavMeshAgent agent;
-    void Start()
+
+    private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         
     }
+
     private void Update()
     {
         agent.destination = goal.position;

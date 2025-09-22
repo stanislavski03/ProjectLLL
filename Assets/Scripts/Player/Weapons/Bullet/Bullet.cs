@@ -16,9 +16,27 @@ public class Bullet : MonoBehaviour, IGameplaySystem
 
     private bool isPaused;
 
-    private void Awake()
+    private void Update()
     {
+        if (_hasTarget && _target != null && _target.gameObject.activeInHierarchy)
+        {
+            Vector3 direction = (_target.position - transform.position).normalized;
+            transform.position += direction * _speed * Time.deltaTime;
 
+            if (direction != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+
+            _lastDirection = direction;
+
+            CheckCollisionWithRaycast();
+        }
+        else
+        {
+            transform.position += _lastDirection * _speed * Time.deltaTime;
+            CheckCollisionWithRaycast();
+        }
     }
 
     private void OnEnable()
@@ -45,28 +63,7 @@ public class Bullet : MonoBehaviour, IGameplaySystem
 
     }
 
-    private void Update()
-    {
-        if (_hasTarget && _target != null && _target.gameObject.activeInHierarchy)
-        {
-            Vector3 direction = (_target.position - transform.position).normalized;
-            transform.position += direction * _speed * Time.deltaTime;
-
-            if (direction != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(direction);
-            }
-
-            _lastDirection = direction;
-
-            CheckCollisionWithRaycast();
-        }
-        else
-        {
-            transform.position += _lastDirection * _speed * Time.deltaTime;
-            CheckCollisionWithRaycast();
-        }
-    }
+    
 
     private void CheckCollisionWithRaycast()
     {

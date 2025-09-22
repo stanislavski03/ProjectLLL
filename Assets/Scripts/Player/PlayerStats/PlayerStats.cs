@@ -21,6 +21,13 @@ public class PlayerStats : MonoBehaviour
     public event Action<float> _iceDamageMultiplierChanged;
     public event Action<float> _energyDamageMultiplierChanged;
 
+    public float GetDamageMultiplier() => _damageMultiplier;
+    public float GetCooldownReduction() => _cooldownReduction;
+    public float GetAreaMultiplier() => _areaMultiplier;
+    public float GetFireDamageMultiplier() => _fireDamageMultiplier;
+    public float GetIceDamageMultiplier() => _iceDamageMultiplier;
+    public float GetEnergyDamageMultiplier() => _energyDamageMultiplier;
+
     private void Awake()
     {
         _damageMultiplierChanged?.Invoke(_damageMultiplier);
@@ -31,14 +38,18 @@ public class PlayerStats : MonoBehaviour
         _energyDamageMultiplierChanged?.Invoke(_energyDamageMultiplier);
     }
 
+    //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
+    private void Update()
+    {
+        _damageMultiplierChanged?.Invoke(_damageMultiplier);
+        _cooldownReductionChanged?.Invoke(_cooldownReduction);
+        _areaMultiplierChanged?.Invoke(_areaMultiplier);
+        _fireDamageMultiplierChanged?.Invoke(_fireDamageMultiplier);
+        _iceDamageMultiplierChanged?.Invoke(_iceDamageMultiplier);
+        _energyDamageMultiplierChanged?.Invoke(_energyDamageMultiplier);
+    }
 
-    public float GetDamageMultiplier() => _damageMultiplier;
-    public float GetCooldownReduction() => _cooldownReduction;
-    public float GetAreaMultiplier() => _areaMultiplier;
-    public float GetFireDamageMultiplier() => _fireDamageMultiplier;
-    public float GetIceDamageMultiplier() => _iceDamageMultiplier;
-    public float GetEnergyDamageMultiplier() => _energyDamageMultiplier;
     public void AddDamageMultiplier(float value)
     {
         _damageMultiplier += value;
@@ -75,16 +86,4 @@ public class PlayerStats : MonoBehaviour
         _energyDamageMultiplierChanged?.Invoke(_energyDamageMultiplier);
     }
 
-
-    //Часть для тестов, удалить при выпуске
-
-    private void Update()
-    {
-        _damageMultiplierChanged?.Invoke(_damageMultiplier);
-        _cooldownReductionChanged?.Invoke(_cooldownReduction);
-        _areaMultiplierChanged?.Invoke(_areaMultiplier);
-        _fireDamageMultiplierChanged?.Invoke(_fireDamageMultiplier);
-        _iceDamageMultiplierChanged?.Invoke(_iceDamageMultiplier);
-        _energyDamageMultiplierChanged?.Invoke(_energyDamageMultiplier);
-    }
 }

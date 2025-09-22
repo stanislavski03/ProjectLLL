@@ -8,10 +8,10 @@ public class LevelUpState : GameState
         stateManager.SetPauseForGameplaySystems(true);
         
         LevelUpController levelUpController = stateManager.GetLevelUpController();
-        if (levelUpController != null)
-        {
-            levelUpController.OnLevelUp();
-        }
+        // if (levelUpController != null)
+        // {
+        //     levelUpController.OnLevelUp();
+        // }
     }
     
     public override void Update()

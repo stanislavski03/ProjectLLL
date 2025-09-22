@@ -14,15 +14,6 @@ public class EnemyShootingDmg : MonoBehaviour, IGameplaySystem
 
     private bool isPaused;
 
-    private void Awake()
-    {
-    }
-
-    private void OnEnable()
-    {
-        _playerTransform = GameObject.FindWithTag("Player")?.transform;
-    }
-
     private void Update()
     {
         if (isPaused) return;
@@ -40,6 +31,16 @@ public class EnemyShootingDmg : MonoBehaviour, IGameplaySystem
         {
             StopShooting();
         }
+    }
+
+    private void OnEnable()
+    {
+        _playerTransform = GameObject.FindWithTag("Player")?.transform;
+    }
+
+    private void OnDestroy()
+    {
+        StopShooting();
     }
 
     private void StartShooting()
@@ -99,11 +100,6 @@ public class EnemyShootingDmg : MonoBehaviour, IGameplaySystem
         }
     }
 
-    private void OnDestroy()
-    {
-        StopShooting();
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -113,7 +109,7 @@ public class EnemyShootingDmg : MonoBehaviour, IGameplaySystem
     public void SetPaused(bool paused)
     {
         isPaused = paused;
-        
+
         if (paused)
         {
             StopShooting();

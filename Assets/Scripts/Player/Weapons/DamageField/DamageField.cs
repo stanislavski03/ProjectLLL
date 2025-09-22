@@ -17,7 +17,7 @@ public class DamageField : MonoBehaviour
 
     private void OnEnable()
     {
-        // Получаем актуальные значения
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         damage = damageFieldTrigger.GetDamage();
         cooldown = damageFieldTrigger.GetCooldown();
 
@@ -41,7 +41,7 @@ public class DamageField : MonoBehaviour
         {
             targets.Add(enemy);
 
-            // Автоматически включаем компонент при появлении врагов
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             if (!isActive)
             {
                 enabled = true;
@@ -56,7 +56,7 @@ public class DamageField : MonoBehaviour
         {
             targets.Remove(enemy);
 
-            // Выключаем компонент, если врагов нет
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
             if (targets.Count == 0)
             {
                 enabled = false;
@@ -74,7 +74,7 @@ public class DamageField : MonoBehaviour
                 yield break;
             }
 
-            // Создаем копию списка для безопасной итерации
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             List<EnemyHP> currentTargets = new List<EnemyHP>(targets);
 
             for (int i = 0; i < currentTargets.Count; i++)
@@ -83,7 +83,7 @@ public class DamageField : MonoBehaviour
                 {
                     currentTargets[i].Damage(damage);
 
-                    // Удаляем мертвых врагов из основного списка
+                    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     if (currentTargets[i].GetHP() <= 0)
                     {
                         targets.Remove(currentTargets[i]);
@@ -93,7 +93,7 @@ public class DamageField : MonoBehaviour
 
             yield return new WaitForSeconds(cooldown);
 
-            // Обновляем значения на каждом цикле
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             damage = damageFieldTrigger.GetDamage();
             cooldown = damageFieldTrigger.GetCooldown();
         }

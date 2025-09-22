@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
 {
-    public static GameStateManager Instance { get; private set; }
+    [Header("References")]
+    [SerializeField] private LevelUpController levelUpController;
 
     private GameState currentState;
     private bool isTransitioning;
     private bool escHandledThisFrame = false;
 
+    public static GameStateManager Instance { get; private set; }
+
     public event Action<GameState> OnStateChanged;
 
-    [Header("References")]
-    [SerializeField] private LevelUpController levelUpController;
+    
 
     private List<IPausable> pausableSystems = new List<IPausable>();
     private List<IGameplaySystem> gameplaySystems = new List<IGameplaySystem>();

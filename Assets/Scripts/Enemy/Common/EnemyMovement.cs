@@ -5,25 +5,16 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour, IGameplaySystem
 {
     [SerializeField] private float _speed = 3f;
-    public float _playerRange = 1f;
-
+    
     private Transform _playerTransform;
 
+    public float _playerRange = 1f;
+
     private bool isPaused;
-
-
-    private void Awake()
-    {
-
-    }
 
     private void OnEnable()
     {
         _playerTransform = GameObject.FindWithTag("Player").transform;
-    }
-
-    void OnDestroy()
-    {
     }
 
     private void FixedUpdate()

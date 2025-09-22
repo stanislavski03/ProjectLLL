@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class EnemyDetector : MonoBehaviour, IGameplaySystem
 {
-    public Camera mainCamera;
+    
     [SerializeField] private float _rotationSpeed = 20f;
     [SerializeField] private GameObject _menuCamera;
     [SerializeField] private float _updateInterval = 0.2f;
@@ -11,6 +11,8 @@ public class EnemyDetector : MonoBehaviour, IGameplaySystem
     private Enemy[] _visibleEnemies;
     private float _updateTimer;
     private bool isPaused;
+
+    public Camera mainCamera;
 
     private void Start()
     {

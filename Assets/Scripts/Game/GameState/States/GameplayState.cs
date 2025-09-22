@@ -3,7 +3,7 @@ public class GameplayState : GameState
     public override string StateName => "Gameplay";
     public override bool CanPauseWithESC => true;
     public override bool IsPaused => false;
-    public override bool ShowCountdown => false; // ← ДОБАВИТЬ ЭТУ СТРОЧКУ
+    public override bool ShowCountdown => false;
     
     public override void EnterState()
     {

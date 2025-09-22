@@ -5,22 +5,19 @@ using System;
 
 public class EnemyHP : MonoBehaviour
 {
-
     [SerializeField] private float _maxHP = 100;
-
     [SerializeField] private float _freezeDef = 0;
     [SerializeField] private float _fireDef = 0;
     [SerializeField] private float _electroDef = 0;
-
     [SerializeField] private GameObject _expPrefab;
     [SerializeField] private float _expDropPercent = 10;
     [SerializeField] private float _expAutodropAmount = 10;
 
+    private PlayerEXP _playerEXP;
+    private float _currentHP;
+
     public event Action<float> onDamage;
 
-    private PlayerEXP _playerEXP;
-
-    private float _currentHP;
     public float GetHP()
     {
         return _currentHP;
@@ -79,7 +76,7 @@ public class EnemyHP : MonoBehaviour
     private void Death()
     {
         Debug.Log("HOLY, HE'S DEAD!");
-        if(UnityEngine.Random.Range(1f, 100f) <= _expDropPercent)
+        if (UnityEngine.Random.Range(1f, 100f) <= _expDropPercent)
             Instantiate(_expPrefab, gameObject.transform.position, Quaternion.identity);
         _playerEXP.GetEXP(_expAutodropAmount);
         Destroy(gameObject);

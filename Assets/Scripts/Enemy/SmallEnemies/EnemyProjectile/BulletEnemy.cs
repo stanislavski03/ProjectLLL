@@ -23,18 +23,6 @@ public class BulletEnemy : MonoBehaviour, IGameplaySystem
 
     }
 
-    private void OnEnable()
-    {
-        _currentLifetime = _lifetime;
-        CancelInvoke();
-        Invoke(nameof(ReturnToPool), _lifetime);
-    }
-
-    private void OnDisable()
-    {
-        CancelInvoke();
-    }
-
     private void Update()
     {
         if (isPaused) return;
@@ -50,6 +38,23 @@ public class BulletEnemy : MonoBehaviour, IGameplaySystem
         CheckCollision();
     }
 
+    private void OnEnable()
+    {
+        _currentLifetime = _lifetime;
+        CancelInvoke();
+        Invoke(nameof(ReturnToPool), _lifetime);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        HandleCollision(other);
+    }
+
     private void CheckCollision()
     {
         RaycastHit hit;
@@ -58,11 +63,6 @@ public class BulletEnemy : MonoBehaviour, IGameplaySystem
         {
             HandleCollision(hit.collider);
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        HandleCollision(other);
     }
 
     private void HandleCollision(Collider collider)
@@ -98,10 +98,6 @@ public class BulletEnemy : MonoBehaviour, IGameplaySystem
         {
             gameObject.SetActive(false);
         }
-    }
-
-    private void OnDestroy()
-    {
     }
     
     public void SetPaused(bool paused)

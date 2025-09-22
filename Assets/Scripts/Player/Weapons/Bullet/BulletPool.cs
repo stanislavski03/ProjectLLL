@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class BulletPool : MonoBehaviour
 {
-    public static BulletPool Instance;
-    
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private int _initialPoolSize = 2;
     
     private Queue<GameObject> _bulletPool = new Queue<GameObject>();
+
+    public static BulletPool Instance;
     
     private void Awake()
     {

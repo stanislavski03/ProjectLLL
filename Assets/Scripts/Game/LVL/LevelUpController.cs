@@ -16,7 +16,6 @@ public class LevelUpController : MonoBehaviour, IPausable
 
     private bool isPaused;
 
-
     private void Awake()
     {
         _lvlUpCanvas.gameObject.SetActive(true);

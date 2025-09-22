@@ -7,7 +7,6 @@ using UnityEngine;
 public class PlayerHP : MonoBehaviour
 {
     [SerializeField] private float _maxHP = 100;
-
     [SerializeField] private float _physicDef = 0;
     [SerializeField] private float _freezeDef = 0;
     [SerializeField] private float _fireDef = 0;
@@ -15,10 +14,10 @@ public class PlayerHP : MonoBehaviour
 
     private float _currentHP;
 
-    public event Action<float> Changed;
-
     public float MaxHP => _maxHP;
     public bool isAlive = true;
+
+    public event Action<float> Changed;
 
     private void OnEnable()
     {

@@ -9,13 +9,13 @@ public class PlayerEXP : MonoBehaviour
     [SerializeField] private float _maxEXP;
     [SerializeField] private Image _expProgressBarImage;
 
-    public event Action<float> EXPChanged;
-    public event Action<float> LVLChanged;
-
     private float _currentEXP;
     private float _currentLVL;
 
     public float MaxEXP => _maxEXP;
+
+    public event Action<float> EXPChanged;
+    public event Action<float> LVLChanged;
 
     private void OnEnable()
     {
