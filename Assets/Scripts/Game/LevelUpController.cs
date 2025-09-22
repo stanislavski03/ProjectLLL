@@ -12,8 +12,10 @@ public class LevelUpController : MonoBehaviour, IPausable
     [SerializeField] private float _fadeDuration = 0.5f;
     [SerializeField] private float _buttonDelay = 0.1f;
     [SerializeField] private float _buttonScaleDuration = 0.3f;
+    [SerializeField] private GameObject _PanelItems;
 
     private bool isPaused;
+
 
     private void Awake()
     {
@@ -211,6 +213,7 @@ public class LevelUpController : MonoBehaviour, IPausable
     public void OnLevelUp()
     {
         ShowLevelUpOptions();
+        _PanelItems.GetComponent<LvlUpItemsInfo>().SetItemsInfo();
     }
 
     private void OnDestroy()
@@ -224,4 +227,7 @@ public class LevelUpController : MonoBehaviour, IPausable
             }
         }
     }
+
+    
+
 }

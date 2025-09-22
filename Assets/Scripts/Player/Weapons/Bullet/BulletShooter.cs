@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using System;
 
-public class BulletShooter: MonoBehaviour, IGameplaySystem
+public class BulletShooter: Weapon, IGameplaySystem
 {
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private Transform _bulletSpawn;
@@ -132,6 +132,12 @@ public class BulletShooter: MonoBehaviour, IGameplaySystem
     {
         _damage = _weaponDamage * statsValue;
         _damageChanged?.Invoke(_damage);
+    }
+
+
+    public override string GetTextTitleInfo()
+    {
+        return "Оружие №1";
     }
 
 
