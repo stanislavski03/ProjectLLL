@@ -1,232 +1,143 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.UI;
 
-public class LevelUpController : MonoBehaviour, IPausable
+public class LevelUpController : MonoBehaviour
 {
-    [SerializeField] private Canvas _lvlUpCanvas;
-    [SerializeField] private CanvasGroup _canvasGroup;
-    [SerializeField] private RectTransform[] _buttons;
-    [SerializeField] private float _fadeDuration = 0.5f;
-    [SerializeField] private float _buttonDelay = 0.1f;
-    [SerializeField] private float _buttonScaleDuration = 0.3f;
-    [SerializeField] private GameObject _PanelItems;
+    [SerializeField] private GameObject lvlUpCanvasObject;
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private RectTransform[] buttons;
+    [SerializeField] private GameObject panelItems;
 
-    private bool isPaused;
-
-    private void Awake()
-    {
-        _lvlUpCanvas.gameObject.SetActive(true);
-        // Инициализируем DOTween
-        DOTween.Init();
-
-        // Скрываем canvas при старте
-        if (_lvlUpCanvas != null)
-        {
-            _lvlUpCanvas.enabled = false;
-        }
-
-        if (_canvasGroup != null)
-        {
-            _canvasGroup.alpha = 0f;
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
-        }
-
-        // Подготавливаем кнопки
-        PrepareButtons();
-    }
+    private LvlUpItemsInfo itemsInfo;
+    private bool isLevelUpActive = false;
 
     private void Start()
     {
-        // Автоматически регистрируемся в системе паузы
-        // GameStateManager найдет нас через интерфейс IPausable
+        FindComponents();
+        InitializeUI();
+        itemsInfo.SetWeaponList();
+    }
+
+    private void FindComponents()
+    {
+        if (lvlUpCanvasObject == null)
+        {
+            lvlUpCanvasObject = transform.Find("Canvas")?.gameObject;
+            if (lvlUpCanvasObject == null)
+            {
+                Canvas canvas = GetComponentInChildren<Canvas>();
+                if (canvas != null) lvlUpCanvasObject = canvas.gameObject;
+            }
+        }
+
+        canvasGroup = lvlUpCanvasObject.GetComponent<CanvasGroup>();
+
+        itemsInfo = panelItems.GetComponentInChildren<LvlUpItemsInfo>();
+
+    }
+
+    private void InitializeUI()
+    {
+        lvlUpCanvasObject.SetActive(false);
+
+        canvasGroup.alpha = 0f;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+
+        PrepareButtons();
     }
 
     private void PrepareButtons()
     {
-        if (_buttons == null) return;
-
-        foreach (RectTransform button in _buttons)
+        foreach (var button in buttons)
         {
             if (button != null)
             {
-                button.localScale = Vector3.zero;
-
-                Button btnComponent = button.GetComponent<Button>();
-                if (btnComponent != null)
-                {
-                    btnComponent.interactable = false;
-                }
+                var btnComponent = button.GetComponent<Button>();
+                if (btnComponent != null) btnComponent.interactable = false;
             }
-        }
-    }
-
-    // Новый метод для закрытия паузы через UI кнопку
-    public void ResumeGame()
-    {
-        Debug.Log("ResumeGame called from UI button");
-
-        // Проверяем, что мы именно в LevelUpState
-        if (GameStateManager.Instance.IsCurrentState<LevelUpState>())
-        {
-            HideLevelUpOptions(() =>
-            {
-                // ВАЖНО: Вызываем RequestResume у текущего состояния
-                GameStateManager.Instance.RequestResume();
-            });
         }
     }
 
     public void ShowLevelUpOptions()
     {
-        if (_lvlUpCanvas != null)
-        {
-            _lvlUpCanvas.enabled = true;
-        }
+        if (isLevelUpActive) return;
+        
+        isLevelUpActive = true;
+        
+        GameStateManager.Instance.PauseForLevelUp();
+        
+        itemsInfo.SetItemsInfo();
+        lvlUpCanvasObject.SetActive(true);
 
-        DOTween.Kill(_canvasGroup);
-        foreach (RectTransform button in _buttons)
-        {
-            if (button != null) DOTween.Kill(button);
-        }
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
 
-        if (_canvasGroup != null)
-        {
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
+        ActivateButtons();
+        
 
-            _canvasGroup.DOFade(1f, _fadeDuration)
-                .SetEase(Ease.OutQuad)
-                .OnStart(() =>
-                {
-                    _canvasGroup.alpha = 0f;
-                })
-                .OnComplete(() =>
-                {
-                    AnimateButtons();
-                });
-        }
-        else
-        {
-            AnimateButtons();
-        }
     }
 
-    private void AnimateButtons()
+    private void ActivateButtons()
     {
-        if (_buttons == null || _buttons.Length == 0)
-            return;
-
-        for (int i = 0; i < _buttons.Length; i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
-            RectTransform button = _buttons[i];
+            var button = buttons[i];
             if (button != null)
             {
-                Button btnComponent = button.GetComponent<Button>();
-
-                button.DOScale(Vector3.one, _buttonScaleDuration)
-                    .SetDelay(i * _buttonDelay)
-                    .SetEase(Ease.OutBack)
-                    .OnStart(() =>
-                    {
-                        button.localScale = Vector3.zero;
-                    })
-                    .OnComplete(() =>
-                    {
-                        if (btnComponent != null)
-                        {
-                            btnComponent.interactable = true;
-                        }
-                    });
+                var btnComponent = button.GetComponent<Button>();
+                if (btnComponent != null) 
+                {
+                    btnComponent.interactable = true;
+                }
             }
         }
     }
 
     public void HideLevelUpOptions(System.Action onComplete = null)
     {
-        if (_buttons != null)
+        if (!isLevelUpActive) 
         {
-            foreach (RectTransform button in _buttons)
-            {
-                if (button != null)
-                {
-                    Button btnComponent = button.GetComponent<Button>();
-                    if (btnComponent != null)
-                    {
-                        btnComponent.interactable = false;
-                    }
-
-                    button.DOScale(Vector3.zero, _buttonScaleDuration * 0.7f)
-                        .SetEase(Ease.InBack);
-                }
-            }
-        }
-
-        if (_canvasGroup != null)
-        {
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
-
-            _canvasGroup.DOFade(0f, _fadeDuration * 0.8f)
-                .SetEase(Ease.InQuad)
-                .OnComplete(() =>
-                {
-                    if (_lvlUpCanvas != null)
-                    {
-                        _lvlUpCanvas.enabled = false;
-                    }
-                    onComplete?.Invoke();
-                });
-        }
-        else
-        {
-            if (_lvlUpCanvas != null)
-            {
-                _lvlUpCanvas.enabled = false;
-            }
             onComplete?.Invoke();
+            return;
         }
-    }
+        
+        isLevelUpActive = false;
 
-    // Реализация интерфейса IPausable
-    public void SetPaused(bool paused)
-    {
-        isPaused = paused;
-
-        if (paused)
+        foreach (var button in buttons)
         {
-            // При паузе скрываем UI (если был показан)
-            HideLevelUpOptions();
-        }
-        else
-        {
-            // При снятии паузы также скрываем на всякий случай
-            HideLevelUpOptions();
-        }
-    }
-
-    // Метод для вызова из PlayerEXP при level up
-    public void OnLevelUp()
-    {
-        ShowLevelUpOptions();
-        _PanelItems.GetComponent<LvlUpItemsInfo>().SetItemsInfo();
-    }
-
-    private void OnDestroy()
-    {
-        if (_canvasGroup != null) DOTween.Kill(_canvasGroup);
-        if (_buttons != null)
-        {
-            foreach (RectTransform button in _buttons)
+            if (button != null)
             {
-                if (button != null) DOTween.Kill(button);
+                var btnComponent = button.GetComponent<Button>();
+                if (btnComponent != null) btnComponent.interactable = false;
             }
         }
+
+
+        if (lvlUpCanvasObject != null)
+        {
+            lvlUpCanvasObject.SetActive(false);
+        }
+
+        onComplete?.Invoke();
     }
 
-    
 
+    public void OnResumeButtonClicked()
+    {
+        ResumeFromLevelUp();
+    }
+
+    private void ResumeFromLevelUp()
+    {
+        HideLevelUpOptions(() => {
+            GameStateManager.Instance.ResumeGame();
+        });
+    }
+
+    public void OnItemSelected(int itemIndex)
+    {
+        ResumeFromLevelUp();
+    }
 }

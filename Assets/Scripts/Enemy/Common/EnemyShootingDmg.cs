@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyShootingDmg : MonoBehaviour, IGameplaySystem
+public class EnemyShootingDmg : MonoBehaviour
 {
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private float _bulletSpawnCooldown = 1f;
@@ -106,18 +106,5 @@ public class EnemyShootingDmg : MonoBehaviour, IGameplaySystem
         Gizmos.DrawWireSphere(transform.position, _playerDetectionRange);
     }
 
-    public void SetPaused(bool paused)
-    {
-        isPaused = paused;
 
-        if (paused)
-        {
-            StopShooting();
-            enabled = false;
-        }
-        else
-        {
-            enabled = true;
-        }
-    }
 }

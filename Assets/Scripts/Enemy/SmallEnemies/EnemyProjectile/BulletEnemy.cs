@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BulletEnemy : MonoBehaviour, IGameplaySystem
+public class BulletEnemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 10f;
     [SerializeField] private float _lifetime = 3f;
@@ -100,17 +100,4 @@ public class BulletEnemy : MonoBehaviour, IGameplaySystem
         }
     }
     
-    public void SetPaused(bool paused)
-    {
-        isPaused = paused;
-        
-        if (paused)
-        {
-            enabled = false;
-        }
-        else
-        {
-            enabled = true;
-        }
-    }
 }

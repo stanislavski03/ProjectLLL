@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour, IGameplaySystem
+public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private float _speed = 3f;
     
@@ -36,17 +36,5 @@ public class EnemyMovement : MonoBehaviour, IGameplaySystem
             transform.position += transform.forward * _speed * Time.fixedDeltaTime;
     }
 
-    public void SetPaused(bool paused)
-    {
-        isPaused = paused;
-        
-        if (paused)
-        {
-            enabled = false;
-        }
-        else
-        {
-            enabled = true;
-        }
-    }
+
 }

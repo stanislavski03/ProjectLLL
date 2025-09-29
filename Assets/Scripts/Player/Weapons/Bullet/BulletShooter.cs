@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using System;
 
-public class BulletShooter : Weapon, IGameplaySystem
+public class BulletShooter : Weapon
 {
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private float _shootSpeed = 10f;
@@ -225,22 +225,6 @@ public class BulletShooter : Weapon, IGameplaySystem
     public float GetDamage(float damage)
     {
         return damage;
-    }
-
-    public void SetPaused(bool paused)
-    {
-        isPaused = paused;
-        
-        if (paused)
-        {
-            StopShooting();
-            enabled = false;
-        }
-        else
-        {
-            enabled = true;
-            StartShooting();
-        }
     }
 }
 

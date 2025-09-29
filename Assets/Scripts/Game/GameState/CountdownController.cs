@@ -1,7 +1,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using System;
 
 public class CountdownController : MonoBehaviour
 {
@@ -10,59 +9,22 @@ public class CountdownController : MonoBehaviour
     [SerializeField] private float countdownDuration = 3f;
 
     private Coroutine countdownCoroutine;
-    private Action onCountdownComplete;
 
-    private void OnEnable()
-    {
-        if (GameStateManager.Instance != null)
-        {
-            GameStateManager.Instance.OnStateChanged += OnStateChanged;
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (GameStateManager.Instance != null)
-        {
-            GameStateManager.Instance.OnStateChanged -= OnStateChanged;
-        }
-        
-        if (countdownCoroutine != null)
-        {
-            StopCoroutine(countdownCoroutine);
-        }
-    }
-
-    private void OnStateChanged(GameState state)
-    {
-        // Скрываем таймер всегда, кроме CountdownState
-        if (!(state is CountdownState))
-        {
-            if (countdownCoroutine != null)
-            {
-                StopCoroutine(countdownCoroutine);
-                countdownCoroutine = null;
-            }
-            countdownPanel.SetActive(false);
-        }
-    }
-
-    public void StartCountdown(Action onComplete)
+    public void StartCountdown()
     {
         if (countdownCoroutine != null)
-        {
             StopCoroutine(countdownCoroutine);
-        }
-        
-        onCountdownComplete = onComplete;
+            
         countdownCoroutine = StartCoroutine(CountdownRoutine());
     }
 
     private IEnumerator CountdownRoutine()
     {
+        GameStateManager.Instance.StartCountdown();
+        
         if (countdownPanel == null || countdownText == null)
         {
-            onCountdownComplete?.Invoke();
+            EndCountdown();
             yield break;
         }
 
@@ -72,18 +34,28 @@ public class CountdownController : MonoBehaviour
         
         while (timer > 0f)
         {
-            timer -= Time.unscaledDeltaTime; // Используем unscaled время
+            timer -= Time.unscaledDeltaTime;
             int seconds = Mathf.CeilToInt(timer);
             countdownText.text = seconds.ToString();
             yield return null;
         }
 
         countdownText.text = "GO!";
-        yield return new WaitForSecondsRealtime(0.5f); // Realtime чтобы не зависело от Time.timeScale
+        yield return new WaitForSecondsRealtime(0.5f);
 
         countdownPanel.SetActive(false);
-        countdownCoroutine = null;
         
-        onCountdownComplete?.Invoke();
+        EndCountdown();
+    }
+
+    private void EndCountdown()
+    {
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+            countdownCoroutine = null;
+        }
+        
+        GameStateManager.Instance.EndCountdown();
     }
 }

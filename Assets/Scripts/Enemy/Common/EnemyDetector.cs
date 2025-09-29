@@ -1,9 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class EnemyDetector : MonoBehaviour, IGameplaySystem
+public class EnemyDetector : MonoBehaviour
 {
-    
     [SerializeField] private float _rotationSpeed = 20f;
     [SerializeField] private GameObject _menuCamera;
     [SerializeField] private float _updateInterval = 0.2f;
@@ -16,13 +15,31 @@ public class EnemyDetector : MonoBehaviour, IGameplaySystem
 
     private void Start()
     {
-        // Автоматически регистрируемся через интерфейс
-        // GameStateManager найдет нас при старте
+        GameStateManager.Instance.OnPauseStateChanged += OnPauseChanged;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.OnPauseStateChanged -= OnPauseChanged;
+        }
+    }
+
+    private void OnPauseChanged(bool isPaused, GameStateManager.PauseType pauseType)
+    {
+        this.isPaused = isPaused;
+        
+        if (isPaused)
+        {
+
+            LookAtMenuCamera();
+        }
     }
 
     private void Update()
     {
-        if (isPaused) return;
+        if (isPaused || GameStateManager.Instance.IsInCountdown || Time.timeScale == 0) return;
         
         _updateTimer -= Time.deltaTime;
         
@@ -110,24 +127,16 @@ public class EnemyDetector : MonoBehaviour, IGameplaySystem
     
     private void LookAtMenuCamera()
     {
-        Vector3 lookPosition = new Vector3(_menuCamera.transform.position.x, 1, _menuCamera.transform.position.z);
         if (_menuCamera != null)
         {
-            transform.LookAt(lookPosition);
-        }
-    }
-
-    public void SetPaused(bool paused)
-    {
-        isPaused = paused;
-        
-        if (paused)
-        {
-            // LookAtMenuCamera();
-        }
-        else
-        {
-            FindVisibleEnemies();
+            Vector3 direction = _menuCamera.transform.position - transform.position;
+            direction.y = 0;
+            
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = targetRotation;
+            }
         }
     }
 }

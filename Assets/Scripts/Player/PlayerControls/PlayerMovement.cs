@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 
-public class PlayerMovement : MonoBehaviour, IGameplaySystem
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
 
@@ -64,22 +64,4 @@ public class PlayerMovement : MonoBehaviour, IGameplaySystem
         Debug.Log("Heavy Attack");
     }
 
-    public void SetPaused(bool paused)
-    {
-        isPaused = paused;
-        
-        if (paused)
-        {
-            // Сохраняем текущую скорость и останавливаем
-            _lastVelocity = rb.velocity;
-            rb.velocity = Vector3.zero;
-            rb.isKinematic = true; // Отключаем физику
-        }
-        else
-        {
-            // Восстанавливаем физику и скорость
-            rb.isKinematic = false;
-            rb.velocity = _lastVelocity;
-        }
-    }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,61 +9,53 @@ public class PlayerEXP : MonoBehaviour
     [SerializeField] private Image _expProgressBarImage;
 
     private float _currentEXP;
-    private float _currentLVL;
+    private float _currentLVL = 1;
 
     public float MaxEXP => _maxEXP;
+    public float CurrentEXP => _currentEXP;
+    public float CurrentLVL => _currentLVL;
 
     public event Action<float> EXPChanged;
     public event Action<float> LVLChanged;
 
-    private void OnEnable()
+    private void Start()
     {
-        _currentEXP = 0;
-        _currentLVL = 1;
+        UpdateUI();
     }
 
     public void GetEXP(float EXPamount)
     {
         _currentEXP += EXPamount;
+        
         if (_currentEXP >= _maxEXP)
         {
             _currentEXP = _currentEXP - _maxEXP;
             LevelUP();
-            LVLChanged?.Invoke(_currentLVL);
         }
 
-        _expProgressBarImage.fillAmount = Mathf.Clamp01(_currentEXP / MaxEXP);
+        UpdateUI();
+    }
 
+    private void UpdateUI()
+    {
+        if (_expProgressBarImage != null)
+        {
+            _expProgressBarImage.fillAmount = Mathf.Clamp01(_currentEXP / _maxEXP);
+        }
+        
         EXPChanged?.Invoke(_currentEXP);
     }
 
     private void LevelUP()
     {
         _currentLVL += 1;
+        LVLChanged?.Invoke(_currentLVL);
 
-        // ВАЖНО: Сначала меняем состояние
-        GameStateManager.Instance.RequestLevelUp();
-
-        // Затем показываем UI (после перехода в LevelUpState)
-        StartCoroutine(ShowLevelUpUIAfterDelay());
-    }
-
-    private IEnumerator ShowLevelUpUIAfterDelay()
-    {
-        // Ждем один кадр, чтобы состояние успело поменяться
-        yield return null;
-
+        // Показываем меню прокачки
         LevelUpController levelUpController = FindObjectOfType<LevelUpController>();
-        if (levelUpController != null && GameStateManager.Instance.IsCurrentState<LevelUpState>())
+        if (levelUpController != null)
         {
-            levelUpController.OnLevelUp();
+            levelUpController.ShowLevelUpOptions();
         }
-    }
-
-    // В методе выбора предмета:
-    public void OnLevelUpItemSelected()
-    {
-        // ВАЖНО: Вызываем Resume через GameStateManager
-        GameStateManager.Instance.RequestResume();
     }
 }

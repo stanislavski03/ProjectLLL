@@ -1,55 +1,46 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
-public class CameraChanger : MonoBehaviour, IPausable
+public class CameraChanger : MonoBehaviour
 {
     [SerializeField] private GameObject _gameCamera;
     [SerializeField] private GameObject _menuCamera;
-    [SerializeField] private float _cameraSwitchDelay = 0.5f;
 
-    private void Awake()
+    private void Start()
     {
-        GameStateManager.Instance.OnStateChanged += OnStateChanged;
+        GameStateManager.Instance.OnPauseStateChanged += OnPauseChanged;
     }
 
     private void OnDestroy()
     {
         if (GameStateManager.Instance != null)
         {
-            GameStateManager.Instance.OnStateChanged -= OnStateChanged;
+            GameStateManager.Instance.OnPauseStateChanged -= OnPauseChanged;
         }
     }
 
-    private void OnStateChanged(GameState state)
+    private void OnPauseChanged(bool isPaused, GameStateManager.PauseType pauseType)
     {
-        // Меняем камеру для паузы (ESC)
-        if (state is PausedState)
+        
+        if (isPaused && pauseType == GameStateManager.PauseType.EscPause)
         {
             SwitchToMenuCameraImmediately();
         }
-        // Во время таймера используем игровую камеру
-        else if (state is CountdownState || state is GameplayState)
+        else
         {
-            StartCoroutine(SwitchToGameCamera());
+            SwitchToGameCameraImmediately();
         }
     }
 
-    private IEnumerator SwitchToGameCamera()
+    private void SwitchToGameCameraImmediately()
     {
-        yield return new WaitForSeconds(_cameraSwitchDelay);
-        
-        if (_gameCamera != null) _gameCamera.SetActive(true);
-        if (_menuCamera != null) _menuCamera.SetActive(false);
+        _gameCamera.SetActive(true);
+        _menuCamera.SetActive(false);
     }
 
     private void SwitchToMenuCameraImmediately()
     {
-        if (_menuCamera != null) _menuCamera.SetActive(true);
-        if (_gameCamera != null) _gameCamera.SetActive(false);
-    }
-
-    public void SetPaused(bool paused)
-    {
-        // Логика паузы уже обрабатывается в OnStateChanged
+        _menuCamera.SetActive(true);
+        _gameCamera.SetActive(false);
     }
 }

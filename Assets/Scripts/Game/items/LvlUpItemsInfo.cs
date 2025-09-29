@@ -16,11 +16,6 @@ public class LvlUpItemsInfo : MonoBehaviour
     public List<Weapon> allWeaponList;
     public int numberOfCurrentWeaponList = 2;
 
-    private void Start()
-    {
-        SetWeaponList();
-    }
-
     public void SetWeaponList()
     {
         for (int i = 0; i < allWeaponList.Count; i++)
@@ -53,10 +48,8 @@ public class LvlUpItemsInfo : MonoBehaviour
 
         for (int i = 0; i < Mathf.Min(ItemsList.Count, _currentWeaponList.Count); i++)
         {
-            // Пропускаем null элементы
             if (ItemsList[i] == null || _currentWeaponList[i] == null) continue;
 
-            // Ищем TextMeshProUGUI напрямую среди дочерних объектов
             TextMeshProUGUI[] TMPItemTitle = ItemsList[i].GetComponentsInChildren<TextMeshProUGUI>(true);
 
             if (TMPItemTitle != null)

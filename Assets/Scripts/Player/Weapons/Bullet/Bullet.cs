@@ -1,7 +1,7 @@
 using System.Xml.Serialization;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour, IGameplaySystem
+public class Bullet : MonoBehaviour
 {
     [SerializeField] private LayerMask _collisionLayers = Physics.DefaultRaycastLayers;
 
@@ -139,17 +139,4 @@ public class Bullet : MonoBehaviour, IGameplaySystem
     }
 
 
-    public void SetPaused(bool paused)
-    {
-        isPaused = paused;
-        
-        if (paused)
-        {
-            enabled = false;
-        }
-        else
-        {
-            enabled = true;
-        }
-    }
 }

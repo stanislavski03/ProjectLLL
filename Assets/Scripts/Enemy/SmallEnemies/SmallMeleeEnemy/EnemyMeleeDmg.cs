@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMeleeDmg : MonoBehaviour, IGameplaySystem
+public class EnemyMeleeDmg : MonoBehaviour
 {
     [SerializeField] private float _damage = 10f;
     [SerializeField] private float _damageCooldown = 1f;
@@ -51,19 +51,4 @@ public class EnemyMeleeDmg : MonoBehaviour, IGameplaySystem
         EnemyPool.Instance.GetEnemyBackToPool(gameObject);
     }
 
-    public void SetPaused(bool paused)
-    {
-        if (isDestroyed) return; // Не выполняем если объект уничтожен
-        
-        isPaused = paused;
-        
-        if (paused)
-        {
-            enabled = false;
-        }
-        else
-        {
-            enabled = true;
-        }
-    }
 }
