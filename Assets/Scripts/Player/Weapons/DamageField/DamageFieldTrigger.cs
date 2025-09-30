@@ -23,7 +23,7 @@ public class DamageFieldTrigger : Weapon
             _currentLevel++;
             switch (_currentLevel)
             {
-                case 1: _weaponArea += 2; break;
+                case 1: _weaponArea += 10; break;
                 case 2: _weaponDamage += 2; break;
                 case 3: _weaponCooldown -= 0.2f; break;
                 case 4: _weaponArea += 2; break;
