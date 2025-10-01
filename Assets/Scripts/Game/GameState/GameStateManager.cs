@@ -9,6 +9,7 @@ public class GameStateManager : MonoBehaviour
     public bool IsInCountdown { get; private set; }
     public PauseType CurrentPauseType { get; private set; }
     public event Action<bool, PauseType> OnPauseStateChanged;
+    public GameObject MenuCanvas;
 
     public enum PauseType
     {
@@ -41,8 +42,9 @@ public class GameStateManager : MonoBehaviour
     {
         if (IsPaused)
         {
+            MenuCanvas.SetActive(false);
             SetPaused(false);
-            
+
             CountdownController countdown = FindObjectOfType<CountdownController>();
             if (countdown != null)
             {
@@ -52,6 +54,7 @@ public class GameStateManager : MonoBehaviour
         else
         {
             SetPaused(true, PauseType.EscPause);
+            MenuCanvas.SetActive(true);
         }
     }
 
