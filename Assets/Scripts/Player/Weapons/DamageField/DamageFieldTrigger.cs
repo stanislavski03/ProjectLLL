@@ -1,90 +1,92 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageFieldTrigger : Weapon
+public class DamageFieldTrigger : Weapon, IAreaWeapon
 {
-    protected override void Start()
+    [Header("Damage Field References")]
+    [SerializeField] private DamageField damageField;
+
+    private float currentArea;
+
+    private DamageFieldDataSO DamageFieldData => weaponData as DamageFieldDataSO;
+
+    public float GetArea() => currentArea;
+
+    public void CalculateArea(float areaMultiplier)
     {
-        // Устанавливаем базовые статы для этого конкретного оружия
-        _weaponArea = 8f;
-        _weaponDamage = 10f;
-        _weaponCooldown = 1f;
-        
-        // Вызываем базовый Start для инициализации
-        base.Start();
+        float baseArea = GetBaseAreaForCurrentLevel();
+        currentArea = baseArea * areaMultiplier;
+        ApplyAreaToVisual();
     }
 
-    public override void AddLevel(int value)
+    protected override void Awake()
     {
-        for (; value > 0 && _currentLevel <= _maxLevel; value--)
+        base.Awake();
+        if (damageField == null)
+            damageField = GetComponent<DamageField>();
+    }
+
+    protected override void InitializeWeapon()
+    {
+        base.InitializeWeapon();
+
+        if (weaponData is not DamageFieldDataSO)
         {
-            _currentLevel++;
-            switch (_currentLevel)
-            {
-                case 1: _weaponArea += 10; break;
-                case 2: _weaponDamage += 2; break;
-                case 3: _weaponCooldown -= 0.2f; break;
-                case 4: _weaponArea += 2; break;
-                case 5: _weaponDamage += 5; break;
-                case 6: _weaponCooldown -= 0.2f; break;
-            }
-            
-            // Пересчитываем статы после изменения базовых значений
-            if (playerStats != null)
-            {
-                CountArea(playerStats.GetAreaMultiplier());
-                CountCooldown(playerStats.GetCooldownReduction());
-                CountDamage(playerStats.GetDamageMultiplier());
-            }
+            Debug.LogError($"WeaponData must be of type DamageFieldDataSO for {gameObject.name}", this);
+            return;
         }
     }
 
-    public override void ReduceLevel(int value)
+    protected virtual float GetBaseAreaForCurrentLevel()
     {
-        for (; value > 0 && _currentLevel > 0; value--)
-        {
-            switch (_currentLevel)
-            {
-                case 1: _weaponArea -= 2; break;
-                case 2: _weaponDamage -= 2; break;
-                case 3: _weaponCooldown += 0.2f; break;
-                case 4: _weaponArea -= 2; break;
-                case 5: _weaponDamage -= 5; break;
-                case 6: _weaponCooldown += 0.2f; break;
-            }
-            _currentLevel--;
+        if (DamageFieldData == null) return 0f;
 
-            // Пересчитываем статы после изменения базовых значений
-            if (playerStats != null)
+        float area = DamageFieldData.baseArea;
+        if (weaponData.levelUpgrades != null)
+        {
+            for (int i = 0; i < currentLevel && i < weaponData.levelUpgrades.Length; i++)
             {
-                CountArea(playerStats.GetAreaMultiplier());
-                CountCooldown(playerStats.GetCooldownReduction());
-                CountDamage(playerStats.GetDamageMultiplier());
+                area += weaponData.levelUpgrades[i].areaBonus;
             }
+        }
+        return area;
+    }
+
+    protected virtual void ApplyAreaToVisual()
+    {
+        transform.localScale = new Vector3(currentArea, transform.localScale.y, currentArea);
+
+        if (damageField != null)
+        {
+            damageField.UpdateStats(currentDamage, currentCooldown);
         }
     }
 
-    protected override void CountArea(float statsValue)
+    protected override void CalculateStats()
     {
-        area = _weaponArea * statsValue;
-        gameObject.transform.localScale = new Vector3(area, 0.05f, area);
+        base.CalculateStats();
+        ApplyAreaToVisual();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<EnemyHP>())
-            gameObject.GetComponent<DamageField>().enabled = true;
+        {
+            damageField?.EnableDamageField();
+        }
     }
 
     public override string GetTextTitleInfo()
     {
-        return "Оружие №2";
+        return weaponData?.weaponName ?? "Damage Field";
     }
 
     public override string GetTextDescriptionInfo()
     {
-        return "Описание Оружия №2";
+        if (this?.GetUpgradeDescriptionForNextLevel() != "")
+        {
+            return this?.GetUpgradeDescriptionForNextLevel();
+        }
+        return this?.GetItemDescription();
     }
+
 }

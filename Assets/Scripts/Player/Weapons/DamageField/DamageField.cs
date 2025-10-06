@@ -4,34 +4,38 @@ using UnityEngine;
 
 public class DamageField : MonoBehaviour
 {
-    private DamageFieldTrigger damageFieldTrigger;
-    private float damage;
-    private float cooldown;
+    [SerializeField] private Weapon weaponSource;
     private List<EnemyHP> targets = new List<EnemyHP>();
     private bool isActive = false;
+    private float currentDamage;
+    private float currentCooldown;
 
     private void Awake()
     {
-        damageFieldTrigger = GetComponent<DamageFieldTrigger>();
+        if (weaponSource == null)
+            weaponSource = GetComponentInParent<Weapon>();
     }
 
-    private void OnEnable()
+    public void UpdateStats(float damage, float cooldown)
     {
-        // �������� ���������� ��������
-        damage = damageFieldTrigger.GetDamage();
-        cooldown = damageFieldTrigger.GetCooldown();
+        currentDamage = damage;
+        currentCooldown = cooldown;
+    }
 
+    public void EnableDamageField()
+    {
         if (!isActive)
         {
             isActive = true;
-            StartCoroutine(Damager());
+            StartCoroutine(DamageCoroutine());
         }
     }
 
-    private void OnDisable()
+    public void DisableDamageField()
     {
         isActive = false;
         StopAllCoroutines();
+        targets.Clear();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,11 +44,9 @@ public class DamageField : MonoBehaviour
         if (enemy != null && !targets.Contains(enemy))
         {
             targets.Add(enemy);
-
-            // ������������� �������� ��������� ��� ��������� ������
             if (!isActive)
             {
-                enabled = true;
+                EnableDamageField();
             }
         }
     }
@@ -52,50 +54,44 @@ public class DamageField : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         EnemyHP enemy = other.GetComponent<EnemyHP>();
-        if (enemy != null && targets.Contains(enemy))
+        if (enemy != null)
         {
             targets.Remove(enemy);
-
-            // ��������� ���������, ���� ������ ���
-            if (targets.Count == 0)
-            {
-                enabled = false;
-            }
         }
     }
 
-    IEnumerator Damager()
+    private IEnumerator DamageCoroutine()
     {
-        while (isActive)
+        while (isActive && targets.Count > 0)
         {
-            if (targets.Count == 0)
+            // Обновляем статы от оружия
+            if (weaponSource != null)
             {
-                enabled = false;
-                yield break;
+                currentDamage = weaponSource.GetDamage();
+                currentCooldown = weaponSource.GetCooldown();
             }
 
-            // ������� ����� ������ ��� ���������� ��������
-            List<EnemyHP> currentTargets = new List<EnemyHP>(targets);
-
-            for (int i = 0; i < currentTargets.Count; i++)
+            // Наносим урон всем целям
+            for (int i = targets.Count - 1; i >= 0; i--)
             {
-                if (currentTargets[i] != null)
+                if (targets[i] != null)
                 {
-                    currentTargets[i].Damage(damage);
-
-                    // ������� ������� ������ �� ��������� ������
-                    if (currentTargets[i].GetHP() <= 0)
+                    targets[i].Damage(currentDamage);
+                    
+                    if (targets[i].GetHP() <= 0)
                     {
-                        targets.Remove(currentTargets[i]);
+                        targets.RemoveAt(i);
                     }
+                }
+                else
+                {
+                    targets.RemoveAt(i);
                 }
             }
 
-            yield return new WaitForSeconds(cooldown);
-
-            // ��������� �������� �� ������ �����
-            damage = damageFieldTrigger.GetDamage();
-            cooldown = damageFieldTrigger.GetCooldown();
+            yield return new WaitForSeconds(currentCooldown);
         }
+        
+        isActive = false;
     }
 }

@@ -1,117 +1,124 @@
-using System.Xml.Serialization;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private LayerMask _collisionLayers = Physics.DefaultRaycastLayers;
+    [Header("Bullet Settings")]
+    [SerializeField] private LayerMask collisionLayers = Physics.DefaultRaycastLayers;
+    [SerializeField] private GameObject hitEffect;
+    
+    private Transform target;
+    private float currentSpeed;
+    private float currentLifetime;
+    private int currentDamageType;
+    private float currentDamage;
+    private bool hasTarget;
+    private Vector3 lastDirection;
 
-    private Transform _target;
-    private float _speed;
-    private float _lifetime;
-    private int _damageType;
-    private float _damage;
-    private bool _hasTarget;
-    private Vector3 _lastDirection;
-    private BulletShooter _bulletShooter;
-
-    private bool isPaused;
+    // Ссылка на источник урона (для возможных будущих улучшений)
+    private Weapon sourceWeapon;
 
     private void Update()
     {
-        if (_hasTarget && _target != null && _target.gameObject.activeInHierarchy)
+        if (hasTarget && target != null && target.gameObject.activeInHierarchy)
         {
-            Vector3 direction = (_target.position - transform.position).normalized;
-            transform.position += direction * _speed * Time.deltaTime;
+            Vector3 direction = (target.position - transform.position).normalized;
+            transform.position += direction * currentSpeed * Time.deltaTime;
 
             if (direction != Vector3.zero)
             {
                 transform.rotation = Quaternion.LookRotation(direction);
             }
 
-            _lastDirection = direction;
-
+            lastDirection = direction;
             CheckCollisionWithRaycast();
         }
         else
         {
-            transform.position += _lastDirection * _speed * Time.deltaTime;
+            // Двигаемся в последнем направлении если цель потеряна
+            transform.position += lastDirection * currentSpeed * Time.deltaTime;
             CheckCollisionWithRaycast();
         }
     }
 
     private void OnEnable()
     {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            _bulletShooter = player.GetComponent<BulletShooter>();
-        }
-        _bulletShooter._damageChanged += SetDamage;
         CancelInvoke();
-        Invoke(nameof(ReturnToPool), _lifetime);
+        Invoke(nameof(ReturnToPool), currentLifetime);
     }
 
     private void OnDisable()
     {
         CancelInvoke();
-        _target = null;
-        _hasTarget = false;
+        ResetBullet();
     }
 
-    private void OnDestroy()
+
+    public void UpdateStats(float damage, float speed, int damageType)
     {
-
+        currentDamage = damage;
+        currentSpeed = speed;
+        currentDamageType = damageType;
     }
 
-    
+    public void InitializeBullet(Transform newTarget, float newSpeed, float newLifetime, int newDamageType, float newDamage, Weapon source = null)
+    {
+        target = newTarget;
+        currentSpeed = newSpeed;
+        currentLifetime = newLifetime;
+        currentDamageType = newDamageType;
+        currentDamage = newDamage;
+        sourceWeapon = source;
+        hasTarget = newTarget != null;
+
+        if (hasTarget)
+        {
+            lastDirection = (target.position - transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(lastDirection);
+        }
+        else
+        {
+            lastDirection = transform.forward;
+        }
+    }
 
     private void CheckCollisionWithRaycast()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, _lastDirection, out hit, _speed * Time.deltaTime + 0.1f, _collisionLayers))
+        if (Physics.Raycast(transform.position, lastDirection, out hit, currentSpeed * Time.deltaTime + 0.1f, collisionLayers))
         {
-            HandleCollision(hit.collider);
+            HandleCollision(hit.collider, hit.point);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        HandleCollision(other);
+        HandleCollision(other, transform.position);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        HandleCollision(collision.collider);
-    }
-
-    private void HandleCollision(Collider collider)
+    private void HandleCollision(Collider collider, Vector3 hitPoint)
     {
         if (collider.CompareTag("Enemy"))
         {
             if (collider.TryGetComponent(out EnemyHP enemy))
             {
-                enemy.Damage(_damage, _damageType);
+                enemy.Damage(currentDamage, currentDamageType);
+                PlayHitEffect(hitPoint);
             }
+            ReturnToPool();
+        }
+        else if (collider.CompareTag("Environment")) // Столкновение с окружением
+        {
+            PlayHitEffect(hitPoint);
             ReturnToPool();
         }
     }
 
-    public void ResetBullet(Transform newTarget, float newSpeed, float newLifetime, int damageType)
+    private void PlayHitEffect(Vector3 position)
     {
-        _target = newTarget;
-        _speed = newSpeed;
-        _lifetime = newLifetime;
-        _damageType = damageType;
-        _hasTarget = newTarget != null;
-
-        if (_hasTarget)
+        if (hitEffect != null)
         {
-            _lastDirection = (_target.position - transform.position).normalized;
-            transform.rotation = Quaternion.LookRotation(_lastDirection);
-        }
-        else
-        {
-            _lastDirection = transform.forward;
+            // Здесь можно создать систему пула для эффектов
+            Instantiate(hitEffect, position, Quaternion.identity);
         }
     }
 
@@ -127,16 +134,19 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    private void ResetBullet()
+    {
+        target = null;
+        hasTarget = false;
+        sourceWeapon = null;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + _lastDirection * 2f);
+        Gizmos.DrawLine(transform.position, transform.position + lastDirection * 2f);
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, 0.1f);
     }
-
-    private void SetDamage(float damage)
-    {
-        _damage = damage;
-    }
-
-
 }

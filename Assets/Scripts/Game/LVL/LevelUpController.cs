@@ -127,6 +127,7 @@ public class LevelUpController : MonoBehaviour
     public void OnResumeButtonClicked()
     {
         ResumeFromLevelUp();
+        itemsInfo.SetWeaponList();
     }
 
     private void ResumeFromLevelUp()
@@ -139,5 +140,6 @@ public class LevelUpController : MonoBehaviour
     public void OnItemSelected(int itemIndex)
     {
         ResumeFromLevelUp();
+        itemsInfo.SetWeaponList();
     }
 }
