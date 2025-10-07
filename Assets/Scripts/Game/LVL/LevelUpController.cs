@@ -31,19 +31,15 @@ public class LevelUpController : MonoBehaviour
         }
 
         canvasGroup = lvlUpCanvasObject.GetComponent<CanvasGroup>();
-
         itemsInfo = panelItems.GetComponentInChildren<LvlUpItemsInfo>();
-
     }
 
     private void InitializeUI()
     {
         lvlUpCanvasObject.SetActive(false);
-
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
-
         PrepareButtons();
     }
 
@@ -75,8 +71,6 @@ public class LevelUpController : MonoBehaviour
         canvasGroup.blocksRaycasts = true;
 
         ActivateButtons();
-        
-
     }
 
     private void ActivateButtons()
@@ -114,7 +108,6 @@ public class LevelUpController : MonoBehaviour
             }
         }
 
-
         if (lvlUpCanvasObject != null)
         {
             lvlUpCanvasObject.SetActive(false);
@@ -123,11 +116,9 @@ public class LevelUpController : MonoBehaviour
         onComplete?.Invoke();
     }
 
-
     public void OnResumeButtonClicked()
     {
         ResumeFromLevelUp();
-        itemsInfo.SetWeaponList();
     }
 
     private void ResumeFromLevelUp()
@@ -139,7 +130,8 @@ public class LevelUpController : MonoBehaviour
 
     public void OnItemSelected(int itemIndex)
     {
-        ResumeFromLevelUp();
         itemsInfo.SetWeaponList();
+        
+        ResumeFromLevelUp();
     }
 }

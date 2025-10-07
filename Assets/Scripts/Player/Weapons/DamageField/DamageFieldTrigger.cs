@@ -1,22 +1,14 @@
 using UnityEngine;
 
-public class DamageFieldTrigger : Weapon, IAreaWeapon
+public class DamageFieldTrigger : Weapon
 {
     [Header("Damage Field References")]
     [SerializeField] private DamageField damageField;
 
     private float currentArea;
-
     private DamageFieldDataSO DamageFieldData => weaponData as DamageFieldDataSO;
 
-    public float GetArea() => currentArea;
-
-    public void CalculateArea(float areaMultiplier)
-    {
-        float baseArea = GetBaseAreaForCurrentLevel();
-        currentArea = baseArea * areaMultiplier;
-        ApplyAreaToVisual();
-    }
+    public override float GetArea() => currentArea;
 
     protected override void Awake()
     {
@@ -31,40 +23,77 @@ public class DamageFieldTrigger : Weapon, IAreaWeapon
 
         if (weaponData is not DamageFieldDataSO)
         {
-            Debug.LogError($"WeaponData must be of type DamageFieldDataSO for {gameObject.name}", this);
             return;
         }
     }
 
-    protected virtual float GetBaseAreaForCurrentLevel()
+    protected override void SubscribeToPlayerStats()
     {
-        if (DamageFieldData == null) return 0f;
+        base.SubscribeToPlayerStats();
+        
+        if (playerStats != null)
+        {
+            playerStats._areaMultiplierChanged += OnAreaMultiplierChanged;
+        }
+    }
 
-        float area = DamageFieldData.baseArea;
+    protected override void UnsubscribeFromPlayerStats()
+    {
+        base.UnsubscribeFromPlayerStats();
+        
+        if (playerStats != null)
+        {
+            playerStats._areaMultiplierChanged -= OnAreaMultiplierChanged;
+        }
+    }
+
+    private void OnAreaMultiplierChanged(float areaMultiplier)
+    {
+        CalculateArea();
+    }
+
+    private void CalculateArea()
+    {
+        if (DamageFieldData == null) return;
+
+        float baseArea = DamageFieldData.baseArea;
+        
+        // ДОБАВЛЯЕМ БОНУСЫ ОТ УРОВНЕЙ
         if (weaponData.levelUpgrades != null)
         {
-            for (int i = 0; i < currentLevel && i < weaponData.levelUpgrades.Length; i++)
+            for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
             {
-                area += weaponData.levelUpgrades[i].areaBonus;
+                var upgrade = weaponData.levelUpgrades[i];
+                if (upgrade.level <= currentLevel)
+                {
+                    baseArea += upgrade.areaBonus;
+                }
             }
         }
-        return area;
+        
+        // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
+        float areaMultiplier = playerStats?.GetAreaMultiplier() ?? 1f;
+        currentArea = baseArea * areaMultiplier;
+        
+        ApplyAreaToVisual();
+        
     }
 
-    protected virtual void ApplyAreaToVisual()
+    protected override void CalculateAllStats()
+    {
+        base.CalculateAllStats();
+        CalculateArea();
+        
+    }
+
+    private void ApplyAreaToVisual()
     {
         transform.localScale = new Vector3(currentArea, transform.localScale.y, currentArea);
-
+        
         if (damageField != null)
         {
-            damageField.UpdateStats(currentDamage, currentCooldown);
+            damageField.SetWeaponSource(this);
         }
-    }
-
-    protected override void CalculateStats()
-    {
-        base.CalculateStats();
-        ApplyAreaToVisual();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -88,5 +117,4 @@ public class DamageFieldTrigger : Weapon, IAreaWeapon
         }
         return this?.GetItemDescription();
     }
-
 }

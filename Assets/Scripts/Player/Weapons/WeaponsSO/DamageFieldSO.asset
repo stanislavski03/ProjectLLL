@@ -28,7 +28,7 @@ MonoBehaviour:
     upgradeDescription: 
   - level: 2
     areaBonus: 20
-    damageBonus: 0
+    damageBonus: 1000
     cooldownReduction: 0
     speedBonus: 0
     upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
@@ -41,5 +41,3 @@ MonoBehaviour:
     upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
       \u0440\u0430\u0437\u043C\u0435\u0440 \u0437\u043E\u043D\u044B +++"
   baseArea: 7.5
-  fieldEffectPrefab: {fileID: 0}
-  fieldColor: {r: 1, g: 0, b: 0, a: 1}

@@ -7,8 +7,6 @@ public class DamageField : MonoBehaviour
     [SerializeField] private Weapon weaponSource;
     private List<EnemyHP> targets = new List<EnemyHP>();
     private bool isActive = false;
-    private float currentDamage;
-    private float currentCooldown;
 
     private void Awake()
     {
@@ -16,15 +14,14 @@ public class DamageField : MonoBehaviour
             weaponSource = GetComponentInParent<Weapon>();
     }
 
-    public void UpdateStats(float damage, float cooldown)
+    public void SetWeaponSource(Weapon source)
     {
-        currentDamage = damage;
-        currentCooldown = cooldown;
+        weaponSource = source;
     }
 
     public void EnableDamageField()
     {
-        if (!isActive)
+        if (!isActive && weaponSource != null)
         {
             isActive = true;
             StartCoroutine(DamageCoroutine());
@@ -62,21 +59,17 @@ public class DamageField : MonoBehaviour
 
     private IEnumerator DamageCoroutine()
     {
-        while (isActive && targets.Count > 0)
+        while (isActive && targets.Count > 0 && weaponSource != null)
         {
-            // Обновляем статы от оружия
-            if (weaponSource != null)
-            {
-                currentDamage = weaponSource.GetDamage();
-                currentCooldown = weaponSource.GetCooldown();
-            }
+            float actualDamage = weaponSource.GetDamage();
+            float actualCooldown = weaponSource.GetCooldown();
 
-            // Наносим урон всем целям
+
             for (int i = targets.Count - 1; i >= 0; i--)
             {
                 if (targets[i] != null)
                 {
-                    targets[i].Damage(currentDamage);
+                    targets[i].Damage(actualDamage);
                     
                     if (targets[i].GetHP() <= 0)
                     {
@@ -89,7 +82,7 @@ public class DamageField : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(currentCooldown);
+            yield return new WaitForSeconds(actualCooldown);
         }
         
         isActive = false;

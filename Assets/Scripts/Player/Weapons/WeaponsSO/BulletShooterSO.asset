@@ -27,8 +27,8 @@ MonoBehaviour:
     upgradeDescription: 
   - level: 2
     areaBonus: 0
-    damageBonus: 0
-    cooldownReduction: 1
+    damageBonus: 1000
+    cooldownReduction: 0.8
     speedBonus: 0
     upgradeDescription: "\u0411\u043E\u043D\u0443\u0441 \u043A \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u0438
       \u0441\u0442\u0440\u0435\u043B\u044C\u0431\u044B"
@@ -36,5 +36,3 @@ MonoBehaviour:
   bulletLifetime: 3
   damageType: 0
   bulletPrefab: {fileID: 6286318592029805020, guid: 9dee57f6df009434db65f2497bd772b8, type: 3}
-  shootEffect: {fileID: 0}
-  shootSound: {fileID: 0}
