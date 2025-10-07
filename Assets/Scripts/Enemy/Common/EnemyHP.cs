@@ -2,21 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class EnemyHP : MonoBehaviour
 {
-    [SerializeField] private float _maxHP = 100;
-    [SerializeField] private float _freezeDef = 0;
-    [SerializeField] private float _fireDef = 0;
-    [SerializeField] private float _electroDef = 0;
-    [SerializeField] private GameObject _expPrefab;
-    [SerializeField] private float _expDropPercent = 10;
-    [SerializeField] private float _expAutodropAmount = 10;
+    private float _maxHP;
+    private float _freezeDef = 0;
+    private float _fireDef = 0;
+    private float _electroDef = 0;
+    private GameObject _expPrefab;
+    private float _expDropPercent;
+    private float _expAutodropAmount;
+
+    [SerializeField] private EnemyConfig _initializedStats;
 
     private PlayerEXP _playerEXP;
     private float _currentHP;
 
     public event Action<float> onDamage;
+
+
+
+    private void Start()
+    {
+            
+
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            _playerEXP = player.GetComponent<PlayerEXP>();
+        }
+    }
+
+    private void OnEnable()
+    {
+        try
+        {
+            InitializeStats();
+        }
+        catch { }
+
+    }
+    private void InitializeStats()
+    {
+        _maxHP = _initializedStats._maxHealth;
+        _expPrefab = _initializedStats._expSmallPrefab;
+        _expDropPercent = _initializedStats._expSmallDropChance;
+        _expAutodropAmount = _initializedStats._expOnDeath;
+        _currentHP = _maxHP;
+    }
 
     public float GetHP()
     {
@@ -26,39 +60,26 @@ public class EnemyHP : MonoBehaviour
     {
         return _maxHP;
     }
-
-    private void OnEnable()
-    {
-        _currentHP = _maxHP;
-
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            _playerEXP = player.GetComponent<PlayerEXP>();
-        }
-    }
-
-    public void Damage(float damageAmmount, int damageType)
+    public void Damage(float damageAmount, int damageType)
     {
         switch (damageType)
         {
             case 0:
-                _currentHP -= damageAmmount * _freezeDef / 100;
+                _currentHP -= damageAmount * ((100 - _freezeDef) / 100);
                 break;
             case 1:
-                _currentHP -= damageAmmount * _fireDef / 100;
+                _currentHP -= damageAmount * ((100 - _fireDef) / 100);
                 break;
             case 2:
-                _currentHP -= damageAmmount * _electroDef / 100;
+                _currentHP -= damageAmount * ((100 - _electroDef) / 100);
                 break;
             default:
-                _currentHP -= damageAmmount;
+                _currentHP -= damageAmount;
                 break;
         }
-        _currentHP -= damageAmmount;
         if (_currentHP <= 0) Death();
         // Debug.Log(_currentHP);
-        onDamage?.Invoke(damageAmmount);
+        onDamage?.Invoke(damageAmount);
     }
 
 

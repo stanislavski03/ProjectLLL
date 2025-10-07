@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class EnemyMeleeDmg : MonoBehaviour
 {
-    [SerializeField] private float _damage = 10f;
-    [SerializeField] private float _damageCooldown = 1f;
+    private float _damage = 10;
+    private float _damageCooldown = 1;
 
     private float _cooldownTimer = 0;
 
     private bool isPaused;
     private bool isDestroyed;
 
-    private void Awake()
+    [SerializeField] private EnemyConfig _initializedStats;
+    private void OnEnable()
     {
-
+        try
+        {
+            _damage = _initializedStats._damage;
+            _damageCooldown = _initializedStats._damageCooldown;
+        }
+        catch { }
     }
 
     void OnDestroy()

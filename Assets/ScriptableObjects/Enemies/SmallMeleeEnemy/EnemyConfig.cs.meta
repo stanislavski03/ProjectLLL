@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 035e94afc8b932e489e1f038d4c46866
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _expSmallPrefab: {fileID: 1627554565677760942, guid: e1eb3370df7dc8b45b7fb79e0472a778, type: 3}
+  - _expMediumPrefab: {fileID: 1627554565677760942, guid: 8a648a11417f01b4f93b101ca312f77d, type: 3}
+  - _expHugePrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
