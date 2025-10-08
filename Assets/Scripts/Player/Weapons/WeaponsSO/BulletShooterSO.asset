@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0ef784d6ee02b94883e2ae9aee8fae9, type: 3}
+  m_Name: BulletShooterSO
+  m_EditorClassIdentifier: 
+  weaponName: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
+  description: "\u0421\u0442\u0440\u0435\u043B\u044F\u0435\u0442 \u043F\u0443\u043B\u044F\u043C\u0438"
+  icon: {fileID: 0}
+  baseDamage: 10
+  baseCooldown: 1
+  maxLevel: 6
+  levelUpgrades:
+  - level: 1
+    areaBonus: 0
+    damageBonus: 0
+    cooldownReduction: 0
+    speedBonus: 0
+    upgradeDescription: 
+  - level: 2
+    areaBonus: 0
+    damageBonus: 1000
+    cooldownReduction: 0.8
+    speedBonus: 0
+    upgradeDescription: "\u0411\u043E\u043D\u0443\u0441 \u043A \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u0438
+      \u0441\u0442\u0440\u0435\u043B\u044C\u0431\u044B"
+  bulletSpeed: 10
+  bulletLifetime: 3
+  damageType: 0
+  bulletPrefab: {fileID: 6286318592029805020, guid: 9dee57f6df009434db65f2497bd772b8, type: 3}

@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class BulletPool : MonoBehaviour
 {
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private int _initialPoolSize = 2;
+    [SerializeField] private BulletShooterDataSO defaultBulletData;
     
-    private Queue<GameObject> _bulletPool = new Queue<GameObject>();
+    private Queue<GameObject> bulletPool = new Queue<GameObject>();
+    private GameObject bulletPrefab;
 
-    public static BulletPool Instance;
+    public static BulletPool Instance { get; private set; }
     
     private void Awake()
     {
@@ -25,7 +25,18 @@ public class BulletPool : MonoBehaviour
     
     private void InitializePool()
     {
-        for (int i = 0; i < _initialPoolSize; i++)
+        // Используем префаб из ScriptableObject или резервный
+        if (defaultBulletData != null && defaultBulletData.bulletPrefab != null)
+        {
+            bulletPrefab = defaultBulletData.bulletPrefab;
+        }
+        else
+        {
+            Debug.LogError("No bullet prefab assigned in BulletPool!");
+            return;
+        }
+        
+        for (int i = 0; i < 1; i++) // Динамический размер пула
         {
             CreateNewBullet();
         }
@@ -33,9 +44,9 @@ public class BulletPool : MonoBehaviour
     
     private GameObject CreateNewBullet()
     {
-        GameObject bullet = Instantiate(_bulletPrefab, transform);
+        GameObject bullet = Instantiate(bulletPrefab, transform);
         bullet.SetActive(false);
-        _bulletPool.Enqueue(bullet);
+        bulletPool.Enqueue(bullet);
         return bullet;
     }
     
@@ -43,9 +54,9 @@ public class BulletPool : MonoBehaviour
     {
         CleanPool();
         
-        if (_bulletPool.Count > 0)
+        if (bulletPool.Count > 0)
         {
-            GameObject bullet = _bulletPool.Dequeue();
+            GameObject bullet = bulletPool.Dequeue();
             if (bullet != null)
             {
                 return bullet;
@@ -64,21 +75,15 @@ public class BulletPool : MonoBehaviour
         bullet.transform.position = Vector3.zero;
         bullet.transform.rotation = Quaternion.identity;
         
-        Bullet bulletComponent = bullet.GetComponent<Bullet>();
-        if (bulletComponent != null)
-        {
-            // Можно добавить сброс состояния если нужно
-        }
-        
-        _bulletPool.Enqueue(bullet);
+        bulletPool.Enqueue(bullet);
     }
     
     private void CleanPool()
     {
-        int initialCount = _bulletPool.Count;
+        int initialCount = bulletPool.Count;
         Queue<GameObject> cleanPool = new Queue<GameObject>();
         
-        foreach (var bullet in _bulletPool)
+        foreach (var bullet in bulletPool)
         {
             if (bullet != null)
             {
@@ -86,24 +91,15 @@ public class BulletPool : MonoBehaviour
             }
         }
         
-        _bulletPool = cleanPool;
+        bulletPool = cleanPool;
     }
     
-    public int GetActiveBulletsCount()
+    public void UpdateBulletPrefab(GameObject newPrefab)
     {
-        int count = 0;
-        foreach (Transform child in transform)
+        if (newPrefab != null)
         {
-            if (child.gameObject.activeInHierarchy)
-            {
-                count++;
-            }
+            bulletPrefab = newPrefab;
+            // Можно очистить пул и пересоздать с новым префабом
         }
-        return count;
-    }
-    
-    public int GetPoolSize()
-    {
-        return _bulletPool.Count;
     }
 }

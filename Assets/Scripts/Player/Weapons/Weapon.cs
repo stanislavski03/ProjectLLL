@@ -1,106 +1,231 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
+    [SerializeField] protected WeaponDataSO weaponData;
     [SerializeField] protected PlayerStats playerStats;
-    
-    // Базовые статы оружия (должны быть установлены в производных классах)
-    protected float _weaponArea;
-    protected float _weaponDamage;
-    protected float _weaponCooldown;
-    
-    // Текущие рассчитанные статы
-    protected float area;
-    protected float damage;
-    protected float cooldown;
-    protected float additionalDamage = 1f;
-    
-    protected int _currentLevel = 0;
-    protected int _maxLevel = 6;
 
-    public abstract string GetTextTitleInfo();
-    public abstract string GetTextDescriptionInfo();
-    
-    // Виртуальные методы для переопределения в производных классах
-    public virtual void AddLevel(int value)
-    {
-        // Базовая реализация может быть пустой
-    }
-    
-    public virtual void ReduceLevel(int value)
-    {
-        // Базовая реализация может быть пустой
-    }
+    protected float currentDamage;
+    protected float currentCooldown;
+    protected int currentLevel = 0;
+
+    public bool IsAvailable = true;
+    public Action AvailableChanged;
+
+    public WeaponDataSO Data => weaponData;
+    public int CurrentLevel => currentLevel;
+    public bool IsMaxLevel => currentLevel >= weaponData.maxLevel;
+
+    public System.Action<Weapon> OnLevelUp;
 
     protected virtual void Awake()
     {
-        // Базовая инициализация в Awake
-        playerStats = FindObjectOfType<PlayerStats>(); // или другой способ получения ссылки
+        playerStats = FindObjectOfType<PlayerStats>();
+        InitializeWeapon();
     }
 
     protected virtual void Start()
     {
-        // Инициализация статов при старте
+        SubscribeToPlayerStats();
+        CalculateAllStats();
+    }
+
+    protected virtual void InitializeWeapon()
+    {
+        if (weaponData == null)
+        {
+            return;
+        }
+    }
+
+    protected virtual void SubscribeToPlayerStats()
+    {
         if (playerStats != null)
         {
-            CountArea(playerStats.GetAreaMultiplier());
-            CountCooldown(playerStats.GetCooldownReduction());
-            CountAdditionalDamage(playerStats.GetEnergyDamageMultiplier());
-            CountDamage(playerStats.GetDamageMultiplier());
+            playerStats._cooldownReductionChanged += OnCooldownReductionChanged;
+            playerStats._damageMultiplierChanged += OnDamageMultiplierChanged;
+        }
+    }
+
+    protected virtual void UnsubscribeFromPlayerStats()
+    {
+        if (playerStats != null)
+        {
+            playerStats._cooldownReductionChanged -= OnCooldownReductionChanged;
+            playerStats._damageMultiplierChanged -= OnDamageMultiplierChanged;
         }
     }
 
     private void OnEnable()
     {
-        if (playerStats != null)
-        {
-            playerStats._areaMultiplierChanged += CountArea;
-            playerStats._cooldownReductionChanged += CountCooldown;
-            playerStats._damageMultiplierChanged += CountDamage;
-            playerStats._energyDamageMultiplierChanged += CountAdditionalDamage;
-        }
+        SubscribeToPlayerStats();
+        CalculateAllStats();
     }
 
     private void OnDisable()
     {
-        if (playerStats != null)
-        {
-            playerStats._areaMultiplierChanged -= CountArea;
-            playerStats._cooldownReductionChanged -= CountCooldown;
-            playerStats._damageMultiplierChanged -= CountDamage;
-            playerStats._energyDamageMultiplierChanged -= CountAdditionalDamage;
-        }
+        UnsubscribeFromPlayerStats();
     }
 
-    protected virtual void CountArea(float statsValue)
+    private void OnCooldownReductionChanged(float cooldownReduction)
     {
+        CalculateAllStats();
+    }
+
+    private void OnDamageMultiplierChanged(float damageMultiplier)
+    {
+        CalculateAllStats();
+    }
+
+    // ГЛАВНЫЙ МЕТОД: РАСЧЕТ ВСЕХ СТАТОВ
+    protected virtual void CalculateAllStats()
+    {
+        CalculateDamage();
+        CalculateCooldown();
+    }
+
+    // РАСЧЕТ УРОНА: базовый урон + бонусы уровня + множитель игрока
+    protected virtual void CalculateDamage()
+    {
+        float baseDamage = weaponData.baseDamage;
+        
+        // ДОБАВЛЯЕМ БОНУСЫ ОТ УРОВНЕЙ
+        if (weaponData.levelUpgrades != null)
+        {
+            for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
+            {
+                var upgrade = weaponData.levelUpgrades[i];
+                if (upgrade.level <= currentLevel)
+                {
+                    baseDamage += upgrade.damageBonus;
+                }
+            }
+        }
+        
+        // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
+        float damageMultiplier = playerStats?.GetDamageMultiplier() ?? 1f;
+        currentDamage = baseDamage * damageMultiplier;
         
     }
 
-    protected virtual void CountCooldown(float statsValue)
+    protected virtual void CalculateCooldown()
     {
-        cooldown = _weaponCooldown * statsValue;
-    }
-
-    protected virtual void CountDamage(float statsValue)
-    {
-        damage = _weaponDamage * statsValue * additionalDamage;
-    }
-
-    protected virtual void CountAdditionalDamage(float statsValue)
-    {
-        additionalDamage = statsValue;
-        // Пересчитываем damage при изменении additionalDamage
-        if (playerStats != null)
+        float baseCooldown = weaponData.baseCooldown;
+        
+        if (weaponData.levelUpgrades != null)
         {
-            CountDamage(playerStats.GetDamageMultiplier());
+            for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
+            {
+                var upgrade = weaponData.levelUpgrades[i];
+                if (upgrade.level <= currentLevel)
+                {
+                    baseCooldown -= upgrade.cooldownReduction;
+                }
+            }
+        }
+        
+        baseCooldown = Mathf.Max(baseCooldown, 0.05f);
+        
+        // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
+        float cooldownMultiplier = playerStats?.GetCooldownReduction() ?? 1f;
+        currentCooldown = baseCooldown * cooldownMultiplier;
+    }
+
+    public virtual bool CanLevelUp()
+    {
+        return currentLevel < weaponData.maxLevel;
+    }
+
+    public virtual void AddLevel(int levels = 1)
+    {
+        if (currentLevel == 0)
+        {
+            this.gameObject.SetActive(true);
+        }
+
+        int levelsAdded = 0;
+        for (int i = 0; i < levels && CanLevelUp(); i++)
+        {
+            currentLevel++;
+            levelsAdded++;
+        }
+
+        if (levelsAdded > 0)
+        {
+            CalculateAllStats();
+            OnLevelUp?.Invoke(this);
         }
     }
 
-    public float GetArea() => area;
-    public float GetCooldown() => cooldown;
-    public float GetDamage() => damage;
-    public int GetCurrentLevel() => _currentLevel;
+    public virtual void ReduceLevel(int levels = 1)
+    {
+        int newLevel = Mathf.Max(0, currentLevel - levels);
+        if (newLevel != currentLevel)
+        {
+            currentLevel = newLevel;
+            CalculateAllStats();
+        }
+    }
+
+    public abstract string GetTextTitleInfo();
+    public abstract string GetTextDescriptionInfo();
+
+    public virtual string GetUpgradeDescriptionForNextLevel()
+    {
+        if (!CanLevelUp()) return "Max Level";
+
+        int nextLevelIndex = currentLevel;
+        if (weaponData.levelUpgrades != null && nextLevelIndex < weaponData.levelUpgrades.Length)
+        {
+            return weaponData.levelUpgrades[nextLevelIndex].upgradeDescription;
+        }
+        return "Upgrade available";
+    }
+
+    public virtual string GetItemDescription()
+    {
+        return weaponData.description;
+    }
+
+    public float GetCooldown() => currentCooldown;
+    public float GetDamage() => currentDamage;
+    public virtual float GetArea() => 0f;
+    public virtual float GetBulletSpeed() => 0f;
+    public virtual float GetBulletLifetime() => 0f;
+    public virtual int GetDamageType() => 0;
+
+    public void SetAvailable(bool available)
+    {
+        IsAvailable = available;
+        AvailableChanged?.Invoke();
+    }
+
+    [ContextMenu("Test Add Level")]
+    public void TestAddLevel()
+    {
+        AddLevel(1);
+    }
+
+    [ContextMenu("Debug Weapon Stats")]
+    public void DebugWeaponStats()
+    {
+        Debug.Log($"=== {weaponData.weaponName} DEBUG ===");
+        Debug.Log($"Level: {currentLevel}");
+        Debug.Log($"Base Damage: {weaponData.baseDamage}");
+        Debug.Log($"Base Cooldown: {weaponData.baseCooldown}");
+        
+        if (weaponData.levelUpgrades != null)
+        {
+            for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
+            {
+                var upgrade = weaponData.levelUpgrades[i];
+                Debug.Log($"Upgrade {i}: Level={upgrade.level}, DamageBonus={upgrade.damageBonus}, CooldownReduction={upgrade.cooldownReduction}");
+            }
+        }
+        
+        Debug.Log($"Current Damage: {currentDamage}");
+        Debug.Log($"Current Cooldown: {currentCooldown}");
+        Debug.Log($"=== END DEBUG ===");
+    }
 }
