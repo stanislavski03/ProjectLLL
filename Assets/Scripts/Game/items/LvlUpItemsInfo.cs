@@ -69,9 +69,7 @@ public class LvlUpItemsInfo : MonoBehaviour
 
     // НОВЫЙ МЕТОД: обрабатываем прокачку оружия
     private void OnWeaponLevelUp(Weapon weapon)
-    {
-        Debug.Log($"[LvlUpItemsInfo] Weapon {weapon.Data.weaponName} leveled up to {weapon.CurrentLevel}");
-        
+    {   
         // ОБНОВЛЯЕМ UI если меню прокачки еще открыто
         if (levelUpController != null)
         {
@@ -85,7 +83,7 @@ public class LvlUpItemsInfo : MonoBehaviour
         
         for (int i = 0; i < allWeaponList.Count; i++)
         {
-            if (allWeaponList[i] != null && allWeaponList[i].IsAvailable)
+            if (allWeaponList[i] != null && allWeaponList[i].IsAvailable && !allWeaponList[i].IsMaxLevel)
             {
                 weaponList.Add(allWeaponList[i]);
             }
@@ -146,10 +144,9 @@ public class LvlUpItemsInfo : MonoBehaviour
                 
                 // ОБНОВЛЯЕМ ОПИСАНИЕ с информацией об уровне
                 string levelInfo = $"Lvl {weapon.CurrentLevel}";
-                if (weapon.IsMaxLevel)
+                if (weapon.CurrentLevel + 1 == weapon.weaponData.maxLevel)
                 {
-                    levelInfo = "MAX LEVEL";
-                    TMPItemTitle[1].text = $"{levelInfo}\n{weapon.GetItemDescription()}";
+                    TMPItemTitle[1].text = $"{levelInfo} → MAX LEVEL\n{weapon.GetUpgradeDescriptionForNextLevel()}";
                 }
                 else
                 {
@@ -162,10 +159,6 @@ public class LvlUpItemsInfo : MonoBehaviour
             {
                 ItemButton.onClick.RemoveAllListeners();
                 ItemButton.onClick.AddListener(() => OnItemSelected(itemIndex));
-                
-                // БЛОКИРУЕМ кнопку если оружие на максимальном уровне
-                Weapon weapon = _currentWeaponList[i];
-                ItemButton.interactable = !weapon.IsMaxLevel;
             }
         }
     }

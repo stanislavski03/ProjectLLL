@@ -3,12 +3,12 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] protected WeaponDataSO weaponData;
     [SerializeField] protected PlayerStats playerStats;
+    public WeaponDataSO weaponData;
 
     protected float currentDamage;
     protected float currentCooldown;
-    protected int currentLevel = 0;
+    public int currentLevel = 0;
 
     public bool IsAvailable = true;
     public Action AvailableChanged;
@@ -194,6 +194,12 @@ public abstract class Weapon : MonoBehaviour
     public virtual float GetBulletSpeed() => 0f;
     public virtual float GetBulletLifetime() => 0f;
     public virtual int GetDamageType() => 0;
+
+    public virtual string GetWeaponStats()
+    {
+        string statsString = $"Cooldown: {GetCooldown()}\nDamage: {GetDamage()}\n";
+        return statsString;
+    }
 
     public void SetAvailable(bool available)
     {

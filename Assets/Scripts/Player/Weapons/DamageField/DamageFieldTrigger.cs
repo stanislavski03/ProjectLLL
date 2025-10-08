@@ -30,7 +30,7 @@ public class DamageFieldTrigger : Weapon
     protected override void SubscribeToPlayerStats()
     {
         base.SubscribeToPlayerStats();
-        
+
         if (playerStats != null)
         {
             playerStats._areaMultiplierChanged += OnAreaMultiplierChanged;
@@ -40,7 +40,7 @@ public class DamageFieldTrigger : Weapon
     protected override void UnsubscribeFromPlayerStats()
     {
         base.UnsubscribeFromPlayerStats();
-        
+
         if (playerStats != null)
         {
             playerStats._areaMultiplierChanged -= OnAreaMultiplierChanged;
@@ -57,7 +57,7 @@ public class DamageFieldTrigger : Weapon
         if (DamageFieldData == null) return;
 
         float baseArea = DamageFieldData.baseArea;
-        
+
         // ДОБАВЛЯЕМ БОНУСЫ ОТ УРОВНЕЙ
         if (weaponData.levelUpgrades != null)
         {
@@ -70,26 +70,26 @@ public class DamageFieldTrigger : Weapon
                 }
             }
         }
-        
+
         // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
         float areaMultiplier = playerStats?.GetAreaMultiplier() ?? 1f;
         currentArea = baseArea * areaMultiplier;
-        
+
         ApplyAreaToVisual();
-        
+
     }
 
     protected override void CalculateAllStats()
     {
         base.CalculateAllStats();
         CalculateArea();
-        
+
     }
 
     private void ApplyAreaToVisual()
     {
         transform.localScale = new Vector3(currentArea, transform.localScale.y, currentArea);
-        
+
         if (damageField != null)
         {
             damageField.SetWeaponSource(this);
@@ -102,6 +102,13 @@ public class DamageFieldTrigger : Weapon
         {
             damageField?.EnableDamageField();
         }
+    }
+
+    public override string GetWeaponStats()
+    {
+        string baseStats = base.GetWeaponStats();
+        string statsString = baseStats + $"Area: {GetArea()}";
+        return statsString;
     }
 
     public override string GetTextTitleInfo()

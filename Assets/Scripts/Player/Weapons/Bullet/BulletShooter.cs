@@ -47,7 +47,7 @@ public class BulletShooter : Weapon
     protected override void CalculateAllStats()
     {
         base.CalculateAllStats();
-        
+
         currentBulletSpeed = BulletData.bulletSpeed * (1f + (currentLevel * 0.05f));
         currentBulletLifetime = BulletData.bulletLifetime;
 
@@ -141,12 +141,19 @@ public class BulletShooter : Weapon
                 currentDamage,
                 this // ССЫЛКА НА ОРУЖИЕ
             );
-            
+
         }
         else
         {
             BulletPool.Instance.ReturnBullet(bulletObj);
         }
+    }
+
+    public override string GetWeaponStats()
+    {
+        string baseStats = base.GetWeaponStats();
+        string statsString = baseStats + $"Bullet Speed: {GetBulletSpeed()}\nBullet Lifetime: {GetBulletLifetime()}";
+        return statsString;
     }
 
     public override string GetTextTitleInfo()
