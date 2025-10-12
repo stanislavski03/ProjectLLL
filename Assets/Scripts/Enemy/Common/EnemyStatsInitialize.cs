@@ -30,7 +30,7 @@ public class EnemyStatsInitialize : MonoBehaviour
         _enemyName = config._enemyName;
         _maxHealth = config._maxHealth;
         _damage = config._damage;
-        _damageCooldown = config._damageCooldown;
+        _damageCooldown = config._cooldown;
         _moveSpeed = config._moveSpeed;
         _experienceReward = config._experienceReward;
         _expOnDeath = config._expOnDeath;

@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 035e94afc8b932e489e1f038d4c46866, type: 3}
-  m_Name: SmallMeleeEnemyConfig
+  m_Name: SmallRangedEnemyConfig
   m_EditorClassIdentifier: 
-  _enemyName: Small Melee Enemy
+  _enemyName: Small Ranged Enemy
   _damage: 10
   _cooldown: 1
-  _maxHealth: 120
-  _moveSpeed: 5
+  _maxHealth: 100
+  _moveSpeed: 3.5
   _moveSpeedDeviation: 0.1
   _expOnDeath: 10
   _size: 1
-  _range: 0
-  _projectileSpeed: 0
-  _projectileLifetime: 0
-  _prepareTime: 0
+  _range: 10
+  _projectileSpeed: 15
+  _projectileLifetime: 3
+  _prepareTime: 1
   _experienceReward: 50
   _expSmallPrefab: {fileID: 1627554565677760942, guid: e1eb3370df7dc8b45b7fb79e0472a778, type: 3}
   _expSmallDropChance: 50

@@ -18,7 +18,7 @@ public class EnemyMeleeDmg : MonoBehaviour
         try
         {
             _damage = _initializedStats._damage;
-            _damageCooldown = _initializedStats._damageCooldown;
+            _damageCooldown = _initializedStats._cooldown;
         }
         catch { }
     }
