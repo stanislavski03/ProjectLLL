@@ -1,18 +1,31 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class EnemyShootingDmg : MonoBehaviour
+public class EnemyRangeAttack : MonoBehaviour
 {
     [SerializeField] private Transform _bulletSpawn;
-    [SerializeField] private float _bulletSpawnCooldown = 1f;
-    [SerializeField] private float _shootSpeed = 5f;
-    [SerializeField] private float _playerDetectionRange = 10f;
+    [SerializeField] private EnemyConfig _initializedStats;
 
+    private float _attackCooldown;
+    private float _projectileSpeed;
+    private float _projectileLifetime;
+    private float _damage;
+    private float _range;
+    private float _prepareTime;
+
+    private NavMeshAgent agent;
     private Transform _playerTransform;
     private Coroutine _shootingCoroutine;
     private bool _isShooting = false;
+    RaycastHit hit;
 
     private bool isPaused;
+
+    private void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
 
     private void Update()
     {
@@ -21,7 +34,24 @@ public class EnemyShootingDmg : MonoBehaviour
         if (_playerTransform == null) return;
 
         float distance = Vector3.Distance(transform.position, _playerTransform.position);
-        bool shouldShoot = distance <= _playerDetectionRange;
+
+        Vector3 directionToPlayer = (_playerTransform.position - transform.position).normalized;
+
+        bool seeingPlayer = Physics.Raycast(transform.position, directionToPlayer, out hit, _range, LayerMask.NameToLayer("Player") | LayerMask.NameToLayer("Wall"));
+
+        bool shouldShoot = false;
+
+        if (seeingPlayer)
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                shouldShoot = true;
+            }
+            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
+            {
+                shouldShoot = false;
+            }
+        }
 
         if (shouldShoot && !_isShooting)
         {
@@ -31,10 +61,21 @@ public class EnemyShootingDmg : MonoBehaviour
         {
             StopShooting();
         }
+        if (shouldShoot)
+        {
+            Vector3 target = new Vector3(_playerTransform.position.x,transform.position.y, _playerTransform.position.z);
+            transform.LookAt(target);
+        }
     }
 
     private void OnEnable()
     {
+        _attackCooldown = _initializedStats._cooldown;
+        _projectileSpeed = _initializedStats._projectileSpeed;
+        _range = _initializedStats._range;
+        _projectileLifetime = _initializedStats._projectileLifetime;
+        _damage = _initializedStats._damage;
+        _prepareTime = _initializedStats._prepareTime;
         _playerTransform = GameObject.FindWithTag("Player")?.transform;
     }
 
@@ -50,6 +91,7 @@ public class EnemyShootingDmg : MonoBehaviour
 
         _shootingCoroutine = StartCoroutine(ShootingRoutine());
         _isShooting = true;
+        agent.speed = 0;
     }
 
     private void StopShooting()
@@ -59,11 +101,12 @@ public class EnemyShootingDmg : MonoBehaviour
 
         _shootingCoroutine = null;
         _isShooting = false;
+        agent.speed = _initializedStats._moveSpeed;
     }
 
     private IEnumerator ShootingRoutine()
     {
-        yield return new WaitForSeconds(1f); // Начальная задержка
+        yield return new WaitForSeconds(_prepareTime); 
 
         while (true)
         {
@@ -71,7 +114,7 @@ public class EnemyShootingDmg : MonoBehaviour
             {
                 ShootAtPlayer();
             }
-            yield return new WaitForSeconds(_bulletSpawnCooldown);
+            yield return new WaitForSeconds(_attackCooldown);
         }
     }
 
@@ -92,7 +135,7 @@ public class EnemyShootingDmg : MonoBehaviour
         BulletEnemy bulletController = bulletObj.GetComponent<BulletEnemy>();
         if (bulletController != null)
         {
-            bulletController.Initialize(direction, _shootSpeed);
+            bulletController.Initialize(direction, _projectileSpeed, _projectileLifetime, _damage);
         }
         else
         {
@@ -103,8 +146,12 @@ public class EnemyShootingDmg : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _playerDetectionRange);
+        Gizmos.DrawWireSphere(transform.position, _range);
+
+        if (_playerTransform != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, _playerTransform.position);
+        }
     }
-
-
 }

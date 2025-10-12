@@ -35,7 +35,7 @@ public class BulletEnemy : MonoBehaviour
         }
 
         transform.Translate(Vector3.forward * _speed * Time.deltaTime, Space.Self);
-        CheckCollision();
+        //CheckCollision();
     }
 
     private void OnEnable()
@@ -55,15 +55,15 @@ public class BulletEnemy : MonoBehaviour
         HandleCollision(other);
     }
 
-    private void CheckCollision()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit,
-            _speed * Time.deltaTime + 0.1f, _collisionLayers))
-        {
-            HandleCollision(hit.collider);
-        }
-    }
+    //private void CheckCollision()
+    //{
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(transform.position, transform.forward, out hit,
+    //        _speed * Time.deltaTime + 0.1f, _collisionLayers))
+    //    {
+    //        HandleCollision(hit.collider);
+    //    }
+    //}
 
     private void HandleCollision(Collider collider)
     {
@@ -78,10 +78,12 @@ public class BulletEnemy : MonoBehaviour
         }
     }
 
-    public void Initialize(Vector3 direction, float speed)
+    public void Initialize(Vector3 direction, float speed, float lifetime, float damage)
     {
         _direction = direction.normalized;
         _speed = speed;
+        _lifetime = lifetime;
+        _damage = damage;
         transform.rotation = Quaternion.LookRotation(_direction);
 
         CancelInvoke();
