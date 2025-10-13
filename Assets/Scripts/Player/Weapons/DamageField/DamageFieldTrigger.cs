@@ -72,7 +72,7 @@ public class DamageFieldTrigger : Weapon
         }
 
         // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
-        float areaMultiplier = playerStats?.GetAreaMultiplier() ?? 1f;
+        float areaMultiplier = playerStats.AreaMultiplier;
         currentArea = baseArea * areaMultiplier;
 
         ApplyAreaToVisual();

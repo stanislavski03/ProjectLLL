@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] protected PlayerStats playerStats;
+    public PlayerStatsSO playerStats;
     public WeaponDataSO weaponData;
 
     protected float currentDamage;
@@ -14,14 +14,19 @@ public abstract class Weapon : MonoBehaviour
     public Action AvailableChanged;
 
     public WeaponDataSO Data => weaponData;
+    public PlayerStatsSO PlayerStatsData => playerStats;
     public int CurrentLevel => currentLevel;
     public bool IsMaxLevel => currentLevel >= weaponData.maxLevel;
 
     public System.Action<Weapon> OnLevelUp;
 
+    private void Update()
+    {
+        UpdatePlayerStats();
+    }
+
     protected virtual void Awake()
     {
-        playerStats = FindObjectOfType<PlayerStats>();
         InitializeWeapon();
     }
 
@@ -104,7 +109,7 @@ public abstract class Weapon : MonoBehaviour
         }
         
         // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
-        float damageMultiplier = playerStats?.GetDamageMultiplier() ?? 1f;
+        float damageMultiplier = playerStats.DamageMultiplier;
         currentDamage = baseDamage * damageMultiplier;
         
     }
@@ -128,7 +133,7 @@ public abstract class Weapon : MonoBehaviour
         baseCooldown = Mathf.Max(baseCooldown, 0.05f);
         
         // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
-        float cooldownMultiplier = playerStats?.GetCooldownReduction() ?? 1f;
+        float cooldownMultiplier = playerStats.CooldownReduction;
         currentCooldown = baseCooldown * cooldownMultiplier;
     }
 
@@ -220,7 +225,7 @@ public abstract class Weapon : MonoBehaviour
         Debug.Log($"Level: {currentLevel}");
         Debug.Log($"Base Damage: {weaponData.baseDamage}");
         Debug.Log($"Base Cooldown: {weaponData.baseCooldown}");
-        
+
         if (weaponData.levelUpgrades != null)
         {
             for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
@@ -229,9 +234,24 @@ public abstract class Weapon : MonoBehaviour
                 Debug.Log($"Upgrade {i}: Level={upgrade.level}, DamageBonus={upgrade.damageBonus}, CooldownReduction={upgrade.cooldownReduction}");
             }
         }
-        
+
         Debug.Log($"Current Damage: {currentDamage}");
         Debug.Log($"Current Cooldown: {currentCooldown}");
         Debug.Log($"=== END DEBUG ===");
     }
+    
+    private void UpdatePlayerStats()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            playerStats.AreaMultiplier -= 0.1f;
+            playerStats.UpdateAllPlayerStats();
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            playerStats.AreaMultiplier += 0.1f;
+            playerStats.UpdateAllPlayerStats();
+        }
+    }
+
 }

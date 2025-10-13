@@ -3495,7 +3495,6 @@ GameObject:
   - component: {fileID: 423367934}
   - component: {fileID: 423367935}
   - component: {fileID: 423367937}
-  - component: {fileID: 423367936}
   m_Layer: 0
   m_Name: PlayerBody
   m_TagString: Player
@@ -3694,24 +3693,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxEXP: 100
   _expProgressBarImage: {fileID: 1387297690}
---- !u!114 &423367936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 423367923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95f4d26f9eb90ca42a4df79a55f44a4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _damageMultiplier: 1
-  _cooldownReduction: 1
-  _areaMultiplier: 1
-  _fireDamageMultiplier: 1
-  _iceDamageMultiplier: 1
-  _energyDamageMultiplier: 1
 --- !u!114 &423367937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16618,7 +16599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d33f243172dd906478825ee4e38a1d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 423367936}
+  playerStats: {fileID: 11400000, guid: 50cdaffe215c046459138a7d1b170064, type: 2}
   weaponData: {fileID: 11400000, guid: 5eeab649147316a498d5bed07dbb9342, type: 2}
   currentLevel: 0
   IsAvailable: 1
@@ -17449,7 +17430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d42c2a6765966409e831ceba6f45b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 423367936}
+  playerStats: {fileID: 11400000, guid: 50cdaffe215c046459138a7d1b170064, type: 2}
   weaponData: {fileID: 11400000, guid: 14c1f9a55b4101e45a8b5a760cf91a73, type: 2}
   currentLevel: 0
   IsAvailable: 1
