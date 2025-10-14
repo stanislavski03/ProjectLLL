@@ -15,6 +15,7 @@ public class EnemyHP : MonoBehaviour
     private float _expAutodropAmount;
 
     [SerializeField] private EnemyConfig _initializedStats;
+    [NonSerialized]public EnemyPool _pool;
 
     private PlayerEXP _playerEXP;
     private float _currentHP;
@@ -97,9 +98,16 @@ public class EnemyHP : MonoBehaviour
     private void Death()
     {
         Debug.Log("HOLY, HE'S DEAD!");
+        ExpOnDeath();
+        if (_pool != null)
+            _pool.GetEnemyBackToPool(gameObject);
+        else Destroy(gameObject);
+
+    }
+    private void ExpOnDeath() 
+    {
         if (UnityEngine.Random.Range(1f, 100f) <= _expDropPercent)
             Instantiate(_expPrefab, gameObject.transform.position, Quaternion.identity);
         _playerEXP.GetEXP(_expAutodropAmount);
-        Destroy(gameObject);
     }
 }

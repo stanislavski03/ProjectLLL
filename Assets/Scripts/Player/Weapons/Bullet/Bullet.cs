@@ -3,7 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [Header("Bullet Settings")]
-    [SerializeField] private LayerMask collisionLayers = Physics.DefaultRaycastLayers;
+    //[SerializeField] private LayerMask collisionLayers = Physics.DefaultRaycastLayers;
     
     private Transform target;
     private float currentSpeed;

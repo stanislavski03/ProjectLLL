@@ -10,6 +10,7 @@ public class EnemiesMover : MonoBehaviour
     [SerializeField] private EnemyConfig _initializedStats;
     private bool isReady = false;
     private float _moveSpeedDeviation;
+    private Rigidbody rb;
 
     private void Start()
     {
@@ -42,7 +43,6 @@ public class EnemiesMover : MonoBehaviour
             {
                 if (!agent.Warp(transform.position))
                 {
-                    Debug.LogWarning("NavMeshAgent cannot be placed on NavMesh.");
                     return;
                 }
             }
@@ -58,6 +58,10 @@ public class EnemiesMover : MonoBehaviour
         {
             agent.speed = _initializedStats._moveSpeed;
         }
+
+        rb = GetComponent<Rigidbody>();
+
+        rb.maxLinearVelocity = 0;
     }
 
     private void FixedUpdate()

@@ -130,6 +130,7 @@ public class EnemyRangeAttack : MonoBehaviour
         bulletObj.transform.position = _bulletSpawn.position;
 
         Vector3 direction = (_playerTransform.position - _bulletSpawn.position).normalized;
+        direction.y = 0;
         bulletObj.transform.rotation = Quaternion.LookRotation(direction);
 
         BulletEnemy bulletController = bulletObj.GetComponent<BulletEnemy>();

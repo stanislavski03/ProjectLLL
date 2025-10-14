@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _playerInput = new PlayerInput();
-        rb = GetComponent<Rigidbody>(); // Используем свой Rigidbody
+        rb = GetComponent<Rigidbody>();
 
         _playerInput.Player.Click.performed += OnClick;
     }
