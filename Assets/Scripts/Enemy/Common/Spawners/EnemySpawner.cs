@@ -26,6 +26,14 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnSmallRangedEnemy(GetRandomEdgePoint());
         }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SpawnFastMeleeEnemy(GetRandomEdgePoint());
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            SpawnStrongMeleeEnemy(GetRandomEdgePoint());
+        }
 
     }
 
@@ -63,5 +71,13 @@ public class EnemySpawner : MonoBehaviour
     public void SpawnSmallRangedEnemy(Vector3 position)
     {
         EnemyPoolList.instance._smallRangedEnemy.GetEnemy(position);
+    }
+    public void SpawnFastMeleeEnemy(Vector3 position)
+    {
+        EnemyPoolList.instance._fastMeleeEnemy.GetEnemy(position);
+    }
+    public void SpawnStrongMeleeEnemy(Vector3 position)
+    {
+        EnemyPoolList.instance._strongMeleeEnemy.GetEnemy(position);
     }
 }

@@ -58,6 +58,7 @@ public class EnemiesMover : MonoBehaviour
         {
             agent.speed = _initializedStats._moveSpeed;
         }
+        transform.localScale = Vector3.one * _initializedStats._size;
 
         rb = GetComponent<Rigidbody>();
 
