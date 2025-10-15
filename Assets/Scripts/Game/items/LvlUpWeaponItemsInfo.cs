@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LvlUpItemsInfo : MonoBehaviour
+public class LvlUpWeaponItemsInfo : MonoBehaviour
 {
     private List<Weapon> _currentWeaponList = new List<Weapon>();
     private List<Weapon> weaponList = new List<Weapon>();
@@ -170,13 +170,7 @@ public class LvlUpItemsInfo : MonoBehaviour
             Weapon selectedWeapon = _currentWeaponList[itemIndex];
             if (selectedWeapon != null && !selectedWeapon.IsMaxLevel)
             {
-                Debug.Log($"[LvlUpItemsInfo] Leveling up: {selectedWeapon.Data.weaponName}");
-                
-                // ПРОКАЧЫВАЕМ ОРУЖИЕ
                 selectedWeapon.AddLevel(1);
-                
-                // ЛОГИРУЕМ результат прокачки
-                Debug.Log($"[LvlUpItemsInfo] After level up - Level: {selectedWeapon.CurrentLevel}, Damage: {selectedWeapon.GetDamage()}");
             }
         }
 

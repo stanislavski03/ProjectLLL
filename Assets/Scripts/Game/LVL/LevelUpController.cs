@@ -8,7 +8,7 @@ public class LevelUpController : MonoBehaviour
     [SerializeField] private RectTransform[] buttons;
     [SerializeField] private GameObject panelItems;
 
-    private LvlUpItemsInfo itemsInfo;
+    private LvlUpWeaponItemsInfo itemsInfo;
     private bool isLevelUpActive = false;
 
     private void Start()
@@ -31,7 +31,7 @@ public class LevelUpController : MonoBehaviour
         }
 
         canvasGroup = lvlUpCanvasObject.GetComponent<CanvasGroup>();
-        itemsInfo = panelItems.GetComponentInChildren<LvlUpItemsInfo>();
+        itemsInfo = panelItems.GetComponentInChildren<LvlUpWeaponItemsInfo>();
     }
 
     private void InitializeUI()

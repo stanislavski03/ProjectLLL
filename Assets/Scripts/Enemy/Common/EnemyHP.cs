@@ -103,6 +103,8 @@ public class EnemyHP : MonoBehaviour
             _pool.GetEnemyBackToPool(gameObject);
         else Destroy(gameObject);
 
+        ItemControllerSO.Instance.ActivateOnEnemyDeathEvent(gameObject.transform);
+
     }
     private void ExpOnDeath() 
     {
