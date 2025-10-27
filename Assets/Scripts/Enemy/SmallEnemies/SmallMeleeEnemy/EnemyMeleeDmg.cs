@@ -12,7 +12,7 @@ public class EnemyMeleeDmg : MonoBehaviour
     private NavMeshAgent _agent;
     private bool _canDamage = true;
     private bool isPaused;
-    private bool isDestroyed;
+    //private bool isDestroyed = false;
 
     [SerializeField] private EnemyConfig _initializedStats;
     private void OnEnable()
@@ -28,7 +28,7 @@ public class EnemyMeleeDmg : MonoBehaviour
 
     void OnDestroy()
     {
-        isDestroyed = true;
+        //isDestroyed = true;
         StopAllCoroutines();
     }
 

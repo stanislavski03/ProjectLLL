@@ -7,6 +7,7 @@ public class EnemyDetector : MonoBehaviour
     [SerializeField] private GameObject _menuCamera;
     [SerializeField] private float _updateInterval = 0.2f;
 
+    RaycastHit hit;
     private Enemy[] _visibleEnemies;
     private float _updateTimer;
     private bool isPaused;
@@ -47,9 +48,9 @@ public class EnemyDetector : MonoBehaviour
         {
             FindVisibleEnemies();
             _updateTimer = _updateInterval;
+            LookAtEnemy(GetClosestEnemy());
         }
 
-        LookAtEnemy(GetClosestEnemy());
     }
 
     private void FindVisibleEnemies()
@@ -94,19 +95,23 @@ public class EnemyDetector : MonoBehaviour
 
         float minDistance = Mathf.Infinity;
         Enemy closestEnemy = null;
-        
+
         foreach (Enemy enemy in enemies)
         {
             if (enemy == null) continue;
 
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            Vector3 _raycastDirection = enemy.transform.position - transform.position;
+            bool _eyeContact = Physics.Raycast(transform.position, _raycastDirection.normalized, out hit, LayerMask.GetMask("Enemy") | LayerMask.GetMask("Wall"));
+
             if (distance < minDistance)
-            {
-                minDistance = distance;
-                closestEnemy = enemy;
-            }
+                if (_eyeContact)
+                    if (hit.collider.tag == "Enemy")
+                        {
+                            minDistance = distance;
+                            closestEnemy = enemy;
+                        }
         }
-        
         return closestEnemy;
     }
 

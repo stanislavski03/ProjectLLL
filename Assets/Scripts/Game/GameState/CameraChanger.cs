@@ -24,6 +24,7 @@ public class CameraChanger : MonoBehaviour
         
         if (isPaused && pauseType == GameStateManager.PauseType.EscPause)
         {
+            
             SwitchToMenuCameraImmediately();
         }
         else
