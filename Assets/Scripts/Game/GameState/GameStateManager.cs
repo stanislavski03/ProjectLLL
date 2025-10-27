@@ -58,6 +58,7 @@ public class GameStateManager : MonoBehaviour
         {
             SetPaused(true, PauseType.EscPause);
             MenuCanvas.SetActive(true);
+            QuestPanel.Instance.SetQuestsInfo();
         }
     }
 

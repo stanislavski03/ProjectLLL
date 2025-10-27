@@ -22,6 +22,8 @@ public class EnemyHP : MonoBehaviour
 
     public event Action<float> onDamage;
 
+    public int EnemyType = 0;
+
 
 
     private void Start()
@@ -43,6 +45,13 @@ public class EnemyHP : MonoBehaviour
         }
         catch { }
 
+
+
+    }
+
+    private void OnDisable()
+    {
+        
     }
     private void InitializeStats()
     {
@@ -105,6 +114,7 @@ public class EnemyHP : MonoBehaviour
 
         ItemControllerSO.Instance.ActivateOnEnemyDeathEvent(gameObject.transform);
 
+        QuestManager.Instance?.OnEnemyKilled(EnemyType);
     }
     private void ExpOnDeath() 
     {

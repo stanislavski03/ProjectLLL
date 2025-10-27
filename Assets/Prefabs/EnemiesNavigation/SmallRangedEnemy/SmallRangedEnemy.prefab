@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initializedStats: {fileID: 11400000, guid: 5d2dc328d5b07334b8b44d2e43c9a0ce, type: 2}
+  EnemyType: 2
 --- !u!114 &4616906160517684382
 MonoBehaviour:
   m_ObjectHideFlags: 0

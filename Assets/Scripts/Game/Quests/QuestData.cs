@@ -1,0 +1,70 @@
+using System;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "New Quest Data", menuName = "Quests/Quest Data")]
+public class QuestData : QuestSO
+{
+    [Header("Quest Data Settings")]
+    public int progress = 0;
+    public bool active = false;
+    public bool selected = false;
+    public bool highLighted = false;
+    public bool finished = false;
+    public bool canceled = false;
+
+    private int currentGoalCount = 0;
+
+    private void OnEnable()
+    {
+        _onQuestUpdated += UpdateProgress;
+        _onQuestStarted += OnQuestStart;
+        _onQuestFinished += OnQuestFinish;
+    }
+
+    private void OnDisable()
+    {
+        _onQuestUpdated -= UpdateProgress;
+        _onQuestStarted -= OnQuestStart;
+        _onQuestFinished -= OnQuestFinish;
+    }
+
+    public void UpdateProgress(int goalCount)
+    {
+        currentGoalCount += goalCount;
+        progress = Math.Clamp(currentGoalCount * 100 / goal, 0, 100);
+        if (progress >= 100 && !finished)
+        {
+            FinishQuest();
+        }
+    }
+
+    public virtual void OnQuestStart()
+    {
+        active = true;
+        currentGoalCount = 0;
+        progress = 0;
+        finished = false;
+    }
+
+    public virtual void OnQuestFinish()
+    {
+        active = false;
+        finished = true;
+        progress = 100;
+    }
+
+    public virtual void OnQuestCancel()
+    {
+        canceled = true;
+    }
+
+    public void OnSelect()
+    {
+        selected = !selected;
+    }
+
+    public void OnHighlighted()
+    {
+        highLighted = !highLighted;
+    }
+}
