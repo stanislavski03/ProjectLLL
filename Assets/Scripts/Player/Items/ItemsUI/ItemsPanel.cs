@@ -19,7 +19,6 @@ public class ItemsPanel : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
 
