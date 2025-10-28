@@ -24,6 +24,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
+            target=null;
             transform.position += lastDirection * currentSpeed * Time.deltaTime;
         }
     }

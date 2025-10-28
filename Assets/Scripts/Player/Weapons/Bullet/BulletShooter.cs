@@ -139,7 +139,7 @@ public class BulletShooter : Weapon
                 currentBulletLifetime,
                 currentDamageType,
                 currentDamage,
-                this // ССЫЛКА НА ОРУЖИЕ
+                this
             );
 
         }
