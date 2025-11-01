@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 
 public class CameraChanger : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class CameraChanger : MonoBehaviour
     private void SwitchToMenuCameraImmediately()
     {
         _menuCamera.SetActive(true);
+        //await UniTask.NextFrame();
         _gameCamera.SetActive(false);
     }
 }

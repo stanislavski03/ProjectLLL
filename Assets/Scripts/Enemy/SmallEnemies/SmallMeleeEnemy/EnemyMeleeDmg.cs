@@ -36,10 +36,10 @@ public class EnemyMeleeDmg : MonoBehaviour
     {
         if (isPaused) return;
         if (_canDamage)
-            PlayerCheckAndDamage(collision);
+            MeleeAttack(collision);
     }
 
-    private void PlayerCheckAndDamage(Collision collision)
+    private void MeleeAttack(Collision collision)
     {
         if (collision.gameObject.TryGetComponent(out PlayerHP player) && _cooldownTimer <= 0 && enabled)
         {

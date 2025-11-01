@@ -67,7 +67,7 @@ public class Bullet : MonoBehaviour
             {
 
                 float actualDamage = sourceWeapon != null ? sourceWeapon.GetDamage() : currentDamage;
-                enemy.Damage(actualDamage, currentDamageType);
+                enemy.Damage(actualDamage);
             
             }
             ReturnToPool();

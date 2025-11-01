@@ -7,10 +7,7 @@ using UnityEngine;
 public class PlayerHP : MonoBehaviour
 {
     [SerializeField] private float _maxHP = 100;
-    [SerializeField] private float _physicDef = 0;
-    [SerializeField] private float _freezeDef = 0;
-    [SerializeField] private float _fireDef = 0;
-    [SerializeField] private float _energyDef = 0;
+
 
     private float _currentHP;
 
@@ -24,30 +21,6 @@ public class PlayerHP : MonoBehaviour
         _currentHP = _maxHP;
     }
 
-    public void Damage(float damageAmmount, int damageType)
-    {
-        switch (damageType)
-        {
-            case 0:
-                _currentHP -= damageAmmount * (_physicDef / 100);
-                break;
-            case 1:
-                _currentHP -= damageAmmount * (_freezeDef / 100);
-                break;
-            case 2:
-                _currentHP -= damageAmmount * (_fireDef / 100);
-                break;
-            case 3:
-                _currentHP -= damageAmmount * (_energyDef / 100);
-                break;
-            default:
-                _currentHP -= damageAmmount;
-                break;
-        }
-        _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, _maxHP);
-        Changed?.Invoke(_currentHP);
-        if (_currentHP == 0) Death();
-    }
 
 
     public void Damage(float damageAmmount)
@@ -69,11 +42,4 @@ public class PlayerHP : MonoBehaviour
         Debug.Log("HOLY, HE'S DEAD!");
         Destroy(gameObject);
     }
-
-
-    //����������� ��� �������� ����� � ����� �����
-    //private void OnMouseDown()
-    //{
-    //    Damage(10, 0);
-    //}
 }

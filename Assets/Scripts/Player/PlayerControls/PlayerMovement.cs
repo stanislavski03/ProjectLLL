@@ -19,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
         _playerInput = new PlayerInput();
         rb = GetComponent<Rigidbody>();
 
-        _playerInput.Player.Click.performed += OnClick;
     }
 
     private void Update()
@@ -47,21 +46,6 @@ public class PlayerMovement : MonoBehaviour
         float scaledMoveSpeed = _moveSpeed;
         Vector3 offset = new Vector3(_moveDirection.x, 0f, _moveDirection.y) * scaledMoveSpeed;
         rb.velocity = offset;
-    }
-
-    private void OnClick(InputAction.CallbackContext context)
-    {
-        if (isPaused) return;
-
-        if (context.interaction is MultiTapInteraction || context.interaction is HoldInteraction)
-        {
-            StartHeavyAttack();
-        }
-    }
-
-    private void StartHeavyAttack()
-    {
-        Debug.Log("Heavy Attack");
     }
 
 }

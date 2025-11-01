@@ -7,9 +7,6 @@ using Unity.VisualScripting;
 public class EnemyHP : MonoBehaviour
 {
     private float _maxHP;
-    private float _freezeDef = 0;
-    private float _fireDef = 0;
-    private float _electroDef = 0;
     private GameObject _expPrefab;
     private float _expDropPercent;
     private float _expAutodropAmount;
@@ -69,27 +66,6 @@ public class EnemyHP : MonoBehaviour
     public float GetMaxHP()
     {
         return _maxHP;
-    }
-    public void Damage(float damageAmount, int damageType)
-    {
-        switch (damageType)
-        {
-            case 0:
-                _currentHP -= damageAmount * ((100 - _freezeDef) / 100);
-                break;
-            case 1:
-                _currentHP -= damageAmount * ((100 - _fireDef) / 100);
-                break;
-            case 2:
-                _currentHP -= damageAmount * ((100 - _electroDef) / 100);
-                break;
-            default:
-                _currentHP -= damageAmount;
-                break;
-        }
-        if (_currentHP <= 0) Death();
-        // Debug.Log(_currentHP);
-        onDamage?.Invoke(damageAmount);
     }
 
 
