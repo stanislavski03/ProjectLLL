@@ -22,7 +22,7 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnSmallMeleeEnemy(GetRandomEdgePoint());
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             SpawnSmallRangedEnemy(GetRandomEdgePoint());
         }

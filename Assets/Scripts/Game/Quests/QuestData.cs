@@ -12,6 +12,9 @@ public class QuestData : QuestSO
     public bool finished = false;
     public bool canceled = false;
 
+    public QuestGiver _questGiver;
+
+
     private int currentGoalCount = 0;
 
     private void OnEnable()
@@ -51,6 +54,7 @@ public class QuestData : QuestSO
         active = false;
         finished = true;
         progress = 100;
+        _questGiver.SetQuestComplete();
     }
 
     public virtual void OnQuestCancel()
