@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class PlayerEXP : MonoBehaviour
 {
-    [SerializeField] private float _maxEXP;
+    [SerializeField] private PlayerStatsSO _statsSO;
     [SerializeField] private Image _expProgressBarImage;
 
     private float _currentEXP;
     private float _currentLVL = 1;
 
-    public float MaxEXP => _maxEXP;
+    public float MaxEXP => _statsSO.maxEXP;
     public float CurrentEXP => _currentEXP;
     public float CurrentLVL => _currentLVL;
 
@@ -27,9 +27,9 @@ public class PlayerEXP : MonoBehaviour
     {
         _currentEXP += EXPamount;
         
-        if (_currentEXP >= _maxEXP)
+        if (_currentEXP >= MaxEXP)
         {
-            _currentEXP = _currentEXP - _maxEXP;
+            _currentEXP = _currentEXP - MaxEXP;
             LevelUP();
         }
 
@@ -40,7 +40,7 @@ public class PlayerEXP : MonoBehaviour
     {
         if (_expProgressBarImage != null)
         {
-            _expProgressBarImage.fillAmount = Mathf.Clamp01(_currentEXP / _maxEXP);
+            _expProgressBarImage.fillAmount = Mathf.Clamp01(_currentEXP / MaxEXP);
         }
         
         EXPChanged?.Invoke(_currentEXP);

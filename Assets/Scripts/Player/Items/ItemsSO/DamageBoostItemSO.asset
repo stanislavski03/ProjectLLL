@@ -21,3 +21,4 @@ MonoBehaviour:
   itemType: 0
   HasOnEnemyDeathEvent: 1
   HasOnSceneChangeEvent: 0
+  ItemController: {fileID: 11400000, guid: 97b34af25ad8de94db5c4409b170984d, type: 2}

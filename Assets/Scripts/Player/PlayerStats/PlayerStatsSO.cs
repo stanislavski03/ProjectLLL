@@ -11,17 +11,25 @@ public class PlayerStatsSO : ScriptableObject
     public float DamageMultiplier = 1;
     public float CooldownReduction = 1;
     public float AreaMultiplier = 1;
-    public float FireDamageMultiplier = 1;
-    public float IceDamageMultiplier = 1;
-    public float EnergyDamageMultiplier = 1;
+    public float MaxHP = 100;
+
+    //not realised
+    public float MoveSpeed = 10;
+    public float SpeedMultiplier = 1;
+    public long Money = 0;
+
+    public int maxEXP = 100;
     public int maxLevel = 30;
     
     public event Action<float> _damageMultiplierChanged;
     public event Action<float> _cooldownReductionChanged;
     public event Action<float> _areaMultiplierChanged;
-    public event Action<float> _fireDamageMultiplierChanged;
-    public event Action<float> _iceDamageMultiplierChanged;
-    public event Action<float> _energyDamageMultiplierChanged;
+    public event Action<float> _speedMultiplierChanged;
+    public event Action<float> _moneyChanged;
+    public event Action<float> _moveSpeedChanged;
+    //public event Action<float> _fireDamageMultiplierChanged;
+    //public event Action<float> _iceDamageMultiplierChanged;
+    //public event Action<float> _energyDamageMultiplierChanged;
 
     private void Awake()
     {
@@ -33,44 +41,42 @@ public class PlayerStatsSO : ScriptableObject
         _damageMultiplierChanged?.Invoke(DamageMultiplier);
         _cooldownReductionChanged?.Invoke(CooldownReduction);
         _areaMultiplierChanged?.Invoke(AreaMultiplier);
-        _fireDamageMultiplierChanged?.Invoke(FireDamageMultiplier);
-        _iceDamageMultiplierChanged?.Invoke(IceDamageMultiplier);
-        _energyDamageMultiplierChanged?.Invoke(EnergyDamageMultiplier);
+        _speedMultiplierChanged?.Invoke(SpeedMultiplier);
+        _moneyChanged?.Invoke(Money);
+        _moveSpeedChanged?.Invoke(MoveSpeed);
     }
 
-    public void AddDamageMultiplier(float value)
+    public void ChangeDamageMultiplier(float value)
     {
         DamageMultiplier += value;
         _damageMultiplierChanged?.Invoke(DamageMultiplier);
     }
 
-    public void AddCooldownReduction(float value)
+    public void ChangeCooldownReduction(float value)
     {
         CooldownReduction -= value;
         _cooldownReductionChanged?.Invoke(CooldownReduction);
     }
 
-    public void AddAreaMultiplier(float value)
+    public void ChangeAreaMultiplier(float value)
     {
         AreaMultiplier += value;
         _areaMultiplierChanged?.Invoke(AreaMultiplier);
     }
-
-    public void AddFireDamageMultiplier(float value)
+    public void ChangeSpeedMultiplier(float value)
     {
-        FireDamageMultiplier += value;
-        _fireDamageMultiplierChanged?.Invoke(FireDamageMultiplier);
+        SpeedMultiplier += value;
+        _speedMultiplierChanged?.Invoke(SpeedMultiplier);
+    }
+    public void ChangeMoney(long value)
+    {
+        Money += value;
+        _moneyChanged?.Invoke(Money);
+    }
+    public void ChangeMoveSpeed(float value)
+    {
+        MoveSpeed += value;
+        _moveSpeedChanged?.Invoke(MoveSpeed);
     }
 
-    public void AddIceDamageMultiplier(float value)
-    {
-        IceDamageMultiplier += value;
-        _iceDamageMultiplierChanged?.Invoke(IceDamageMultiplier);
-    }
-
-    public void AddEnergyDamageMultiplier(float value)
-    {
-        EnergyDamageMultiplier += value;
-        _energyDamageMultiplierChanged?.Invoke(EnergyDamageMultiplier);
-    }
 }

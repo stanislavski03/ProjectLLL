@@ -1,9 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+
 [CreateAssetMenu(fileName = "New Item Controller", menuName = "Items/Item Controller")]
-public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
+public class ItemControllerSO : ScriptableObject
 {
+    private static ItemControllerSO _instance;
+    public static ItemControllerSO Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                // Ищем существующий экземпляр
+                var guids = AssetDatabase.FindAssets("t:ItemControllerSO");
+                if (guids.Length > 0)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                    _instance = AssetDatabase.LoadAssetAtPath<ItemControllerSO>(path);
+                }
+
+                // Если не нашли, создаем новый
+                if (_instance == null)
+                {
+                    Debug.LogWarning("ItemControllerSO not found in project. Please create one via Assets/Create/Items/Item Controller");
+                }
+            }
+            return _instance;
+        }
+    }
 
     [Header("Item Pools")]
     public List<ItemDataSO> AllItemsPool = new List<ItemDataSO>();
@@ -42,6 +67,24 @@ public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
         }
     }
 
+    // Для работы в Runtime (без AssetDatabase)
+    public static void SetInstance(ItemControllerSO instance)
+    {
+        _instance = instance;
+    }
+
+    private void OnEnable()
+    {
+        // Автоматически устанавливаем себя как инстанс при загрузке
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Debug.LogWarning($"Multiple ItemControllerSO instances detected. Using existing instance: {_instance.name}", this);
+        }
+    }
 
     public void InsertItemInPool(ItemDataSO item, List<ItemDataSO> Pool)
     {
@@ -105,13 +148,13 @@ public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
         }
     }
 
-    public void ActivateOnEnemyDeathEvent(Transform enemyTransform)
+    public void ActivateOnEnemyDeathEvent(GameObject enemy)
     {
         if (OnEnemyDeathPool.Count > 0)
         {
             foreach (ItemDataSO item in OnEnemyDeathPool)
             {
-                item.OnEnemyDeath();
+                item.OnEnemyDeath(enemy);
             }
         }
     }
@@ -126,7 +169,4 @@ public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
             }
         }
     }
-
-
-
 }
