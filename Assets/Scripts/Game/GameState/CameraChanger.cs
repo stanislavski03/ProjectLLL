@@ -1,15 +1,16 @@
 using UnityEngine;
-using System.Collections;
-using Cysharp.Threading.Tasks;
+using Cinemachine;
 
 public class CameraChanger : MonoBehaviour
 {
-    [SerializeField] private GameObject _gameCamera;
-    [SerializeField] private GameObject _menuCamera;
+    [SerializeField] private CinemachineVirtualCamera _gameVirtualCamera;
+    [SerializeField] private CinemachineVirtualCamera _menuVirtualCamera;
 
     private void Start()
     {
         GameStateManager.Instance.OnPauseStateChanged += OnPauseChanged;
+        
+        InitializeCameraPriorities();
     }
 
     private void OnDestroy()
@@ -20,30 +21,33 @@ public class CameraChanger : MonoBehaviour
         }
     }
 
+    private void InitializeCameraPriorities()
+    {
+        _gameVirtualCamera.Priority = 10;
+        _menuVirtualCamera.Priority = 0;
+    }
+
     private void OnPauseChanged(bool isPaused, GameStateManager.PauseType pauseType)
     {
-        
         if (isPaused && pauseType == GameStateManager.PauseType.EscPause)
         {
-            
-            SwitchToMenuCameraImmediately();
+            SwitchToMenuCamera();
         }
         else
         {
-            SwitchToGameCameraImmediately();
+            SwitchToGameCamera();
         }
     }
 
-    private void SwitchToGameCameraImmediately()
+    private void SwitchToGameCamera()
     {
-        _gameCamera.SetActive(true);
-        _menuCamera.SetActive(false);
+        _gameVirtualCamera.Priority = 10;
+        _menuVirtualCamera.Priority = 0;
     }
 
-    private async void SwitchToMenuCameraImmediately()
+    private void SwitchToMenuCamera()
     {
-        _menuCamera.SetActive(true);
-        await UniTask.NextFrame();
-        _gameCamera.SetActive(false);
+        _menuVirtualCamera.Priority = 10;
+        _gameVirtualCamera.Priority = 0;
     }
 }

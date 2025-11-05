@@ -15,7 +15,7 @@ MonoBehaviour:
   itemTitle: Magical 2
   description: "\u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
     \u0443\u0440\u043E\u043D"
-  icon: {fileID: 21300000, guid: 27a039a0439b81543a9cd33b8a0a8d73, type: 3}
+  icon: {fileID: 21300000, guid: 47b6d40f491f2aa4f8b1ccfec4b573af, type: 3}
   isActiveItem: 1
   isActive: 1
   itemType: 1

@@ -30,12 +30,6 @@ public abstract class Weapon : MonoBehaviour
         InitializeWeapon();
     }
 
-    protected virtual void Start()
-    {
-        SubscribeToPlayerStats();
-        CalculateAllStats();
-    }
-
     protected virtual void InitializeWeapon()
     {
         if (weaponData == null)

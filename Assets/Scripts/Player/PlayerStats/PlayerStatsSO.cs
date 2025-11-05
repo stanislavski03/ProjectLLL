@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System;
 
 [CreateAssetMenu(fileName = "Player Stats", menuName = "Player Stats")]
@@ -30,6 +32,29 @@ public class PlayerStatsSO : ScriptableObject
     //public event Action<float> _fireDamageMultiplierChanged;
     //public event Action<float> _iceDamageMultiplierChanged;
     //public event Action<float> _energyDamageMultiplierChanged;
+
+    private static PlayerStatsSO _instance;
+    public static PlayerStatsSO Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                var guids = AssetDatabase.FindAssets("t:PlayerStatsSO");
+                if (guids.Length > 0)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                    _instance = AssetDatabase.LoadAssetAtPath<PlayerStatsSO>(path);
+                }
+
+                if (_instance == null)
+                {
+                    Debug.LogWarning("PlayerStatsSO not found in project");
+                }
+            }
+            return _instance;
+        }
+    }
 
     private void Awake()
     {

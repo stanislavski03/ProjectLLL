@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f977a3701bc31204d8932f0ca0b9f3d5, type: 3}
-  m_Name: Uneversal 2
+  m_Name: Universal 1
   m_EditorClassIdentifier: 
-  itemTitle: Universal 2
+  itemTitle: Universal 1
   description: "\u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
     \u0443\u0440\u043E\u043D"
-  icon: {fileID: 21300000, guid: e26e237f5c31c834dbb21930bedd4f3f, type: 3}
+  icon: {fileID: 21300000, guid: c1667ca849073da4ea4cbe3e789b65b8, type: 3}
   isActiveItem: 1
   isActive: 1
   itemType: 0

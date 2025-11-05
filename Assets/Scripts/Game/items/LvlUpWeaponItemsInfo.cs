@@ -135,7 +135,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
             ItemsList[i].SetActive(true);
 
             TextMeshProUGUI[] TMPItemTitle = ItemsList[i].GetComponentsInChildren<TextMeshProUGUI>(true);
-            Transform imageTransform = ItemsList[i].transform.Find("Image"); // или другое имя
+            Transform imageTransform = ItemsList[i].transform.Find("Image");
             Image ItemImage = imageTransform?.GetComponent<Image>();
             Button ItemButton = ItemsList[i].GetComponentInChildren<Button>(true);
 

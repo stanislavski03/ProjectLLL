@@ -69,9 +69,25 @@ public class ItemRewardInfo : MonoBehaviour
         {
             TextMeshProUGUI[] TMPUniversalItemTitle = ItemsList[0].GetComponentsInChildren<TextMeshProUGUI>(true);
             Button ItemButton = ItemsList[0].GetComponentInChildren<Button>(true);
+            Transform imageTransform = ItemsList[0].transform.Find("Image");
+            Image ItemImage = imageTransform?.GetComponent<Image>();
 
             TMPUniversalItemTitle[0].text = _universalItem.itemTitle;
             TMPUniversalItemTitle[1].text = _universalItem.description;
+
+            if (ItemImage != null)
+            {
+                ItemImage.preserveAspect = true;
+                ItemImage.type = Image.Type.Simple;
+
+                RectTransform rectTransform = ItemImage.GetComponent<RectTransform>();
+                if (rectTransform != null)
+                {
+                    rectTransform.sizeDelta = new Vector2(100, 100);
+                }
+
+                ItemImage.sprite = _universalItem.icon;
+            }
 
             ItemButton.onClick.RemoveAllListeners();
             ItemButton.onClick.AddListener(() => OnItemSelected(_universalItem));
@@ -82,9 +98,25 @@ public class ItemRewardInfo : MonoBehaviour
         {
             TextMeshProUGUI[] TMPSpecialisedItemTitle = ItemsList[1].GetComponentsInChildren<TextMeshProUGUI>(true);
             Button ItemButton = ItemsList[1].GetComponentInChildren<Button>(true);
+            Transform imageTransform = ItemsList[1].transform.Find("Image");
+            Image ItemImage = imageTransform?.GetComponent<Image>();
 
             TMPSpecialisedItemTitle[0].text = _specialisedItem.itemTitle;
             TMPSpecialisedItemTitle[1].text = _specialisedItem.description;
+
+            if (ItemImage != null)
+            {
+                ItemImage.preserveAspect = true;
+                ItemImage.type = Image.Type.Simple;
+
+                RectTransform rectTransform = ItemImage.GetComponent<RectTransform>();
+                if (rectTransform != null)
+                {
+                    rectTransform.sizeDelta = new Vector2(100, 100);
+                }
+
+                ItemImage.sprite = _specialisedItem.icon;
+            }
 
             ItemButton.onClick.RemoveAllListeners();
             ItemButton.onClick.AddListener(() => OnItemSelected(_specialisedItem));

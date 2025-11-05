@@ -38,9 +38,8 @@ public class BulletShooter : Weapon
         currentDamageType = BulletData.damageType;
     }
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         StartShooting();
     }
 
