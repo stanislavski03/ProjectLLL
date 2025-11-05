@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,7 +43,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
             {
                 weapon.AvailableChanged -= OnWeaponAvailableChanged;
                 weapon.AvailableChanged += OnWeaponAvailableChanged;
-                
+
                 // ПОДПИСЫВАЕМСЯ НА СОБЫТИЕ ПРОКАЧКИ ОРУЖИЯ
                 weapon.OnLevelUp -= OnWeaponLevelUp;
                 weapon.OnLevelUp += OnWeaponLevelUp;
@@ -69,7 +70,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
 
     // НОВЫЙ МЕТОД: обрабатываем прокачку оружия
     private void OnWeaponLevelUp(Weapon weapon)
-    {   
+    {
         // ОБНОВЛЯЕМ UI если меню прокачки еще открыто
         if (levelUpController != null)
         {
@@ -80,7 +81,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
     public void SetWeaponList()
     {
         weaponList.Clear();
-        
+
         for (int i = 0; i < allWeaponList.Count; i++)
         {
             if (allWeaponList[i] != null && allWeaponList[i].IsAvailable && !allWeaponList[i].IsMaxLevel)
@@ -93,7 +94,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
     public void TransferRandomObjects()
     {
         _currentWeaponList.Clear();
-        
+
         // ЕСЛИ доступных оружий меньше чем нужно, берем все доступные
         if (weaponList.Count <= numberOfCurrentWeaponList)
         {
@@ -122,7 +123,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
         // Скрываем все элементы
         foreach (var item in ItemsList)
         {
-            if (item != null) 
+            if (item != null)
                 item.SetActive(false);
         }
 
@@ -132,17 +133,33 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
             if (ItemsList[i] == null || _currentWeaponList[i] == null) continue;
 
             ItemsList[i].SetActive(true);
-            
+
             TextMeshProUGUI[] TMPItemTitle = ItemsList[i].GetComponentsInChildren<TextMeshProUGUI>(true);
+            Transform imageTransform = ItemsList[i].transform.Find("Image"); // или другое имя
+            Image ItemImage = imageTransform?.GetComponent<Image>();
             Button ItemButton = ItemsList[i].GetComponentInChildren<Button>(true);
+
+            Weapon weapon = _currentWeaponList[i];
+
+            if (ItemImage != null)
+            {
+                ItemImage.preserveAspect = true;
+                ItemImage.type = Image.Type.Simple;
+
+                RectTransform rectTransform = ItemImage.GetComponent<RectTransform>();
+                if (rectTransform != null)
+                {
+                    rectTransform.sizeDelta = new Vector2(100, 100);
+                }
+
+                ItemImage.sprite = weapon.weaponData.icon;
+            }
 
             if (TMPItemTitle != null && TMPItemTitle.Length >= 2)
             {
-                Weapon weapon = _currentWeaponList[i];
-                
+
                 TMPItemTitle[0].text = weapon.GetTextTitleInfo();
-                
-                // ОБНОВЛЯЕМ ОПИСАНИЕ с информацией об уровне
+
                 string levelInfo = $"Lvl {weapon.CurrentLevel}";
                 if (weapon.CurrentLevel + 1 == weapon.weaponData.maxLevel)
                 {
@@ -153,13 +170,15 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
                     TMPItemTitle[1].text = $"{levelInfo} → {weapon.CurrentLevel + 1}\n{weapon.GetUpgradeDescriptionForNextLevel()}";
                 }
             }
-            
+
             int itemIndex = i;
             if (ItemButton != null)
             {
                 ItemButton.onClick.RemoveAllListeners();
                 ItemButton.onClick.AddListener(() => OnItemSelected(itemIndex));
             }
+
+
         }
     }
 

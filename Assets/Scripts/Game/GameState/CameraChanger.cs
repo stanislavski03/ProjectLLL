@@ -40,10 +40,10 @@ public class CameraChanger : MonoBehaviour
         _menuCamera.SetActive(false);
     }
 
-    private void SwitchToMenuCameraImmediately()
+    private async void SwitchToMenuCameraImmediately()
     {
         _menuCamera.SetActive(true);
-        //await UniTask.NextFrame();
+        await UniTask.NextFrame();
         _gameCamera.SetActive(false);
     }
 }
