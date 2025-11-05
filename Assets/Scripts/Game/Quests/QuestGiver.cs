@@ -9,6 +9,8 @@ public class QuestGiver : MonoBehaviour
     [NonSerialized] public bool _isReady = false;
     [NonSerialized] public bool _canBeInteractedWith = true;
     [NonSerialized] public bool _questComplete = false;
+    [SerializeField] private GameObject _rewardMenu;
+    [SerializeField] private ItemType _questType;
     private Renderer _renderer;
     
 
@@ -34,16 +36,17 @@ public class QuestGiver : MonoBehaviour
 
     public void Interact()
     {
-        if (!_questComplete)// If quest not complete, start it
+        if (!_questComplete)
         {
             quest._questGiver = this;
             quest.OnQuestStart();
             MakeNonReady();
             _canBeInteractedWith = false;
         }
-        else // if it's complete
+        else 
         {
-            Debug.Log("Give Revard");
+            ItemControllerSO.Instance.questType = _questType;
+            _rewardMenu.SetActive(true);
             MakeNonReady();
             _canBeInteractedWith = false;
         } 

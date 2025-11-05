@@ -14,6 +14,7 @@ public class ItemDataSO : ScriptableObject
     public bool HasOnEnemyDeathEvent;
     public bool HasOnSceneChangeEvent;
 
+    public ItemControllerSO ItemController;
     public void OnPick()
     {
         ItemControllerSO.Instance.DistributeItem(this);
@@ -22,7 +23,7 @@ public class ItemDataSO : ScriptableObject
         // ItemsPanel.Instance.ClearItemList();
     }
 
-    public virtual void OnEnemyDeath()
+    public virtual void OnEnemyDeath(GameObject enemy)
     {
         Debug.Log("OnEnemyDeath");
     }
@@ -31,9 +32,5 @@ public class ItemDataSO : ScriptableObject
     {
         Debug.Log("OnSceneChange");
     }
-
-    
-    
-
 
 }

@@ -88,7 +88,7 @@ public class EnemyHP : MonoBehaviour
             _pool.GetEnemyBackToPool(gameObject);
         else Destroy(gameObject);
 
-        ItemControllerSO.Instance.ActivateOnEnemyDeathEvent(gameObject.transform);
+        ItemControllerSO.Instance.ActivateOnEnemyDeathEvent(gameObject);
 
         QuestManager.Instance?.OnEnemyKilled(EnemyType);
     }

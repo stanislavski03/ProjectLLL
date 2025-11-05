@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Interactions;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private PlayerStatsSO _statsSO;
 
     private PlayerInput _playerInput;
     private Vector2 _moveDirection;
@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isPaused) return;
 
-        float scaledMoveSpeed = _moveSpeed;
+        float scaledMoveSpeed = _statsSO.MoveSpeed;
         Vector3 offset = new Vector3(_moveDirection.x, 0f, _moveDirection.y) * scaledMoveSpeed;
         rb.velocity = offset;
     }

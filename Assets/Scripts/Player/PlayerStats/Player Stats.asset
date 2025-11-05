@@ -16,7 +16,9 @@ MonoBehaviour:
   DamageMultiplier: 1
   CooldownReduction: 2
   AreaMultiplier: 1
-  FireDamageMultiplier: 1
-  IceDamageMultiplier: 1
-  EnergyDamageMultiplier: 1
+  MaxHP: 100
+  MoveSpeed: 10
+  SpeedMultiplier: 1
+  Money: 0
+  maxEXP: 100
   maxLevel: 30
