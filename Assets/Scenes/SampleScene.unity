@@ -1125,6 +1125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quest: {fileID: 11400000, guid: 3d1d465283233a1438acf9c9190a4ebc, type: 2}
+  _rewardMenu: {fileID: 537986630}
+  _questType: 0
 --- !u!54 &99480290
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1553,6 +1555,7 @@ MonoBehaviour:
   - {fileID: 1367515084}
   - {fileID: 1161091536}
   _questGiverType: 1
+  _itemRewardCanvas: {fileID: 537986630}
   numberOfCurrentWeaponList: 2
   _itemControllerSO: {fileID: 11400000, guid: 97b34af25ad8de94db5c4409b170984d, type: 2}
 --- !u!1 &166035043
@@ -10624,6 +10627,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quest: {fileID: 11400000, guid: 13844d2f07929a2488264fccb59c01e5, type: 2}
+  _rewardMenu: {fileID: 537986630}
+  _questType: 0
 --- !u!136 &982067035
 CapsuleCollider:
   m_ObjectHideFlags: 0

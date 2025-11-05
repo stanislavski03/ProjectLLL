@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Unity.VisualScripting;
+using System;
 
 [CreateAssetMenu(fileName = "New Item Controller", menuName = "Items/Item Controller")]
 public class ItemControllerSO : ScriptableObject
@@ -30,7 +32,21 @@ public class ItemControllerSO : ScriptableObject
         }
     }
 
-    [Header("Item Pools")]
+
+
+
+    [Header("Clear Pools")]
+    [SerializeField] private List<ItemDataSO> AllItemsStartPool = new List<ItemDataSO>();
+    [SerializeField] private List<ItemDataSO> itemAllTypesStartPool = new List<ItemDataSO>();
+    [SerializeField] private List<ItemDataSO> itemUniversalStartPool = new List<ItemDataSO>();
+    [SerializeField] private List<ItemDataSO> itemMagicStartPool = new List<ItemDataSO>();
+    [SerializeField] private List<ItemDataSO> itemTecnoStartPool = new List<ItemDataSO>();
+
+    [NonSerialized] public ItemType questType;
+
+
+
+    [Header("Game Pools")]
     public List<ItemDataSO> AllItemsPool = new List<ItemDataSO>();
 
     public List<ItemDataSO> itemAllTypesPool = new List<ItemDataSO>();
@@ -53,6 +69,7 @@ public class ItemControllerSO : ScriptableObject
             {
                 _allPools = new List<List<ItemDataSO>>
                 {
+                    AllItemsPool,
                     itemAllTypesPool,
                     itemUniversalPool,
                     itemMagicPool,
@@ -72,6 +89,10 @@ public class ItemControllerSO : ScriptableObject
     {
         _instance = instance;
     }
+    private void Awake()
+    {
+        ClearAllPools();
+    }
 
     private void OnEnable()
     {
@@ -84,6 +105,7 @@ public class ItemControllerSO : ScriptableObject
         {
             Debug.LogWarning($"Multiple ItemControllerSO instances detected. Using existing instance: {_instance.name}", this);
         }
+        
     }
 
     public void InsertItemInPool(ItemDataSO item, List<ItemDataSO> Pool)
@@ -100,17 +122,15 @@ public class ItemControllerSO : ScriptableObject
     {
         foreach (List<ItemDataSO> pool in AllPools)
         {
-            for (int i = pool.Count - 1; i >= 0; i--)
-            {
-                ItemDataSO item = pool[i];
-                pool.RemoveAt(i);
-
-                if (!AllItemsPool.Contains(item))
-                {
-                    AllItemsPool.Add(item);
-                }
-            }
+             pool.Clear();
         }
+        AllItemsPool.AddRange(AllItemsStartPool);
+        itemAllTypesPool.AddRange(itemAllTypesStartPool);
+        itemUniversalPool.AddRange(itemUniversalStartPool);
+        itemMagicPool.AddRange(itemMagicStartPool);
+        itemTecnoPool.AddRange(itemTecnoStartPool);
+
+
     }
 
     public void DistributeItem(ItemDataSO item)
