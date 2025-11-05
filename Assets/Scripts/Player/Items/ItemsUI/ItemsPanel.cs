@@ -24,7 +24,7 @@ public class ItemsPanel : MonoBehaviour
 
     public void SetItemsInfo()
     {
-        AllPlayerItems = ItemControllerSO.Instance.itemAllTypesPool;
+        AllPlayerItems = ItemControllerSO.Instance.ItemInventory;
 
         Transform[] items = new Transform[transform.childCount];
 

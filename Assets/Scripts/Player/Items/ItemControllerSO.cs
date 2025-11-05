@@ -37,7 +37,6 @@ public class ItemControllerSO : ScriptableObject
 
     [Header("Clear Pools")]
     [SerializeField] private List<ItemDataSO> AllItemsStartPool = new List<ItemDataSO>();
-    [SerializeField] private List<ItemDataSO> itemAllTypesStartPool = new List<ItemDataSO>();
     [SerializeField] private List<ItemDataSO> itemUniversalStartPool = new List<ItemDataSO>();
     [SerializeField] private List<ItemDataSO> itemMagicStartPool = new List<ItemDataSO>();
     [SerializeField] private List<ItemDataSO> itemTecnoStartPool = new List<ItemDataSO>();
@@ -47,9 +46,12 @@ public class ItemControllerSO : ScriptableObject
 
 
     [Header("Game Pools")]
+
+    public List<ItemDataSO> ItemInventory = new List<ItemDataSO>();
+
+
     public List<ItemDataSO> AllItemsPool = new List<ItemDataSO>();
 
-    public List<ItemDataSO> itemAllTypesPool = new List<ItemDataSO>();
     public List<ItemDataSO> itemUniversalPool = new List<ItemDataSO>();
     public List<ItemDataSO> itemMagicPool = new List<ItemDataSO>();
     public List<ItemDataSO> itemTecnoPool = new List<ItemDataSO>();
@@ -69,8 +71,8 @@ public class ItemControllerSO : ScriptableObject
             {
                 _allPools = new List<List<ItemDataSO>>
                 {
+                    ItemInventory,
                     AllItemsPool,
-                    itemAllTypesPool,
                     itemUniversalPool,
                     itemMagicPool,
                     itemTecnoPool,
@@ -125,7 +127,6 @@ public class ItemControllerSO : ScriptableObject
              pool.Clear();
         }
         AllItemsPool.AddRange(AllItemsStartPool);
-        itemAllTypesPool.AddRange(itemAllTypesStartPool);
         itemUniversalPool.AddRange(itemUniversalStartPool);
         itemMagicPool.AddRange(itemMagicStartPool);
         itemTecnoPool.AddRange(itemTecnoStartPool);
@@ -136,19 +137,19 @@ public class ItemControllerSO : ScriptableObject
     public void DistributeItem(ItemDataSO item)
     {
         AllItemsPool.Remove(item);
-        itemAllTypesPool.Add(item);
+        ItemInventory.Add(item);
 
         if (item.itemType == ItemType.Universal)
         {
-            itemUniversalPool.Add(item);
+            itemUniversalPool.Remove(item);
         }
         if (item.itemType == ItemType.Magic)
         {
-            itemMagicPool.Add(item);
+            itemMagicPool.Remove(item);
         }
         if (item.itemType == ItemType.Tecno)
         {
-            itemTecnoPool.Add(item);
+            itemTecnoPool.Remove(item);
         }
         if (item.isActiveItem)
         {

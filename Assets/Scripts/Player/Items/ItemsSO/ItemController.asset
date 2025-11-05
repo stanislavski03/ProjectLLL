@@ -37,12 +37,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 50d43ea50865f764d839ba622677091d, type: 2}
   - {fileID: 11400000, guid: 1ac6c99ed71b1b04daffb92c8eb1b134, type: 2}
   itemAllTypesPool: []
-  itemUniversalPool:
-  - {fileID: 11400000, guid: c2e1676ac306233409d3f90e2d042708, type: 2}
-  - {fileID: 11400000, guid: 12b8336dcf6a3fe488639ac16456791a, type: 2}
-  itemMagicPool:
-  - {fileID: 11400000, guid: 5d501b1fdfe66e343bf72e12274dbb91, type: 2}
-  - {fileID: 11400000, guid: b81b60814ddf81649a8f1b01516871d2, type: 2}
+  itemUniversalPool: []
+  itemMagicPool: []
   itemTecnoPool:
   - {fileID: 11400000, guid: 50d43ea50865f764d839ba622677091d, type: 2}
   - {fileID: 11400000, guid: 1ac6c99ed71b1b04daffb92c8eb1b134, type: 2}
