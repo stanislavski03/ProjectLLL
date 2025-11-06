@@ -9,7 +9,7 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private PlayerStatsSO _statsSO;
 
 
-    private float _currentHP;
+    public float _currentHP;
 
     public float MaxHP => _statsSO.MaxHP;
     public bool isAlive = true;

@@ -16,9 +16,9 @@ MonoBehaviour:
   DamageMultiplier: 1101
   CooldownReduction: 2
   AreaMultiplier: 33
-  MaxHP: 100
+  MaxHP: 1000
   MoveSpeed: 10
   SpeedMultiplier: 1
-  Money: 0
+  Money: 100
   maxEXP: 100
   maxLevel: 30
