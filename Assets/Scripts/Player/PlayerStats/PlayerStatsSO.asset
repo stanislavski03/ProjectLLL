@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerStatsSO
   m_EditorClassIdentifier: 
   playerName: "\u0418\u0433\u0440\u043E\u043A"
-  DamageMultiplier: 601
+  DamageMultiplier: 701
   CooldownReduction: 2
   AreaMultiplier: 7
   MaxHP: 100

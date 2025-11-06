@@ -104,7 +104,7 @@ public class ItemRewardInfo : MonoBehaviour
             {
                 TMPUniversalItemTitle[0].text = "Мне нечего предложить";
                 TMPUniversalItemTitle[1].text = "";
-                ItemImage.gameObject.SetActive(false);
+                ItemImage.sprite = null;
                 ItemButton.onClick.RemoveAllListeners();
                 ItemButton.onClick.AddListener(() => Skip());
             }
@@ -144,7 +144,7 @@ public class ItemRewardInfo : MonoBehaviour
             {
                 TMPSpecialisedItemTitle[0].text = "Мне нечего предложить";
                 TMPSpecialisedItemTitle[1].text = "";
-                ItemImage.gameObject.SetActive(false);
+                ItemImage.sprite = null;
                 ItemButton.onClick.RemoveAllListeners();
                 ItemButton.onClick.AddListener(() => Skip());
             }
