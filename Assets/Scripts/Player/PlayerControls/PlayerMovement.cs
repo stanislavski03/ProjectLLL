@@ -40,12 +40,18 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Move()
-    {
-        if (isPaused) return;
+{
+    if (isPaused) return;
 
-        float scaledMoveSpeed = _statsSO.MoveSpeed;
-        Vector3 offset = new Vector3(_moveDirection.x, 0f, _moveDirection.y) * scaledMoveSpeed;
-        rb.velocity = offset;
+    float scaledMoveSpeed = _statsSO.MoveSpeed;
+    Vector3 offset = new Vector3(_moveDirection.x, 0f, _moveDirection.y) * scaledMoveSpeed;
+    rb.velocity = offset;
+    
+    if (offset != Vector3.zero)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(offset);
+        rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, 10 * Time.deltaTime);
     }
+}
 
 }

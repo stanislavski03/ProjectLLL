@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 public class EnemyDetector : MonoBehaviour
 {
-    [SerializeField] private float _rotationSpeed = 20f;
     [SerializeField] private GameObject _menuCamera;
     [SerializeField] private float _updateInterval = 0.2f;
 
-    RaycastHit hit;
     private Enemy[] _visibleEnemies;
     private float _updateTimer;
     private bool isPaused;
@@ -33,7 +31,6 @@ public class EnemyDetector : MonoBehaviour
         
         if (isPaused)
         {
-
             LookAtMenuCamera();
         }
     }
@@ -48,9 +45,7 @@ public class EnemyDetector : MonoBehaviour
         {
             FindVisibleEnemies();
             _updateTimer = _updateInterval;
-            LookAtEnemy(GetClosestEnemy());
         }
-
     }
 
     private void FindVisibleEnemies()
@@ -101,33 +96,14 @@ public class EnemyDetector : MonoBehaviour
             if (enemy == null) continue;
 
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
-            Vector3 _raycastDirection = enemy.transform.position - transform.position;
-            bool _eyeContact = Physics.Raycast(transform.position, _raycastDirection.normalized, out hit, LayerMask.GetMask("Enemy") | LayerMask.GetMask("Wall"));
-
+            
             if (distance < minDistance)
-                if (_eyeContact)
-                    if (hit.collider.tag == "Enemy")
-                        {
-                            minDistance = distance;
-                            closestEnemy = enemy;
-                        }
+            {
+                minDistance = distance;
+                closestEnemy = enemy;
+            }
         }
         return closestEnemy;
-    }
-
-    private void LookAtEnemy(Enemy closestEnemy)
-    {
-        if (closestEnemy == null) return;
-
-        Vector3 direction = closestEnemy.transform.position - transform.position;
-        direction.y = 0;
-
-        if (direction != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
-                _rotationSpeed * Time.deltaTime);
-        }
     }
     
     private void LookAtMenuCamera()

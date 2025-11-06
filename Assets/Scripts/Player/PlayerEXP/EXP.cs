@@ -5,6 +5,7 @@ using UnityEngine;
 public class EXP : MonoBehaviour
 {
     [SerializeField] private float _EXPamount;
+    [SerializeField] private long _moneyAmount;
 
     private PlayerEXP _playerEXP;
 
@@ -22,6 +23,7 @@ public class EXP : MonoBehaviour
         if (other.GetComponent<Player>())
         {
             _playerEXP.GetEXP(_EXPamount);
+            PlayerStatsSO.Instance.ChangeMoney(_moneyAmount);
             Destroy(gameObject);
         }
     }

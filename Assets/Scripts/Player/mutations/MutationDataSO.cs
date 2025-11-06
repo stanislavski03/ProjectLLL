@@ -7,6 +7,8 @@ public class MutationDataSO : ScriptableObject
     public string description;
     public Sprite icon;
 
+    public Chest chest;
+
     [Header("Base Stats")]
     public float bonus;
 

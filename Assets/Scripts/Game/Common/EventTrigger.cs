@@ -5,28 +5,28 @@ using UnityEngine;
 
 public class EventTrigger : MonoBehaviour
 {
-    private List<QuestGiver> _events = new List<QuestGiver>();
-    private QuestGiver _activeEvent;
+    private List<EInteractable> _events = new List<EInteractable>();
+    private EInteractable _activeEvent;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<QuestGiver>())
+        if (other.GetComponent<EInteractable>())
         {
-            if (other.GetComponent<QuestGiver>()._canBeInteractedWith)
-                _events.Add(other.GetComponent<QuestGiver>());
+            if (other.GetComponent<EInteractable>()._canBeInteractedWith)
+                _events.Add(other.GetComponent<EInteractable>());
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<QuestGiver>())
+        if (other.GetComponent<EInteractable>())
         {
-            other.GetComponent<QuestGiver>().MakeNonReady();
-            _events.Remove(other.GetComponent<QuestGiver>());
+            other.GetComponent<EInteractable>().MakeNonReady();
+            _events.Remove(other.GetComponent<EInteractable>());
         }
     }
     private void Update()
     {
 
-        if(_events.Count == 0 || _events == null)  return; 
+        if (_events.Count == 0 || _events == null) return;
 
         else if (_events.Count == 1)
         {
@@ -34,19 +34,23 @@ public class EventTrigger : MonoBehaviour
             {
                 _activeEvent = _events[0];
             }
-            else if(!_events[0]._canBeInteractedWith)
+            else if (!_events[0]._canBeInteractedWith)
             {
                 _events.Clear();
             }
         }
 
-        else if (_events.Count >1)
+        else if (_events.Count > 1)
         {
-            List<QuestGiver> delete = new List<QuestGiver>();
-            float minDistance= ((CapsuleCollider)gameObject.GetComponent<Collider>()).radius; // на случай, если колладер будем в инспекторе менять, можно на радиус в инспекторе просто поставить, норм будет
-            foreach (QuestGiver e in _events)
+            List<EInteractable> delete = new List<EInteractable>();
+            float minDistance = ((CapsuleCollider)gameObject.GetComponent<Collider>()).radius; // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+            foreach (EInteractable e in _events)
             {
-                if (e._canBeInteractedWith)
+                if (!e._canBeInteractedWith || e == null)
+                {
+                    delete.Add(e);
+                }
+                else if (e._canBeInteractedWith)
                 {
                     e.MakeNonReady();
                     if (Vector3.Distance(transform.position, e.transform.position) < minDistance)
@@ -55,18 +59,15 @@ public class EventTrigger : MonoBehaviour
                         minDistance = Vector3.Distance(transform.position, e.transform.position);
                     }
                 }
-                else  if(!e._canBeInteractedWith)
-                {
-                    delete.Add(e);
-                }
+
             }
-            foreach (QuestGiver e in delete)
+            foreach (EInteractable e in delete)
             {
                 _events.Remove(e);
             }
         }
-       
-        if (!_activeEvent._isReady && _activeEvent._canBeInteractedWith) 
+
+        if (!_activeEvent._isReady && _activeEvent._canBeInteractedWith)
             _activeEvent.MakeReady();
 
         if (Input.GetKeyDown(KeyCode.E))

@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using Cysharp.Threading.Tasks;
 
 public class LevelUpController : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class LevelUpController : MonoBehaviour
 
     private LvlUpWeaponItemsInfo itemsInfo;
     private bool isLevelUpActive = false;
+    // Инициализация Моста unitask
+    private UniTaskCompletionSource<bool> _levelUpCompletionSource;
 
     private void Start()
     {
@@ -55,11 +59,13 @@ public class LevelUpController : MonoBehaviour
         }
     }
 
-    public void ShowLevelUpOptions()
+    public async UniTask ShowLevelUpOptionsAsync()
     {
         if (isLevelUpActive) return;
-        
+
         isLevelUpActive = true;
+        // Создание Моста unitask
+        _levelUpCompletionSource = new UniTaskCompletionSource<bool>();
         
         GameStateManager.Instance.PauseForLevelUp();
         
@@ -71,6 +77,9 @@ public class LevelUpController : MonoBehaviour
         canvasGroup.blocksRaycasts = true;
 
         ActivateButtons();
+
+        // Ждем, пока игрок не сделает выбор
+        await _levelUpCompletionSource.Task;
     }
 
     private void ActivateButtons()
@@ -113,6 +122,9 @@ public class LevelUpController : MonoBehaviour
             lvlUpCanvasObject.SetActive(false);
         }
 
+        // Завершаем задачу, когда скрываем UI
+        _levelUpCompletionSource?.TrySetResult(true);
+        
         onComplete?.Invoke();
     }
 
@@ -132,6 +144,8 @@ public class LevelUpController : MonoBehaviour
     {
         itemsInfo.SetWeaponList();
         
+        // Завершаем задачу при выборе предмета
+        _levelUpCompletionSource?.TrySetResult(true);
         ResumeFromLevelUp();
     }
 }

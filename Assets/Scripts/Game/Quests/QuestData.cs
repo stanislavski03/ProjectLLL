@@ -54,7 +54,7 @@ public class QuestData : QuestSO
         active = false;
         finished = true;
         progress = 100;
-        _questGiver.SetQuestComplete();
+        _questGiver.SetComplete();
     }
 
     public virtual void OnQuestCancel()
