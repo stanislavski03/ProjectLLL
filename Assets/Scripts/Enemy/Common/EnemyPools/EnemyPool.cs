@@ -20,13 +20,13 @@ public class EnemyPool : MonoBehaviour
             {
                 GameObject enemy = enemyPool.Dequeue();
                 enemy.SetActive(true);
-                enemy.transform.position = new Vector3(hit.position.x, 0.5f, hit.position.z);
+                enemy.transform.position = new Vector3(hit.position.x, enemyPrefab.transform.position.y , hit.position.z);
             }
             else
             {
                 GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
                 enemy.transform.SetParent(transform, true); 
-                enemy.transform.position = new Vector3(hit.position.x, 0.5f, hit.position.z);
+                enemy.transform.position = new Vector3(hit.position.x, enemyPrefab.transform.position.y, hit.position.z);
                 enemy.GetComponent<EnemyHP>()._pool = gameObject.GetComponent<EnemyPool>();
             }
         }

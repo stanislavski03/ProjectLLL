@@ -19,7 +19,7 @@ MonoBehaviour:
   _moveSpeed: 3
   _moveSpeedDeviation: 0.1
   _expOnDeath: 10
-  _size: 3
+  _size: 1.5
   _range: 10
   _projectileSpeed: 5
   _projectileLifetime: 3

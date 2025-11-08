@@ -6,12 +6,13 @@ public class EnemyRangeAttack : MonoBehaviour
 {
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private EnemyConfig _initializedStats;
-
+    public bool shouldShoot = false;
+    
     private float _attackCooldown;
     private float _projectileSpeed;
     private float _projectileLifetime;
     private float _damage;
-    private float _range;
+    public float _range;
     private float _prepareTime;
 
     private NavMeshAgent agent;
@@ -37,20 +38,17 @@ public class EnemyRangeAttack : MonoBehaviour
 
         Vector3 directionToPlayer = (_playerTransform.position - transform.position).normalized;
 
-        bool seeingPlayer = Physics.Raycast(transform.position, directionToPlayer, out hit, _range, LayerMask.NameToLayer("Player") | LayerMask.NameToLayer("Wall"));
+        bool seeingPlayer = Physics.Raycast(transform.position, directionToPlayer, out hit, _range, LayerMask.GetMask("Player","Wall"));
 
-        bool shouldShoot = false;
+        shouldShoot = false;
 
         if (seeingPlayer)
         {
-            if (hit.collider.CompareTag("Player"))
-            {
-                shouldShoot = true;
-            }
-            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
-            {
-                shouldShoot = false;
-            }
+            shouldShoot = hit.collider.gameObject.layer == LayerMask.NameToLayer("Player");
+        }
+        else
+        {
+            shouldShoot = false;
         }
 
         if (shouldShoot && !_isShooting)
