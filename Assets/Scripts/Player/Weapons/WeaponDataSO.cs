@@ -24,6 +24,7 @@ public class LevelUpgrade
     public float areaBonus;
     public float damageBonus;
     public float cooldownReduction;
+    public float lifetimeBonus;
     public float speedBonus;
     public string upgradeDescription;
 }

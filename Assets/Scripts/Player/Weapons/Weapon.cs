@@ -191,7 +191,8 @@ public abstract class Weapon : MonoBehaviour
     public float GetDamage() => currentDamage;
     public virtual float GetArea() => 0f;
     public virtual float GetBulletSpeed() => 0f;
-    public virtual float GetBulletLifetime() => 0f;
+    public virtual float GetLifetime() => 0f;
+    public virtual float GetExplosionCooldown() => 0f;
     public virtual int GetDamageType() => 0;
 
     public virtual string GetWeaponStats()

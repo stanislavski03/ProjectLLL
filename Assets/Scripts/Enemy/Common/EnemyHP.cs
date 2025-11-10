@@ -95,7 +95,7 @@ public class EnemyHP : MonoBehaviour
     private void ExpOnDeath() 
     {
         if (UnityEngine.Random.Range(1f, 100f) <= _expDropPercent)
-            Instantiate(_expPrefab, gameObject.transform.position, Quaternion.identity);
+            Instantiate(_expPrefab, new Vector3(gameObject.transform.position.x, 0.2f, gameObject.transform.position.z), Quaternion.identity);
         _playerEXP.GetEXP(_expAutodropAmount);
     }
 }

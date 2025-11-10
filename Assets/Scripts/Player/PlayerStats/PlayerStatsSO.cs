@@ -29,6 +29,7 @@ public class PlayerStatsSO : ScriptableObject
     public event Action<float> _speedMultiplierChanged;
     public event Action<float> _moneyChanged;
     public event Action<float> _moveSpeedChanged;
+    public event Action<float> _maxHpChanged;
     //public event Action<float> _fireDamageMultiplierChanged;
     //public event Action<float> _iceDamageMultiplierChanged;
     //public event Action<float> _energyDamageMultiplierChanged;
@@ -69,12 +70,19 @@ public class PlayerStatsSO : ScriptableObject
         _speedMultiplierChanged?.Invoke(SpeedMultiplier);
         _moneyChanged?.Invoke(Money);
         _moveSpeedChanged?.Invoke(MoveSpeed);
+        _maxHpChanged?.Invoke(MaxHP);
     }
 
     public void ChangeDamageMultiplier(float value)
     {
         DamageMultiplier += value;
         _damageMultiplierChanged?.Invoke(DamageMultiplier);
+    }
+
+    public void ChangeMaxHp(float value)
+    {
+        MaxHP += value;
+        _maxHpChanged?.Invoke(MaxHP);
     }
 
     public void ChangeCooldownReduction(float value)

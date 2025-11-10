@@ -95,9 +95,18 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
     {
         _currentWeaponList.Clear();
 
-        // ЕСЛИ доступных оружий меньше чем нужно, берем все доступные
+        // Если нет доступных оружий, выходим
+        if (weaponList.Count == 0)
+        {
+            Debug.LogWarning("No weapons available in weaponList!");
+            return;
+        }
+
+        // ЕСЛИ доступных оружий меньше или равно чем нужно, берем все доступные
         if (weaponList.Count <= numberOfCurrentWeaponList)
         {
+            // Перемешиваем список перед добавлением
+            ShuffleWeaponList();
             _currentWeaponList.AddRange(weaponList);
             weaponList.Clear();
         }
@@ -112,6 +121,18 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
                 _currentWeaponList.Add(randomObject);
                 weaponList.RemoveAt(randomIndex);
             }
+        }
+    }
+
+    // Метод для перемешивания списка оружий
+    private void ShuffleWeaponList()
+    {
+        for (int i = 0; i < weaponList.Count; i++)
+        {
+            Weapon temp = weaponList[i];
+            int randomIndex = UnityEngine.Random.Range(i, weaponList.Count);
+            weaponList[i] = weaponList[randomIndex];
+            weaponList[randomIndex] = temp;
         }
     }
 

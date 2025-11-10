@@ -53,7 +53,7 @@ public class BulletShooter : Weapon
     }
 
     public override float GetBulletSpeed() => currentBulletSpeed;
-    public override float GetBulletLifetime() => currentBulletLifetime;
+    public override float GetLifetime() => currentBulletLifetime;
     public override int GetDamageType() => currentDamageType;
 
     private void StartShooting()
@@ -151,7 +151,7 @@ public class BulletShooter : Weapon
     public override string GetWeaponStats()
     {
         string baseStats = base.GetWeaponStats();
-        string statsString = baseStats + $"Bullet Speed: {GetBulletSpeed()}\nBullet Lifetime: {GetBulletLifetime()}";
+        string statsString = baseStats + $"Bullet Speed: {GetBulletSpeed()}\nBullet Lifetime: {GetLifetime()}";
         return statsString;
     }
 

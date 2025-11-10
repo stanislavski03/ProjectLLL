@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9752a02eb35e5c41920713f7ac47686, type: 3}
+  m_Name: MagicStaffSO
+  m_EditorClassIdentifier: 
+  weaponName: "\u041C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u043F\u043E\u0441\u043E\u0445"
+  description: "\u0412\u044B\u0437\u044B\u0432\u0430\u0435\u0442 \u0432\u044B\u0441\u0442\u0440\u0435\u043B\u044B 
+    \u0441 \u043D\u0435\u0431\u0430 \u043F\u043E \u0431\u043B\u0438\u0436\u0430\u0439\u0448\u0435\u043C\u0443
+    \u0432\u0440\u0430\u0433\u0443"
+  icon: {fileID: 21300000, guid: 194b6598e47928b4f9006912256a5dd2, type: 3}
+  baseDamage: 10
+  baseCooldown: 3
+  maxLevel: 3
+  levelUpgrades:
+  - level: 1
+    areaBonus: 0
+    damageBonus: 0
+    cooldownReduction: 0
+    lifetimeBonus: 0
+    speedBonus: 0
+    upgradeDescription: 
+  - level: 2
+    areaBonus: 5
+    damageBonus: 0
+    cooldownReduction: 0
+    lifetimeBonus: 3
+    speedBonus: 0
+    upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
+      \u0440\u0430\u0437\u043C\u0435\u0440 \u0437\u043E\u043D\u044B"
+  - level: 3
+    areaBonus: 0
+    damageBonus: 10
+    cooldownReduction: 0.5
+    lifetimeBonus: 0
+    speedBonus: 0
+    upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
+      \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0441\u0442\u0440\u0435\u043B\u044C\u0431\u044B
+      \u0438 \u0443\u0440\u043E\u043D"
+  explosionArea: 3
+  explosionLifetime: 3
+  explosionCooldown: 1
+  explosionPrefab: {fileID: 266499873908564337, guid: 4e0efd730c007de45b5a2f9fe37b80b3, type: 3}

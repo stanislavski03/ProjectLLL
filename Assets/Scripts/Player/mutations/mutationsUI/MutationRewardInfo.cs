@@ -24,9 +24,9 @@ public class MutationRewardInfo : MonoBehaviour
 
     public void TransferRandomObjects()
     {
-       if(MutationControllerSO.Instance.PlayerMutationsPool != null)
+       if(MutationControllerSO.Instance.AllMutationsPool != null)
         {
-            int _randIndex = Random.Range(0, MutationControllerSO.Instance.PlayerMutationsPool.Count);
+            int _randIndex = Random.Range(0, MutationControllerSO.Instance.AllMutationsPool.Count);
             mutation = MutationControllerSO.Instance.AllMutationsPool[_randIndex];
         }
     }
