@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 4833318340838595525}
   - component: {fileID: 3618138857116630310}
   m_Layer: 0
-  m_Name: SmallRangedEnemy 1
+  m_Name: SmallRangedEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -386,7 +386,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824490478183403951}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1923039037
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 100
@@ -397,7 +397,7 @@ NavMeshAgent:
   m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0.65
+  m_BaseOffset: 0.7
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
 --- !u!114 &4833318340838595525
