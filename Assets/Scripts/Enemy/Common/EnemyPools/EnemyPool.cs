@@ -30,10 +30,7 @@ public class EnemyPool : MonoBehaviour
                 enemy.GetComponent<EnemyHP>()._pool = gameObject.GetComponent<EnemyPool>();
             }
         }
-        else
-        {
-            Debug.LogWarning($"Cannot spawn enemy at {position} - no NavMesh nearby");
-        }
+        
 
     }
 

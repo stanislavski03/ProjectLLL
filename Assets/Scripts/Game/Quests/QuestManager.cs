@@ -33,7 +33,6 @@ public class QuestManager : MonoBehaviour
         {
             _onQuestRegistered?.Invoke();
             activeQuests.Add(quest);
-            Debug.Log($"Начат квест: {quest.QuestName}. Активных квестов: {activeQuests.Count}");
         }
     }
 
