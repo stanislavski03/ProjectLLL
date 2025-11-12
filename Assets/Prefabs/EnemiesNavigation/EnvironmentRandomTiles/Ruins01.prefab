@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1281290826586595624}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -60, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281290826586595624}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.2
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 539d6bcd471f9cc489882dcf80a60119, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 98dd530c83267844591eba61626a8134, type: 2}
   m_BuildHeightMesh: 0
 --- !u!114 &3320438466609830447
 MonoBehaviour:
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281290826586595624}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.4
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 5b9a1563877174244ac60cfcd3c6d70c, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 7c556cdbbeb5c3145bfbf8000002b5e2, type: 2}
   m_BuildHeightMesh: 0
 --- !u!114 &9159842278079517226
 MonoBehaviour:
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281290826586595624}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.2
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: bac890e0ae4825f46b40f3bb225c0df7, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 6f8c12817c76daa4a8c33a9298fb66d8, type: 2}
   m_BuildHeightMesh: 0
 --- !u!114 &6169753313373480525
 MonoBehaviour:
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281290826586595624}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.26666668
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 49b8121247ff74f499d8ec9bef14bbc2, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: ad632718ce70a5f4b9e6c28715e53ef6, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &3321818421655103018
 GameObject:
