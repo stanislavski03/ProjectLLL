@@ -28,7 +28,6 @@ public class LaserPool : MonoBehaviour
     private void InitializePool()
     {
         ExpandPool(initialPoolSize);
-        Debug.Log($"LaserPool initialized with {initialPoolSize} lasers");
     }
 
     private void ExpandPool(int count)
@@ -72,7 +71,6 @@ public class LaserPool : MonoBehaviour
         // Если пул пуст - создаем новый
         if (laserBeam == null)
         {
-            Debug.Log("Pool empty, creating new laser");
             CreateNewLaser();
             if (laserPool.Count > 0)
                 laserBeam = laserPool.Dequeue();
@@ -119,14 +117,5 @@ public class LaserPool : MonoBehaviour
 
         laserPool = cleanPool;
         allLasers.RemoveAll(laser => laser == null);
-    }
-
-    // Для дебага
-    private void Update()
-    {
-        if (Time.frameCount % 300 == 0) // Каждые 5 секунд
-        {
-            Debug.Log($"Laser Pool: {laserPool.Count} available, {allLasers.Count} total");
-        }
     }
 }

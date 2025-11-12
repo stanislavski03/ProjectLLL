@@ -32,7 +32,6 @@ public class Laser : Weapon
 
         if (weaponData is not LaserDataSO)
         {
-            Debug.LogError("Laser requires LaserDataSO!");
             return;
         }
 
@@ -104,7 +103,6 @@ public class Laser : Weapon
         currentLaserLength = Mathf.Min(currentLaserLength, maxLaserLength);
         currentLaserArea = Mathf.Min(currentLaserArea, maxLaserArea);
 
-        Debug.Log($"Laser Stats - Length: {currentLaserLength}, Area: {currentLaserArea}, Lifetime: {currentLaserLifetime}");
     }
 
     private void StartLaser()
@@ -113,7 +111,6 @@ public class Laser : Weapon
 
         if (enemyDetector == null)
         {
-            Debug.LogError("Laser missing EnemyDetector!");
             return;
         }
 
@@ -147,7 +144,6 @@ public class Laser : Weapon
     private IEnumerator LaserRoutine()
     {
         yield return new WaitForSeconds(1f);
-        Debug.Log($"Laser started: cooldown = {currentCooldown}");
 
         while (isActive)
         {
@@ -176,11 +172,9 @@ public class Laser : Weapon
         if (laserBeam != null)
         {
             activeLasers.Add(laserBeam);
-            Debug.Log($"Laser beam created from pool - Length: {currentLaserLength}, Area: {currentLaserArea}");
         }
         else
         {
-            Debug.LogError("Failed to get laser beam from pool!");
         }
     }
 

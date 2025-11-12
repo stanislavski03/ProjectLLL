@@ -78,13 +78,13 @@ public class Generation : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.M))
         {
-            GenerateMap(1, 1);
+            GenerateMap(3, 2);
         }
     }
     private void Start()
     {
-        GenerateMap(1, 1);
+        GenerateMap(3, 2);
     }
 }

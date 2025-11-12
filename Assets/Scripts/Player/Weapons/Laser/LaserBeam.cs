@@ -95,7 +95,6 @@ public class LaserBeam : MonoBehaviour
         else
         {
             meshRenderer.material = CreateDefaultMaterial();
-            Debug.LogWarning("Laser material not assigned, using default");
         }
 
         // Вычисляем финальную ширину с учетом area множителя
@@ -111,14 +110,12 @@ public class LaserBeam : MonoBehaviour
         isActive = true;
         damagedEnemies.Clear();
 
-        Debug.Log($"LaserBeam initialized: Start={startPosition}, Length={currentLength}, Width={finalWidth}");
     }
 
     private void CreateLaserMesh()
     {
         if (meshFilter == null)
         {
-            Debug.LogError("MeshFilter is null in CreateLaserMesh!");
             return;
         }
 
@@ -216,7 +213,6 @@ public class LaserBeam : MonoBehaviour
                 float actualDamage = laserSource != null ? laserSource.GetDamage() : currentDamage;
                 enemy.Damage(actualDamage);
                 damagedEnemies.Add(enemy);
-                Debug.Log($"Laser damaged enemy: {actualDamage} damage");
             }
         }
     }
