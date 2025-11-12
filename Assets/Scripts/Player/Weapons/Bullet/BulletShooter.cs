@@ -33,9 +33,7 @@ public class BulletShooter : Weapon
             return;
         }
 
-        currentBulletSpeed = BulletData.bulletSpeed;
-        currentBulletLifetime = BulletData.bulletLifetime;
-        currentDamageType = BulletData.damageType;
+        CalculateExplosionStats();
     }
 
     private void Start()
@@ -43,16 +41,46 @@ public class BulletShooter : Weapon
         StartShooting();
     }
 
+    protected override void SubscribeToPlayerStats()
+    {
+        base.SubscribeToPlayerStats();
+    }
+
+    protected override void UnsubscribeFromPlayerStats()
+    {
+        base.UnsubscribeFromPlayerStats();
+    }
+
     protected override void CalculateAllStats()
     {
         base.CalculateAllStats();
-
-        currentBulletSpeed = BulletData.bulletSpeed * (1f + (currentLevel * 0.05f));
-        currentBulletLifetime = BulletData.bulletLifetime;
+        CalculateExplosionStats();
 
     }
 
-    public override float GetBulletSpeed() => currentBulletSpeed;
+    private void CalculateExplosionStats()
+    {
+        if (BulletData == null) return;
+
+        currentBulletSpeed = BulletData.bulletSpeed;
+        currentBulletLifetime = BulletData.bulletLifetime;
+        currentDamageType = BulletData.damageType;
+
+        if (weaponData.levelUpgrades != null && currentLevel > 0)
+        {
+            for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
+            {
+                var upgrade = weaponData.levelUpgrades[i];
+                if (upgrade.level <= currentLevel)
+                {
+                    currentBulletSpeed += upgrade.speedBonus;
+                    currentBulletLifetime += upgrade.lifetimeBonus;
+                }
+            }
+        }
+    }
+
+    public override float GetProjectileSpeed() => currentBulletSpeed;
     public override float GetLifetime() => currentBulletLifetime;
     public override int GetDamageType() => currentDamageType;
 
@@ -132,12 +160,13 @@ public class BulletShooter : Weapon
         Bullet bulletController = bulletObj.GetComponent<Bullet>();
         if (bulletController != null)
         {
+            float baseDamage = weaponData.baseDamage;
             bulletController.InitializeBullet(
                 target,
                 currentBulletSpeed,
                 currentBulletLifetime,
                 currentDamageType,
-                currentDamage,
+                baseDamage,
                 this
             );
 
@@ -151,7 +180,7 @@ public class BulletShooter : Weapon
     public override string GetWeaponStats()
     {
         string baseStats = base.GetWeaponStats();
-        string statsString = baseStats + $"Bullet Speed: {GetBulletSpeed()}\nBullet Lifetime: {GetLifetime()}";
+        string statsString = baseStats + $"Bullet Speed: {GetProjectileSpeed()}\nBullet Lifetime: {GetLifetime()}";
         return statsString;
     }
 

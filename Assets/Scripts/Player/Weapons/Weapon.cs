@@ -111,7 +111,7 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void CalculateCooldown()
     {
         float baseCooldown = weaponData.baseCooldown;
-        
+
         if (weaponData.levelUpgrades != null)
         {
             for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
@@ -123,9 +123,9 @@ public abstract class Weapon : MonoBehaviour
                 }
             }
         }
-        
+
         baseCooldown = Mathf.Max(baseCooldown, 0.05f);
-        
+
         // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
         float cooldownMultiplier = playerStats.CooldownReduction;
         currentCooldown = baseCooldown * cooldownMultiplier;
@@ -187,12 +187,11 @@ public abstract class Weapon : MonoBehaviour
         return weaponData.description;
     }
 
-    public float GetCooldown() => currentCooldown;
-    public float GetDamage() => currentDamage;
+    public virtual float GetCooldown() => currentCooldown;
+    public virtual float GetDamage() => currentDamage;
     public virtual float GetArea() => 0f;
-    public virtual float GetBulletSpeed() => 0f;
+    public virtual float GetProjectileSpeed() => 0f;
     public virtual float GetLifetime() => 0f;
-    public virtual float GetExplosionCooldown() => 0f;
     public virtual int GetDamageType() => 0;
 
     public virtual string GetWeaponStats()

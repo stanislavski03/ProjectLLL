@@ -4,8 +4,11 @@ using UnityEngine;
 public class BulletPool : MonoBehaviour
 {
     [SerializeField] private BulletShooterDataSO defaultBulletData;
+    [SerializeField] private int initialPoolSize = 3;
+    [SerializeField] private int expandAmount = 5;
     
     private Queue<GameObject> bulletPool = new Queue<GameObject>();
+    private List<GameObject> allBullets = new List<GameObject>(); // Для отслеживания всех созданных пуль
     private GameObject bulletPrefab;
 
     public static BulletPool Instance { get; private set; }
@@ -25,7 +28,6 @@ public class BulletPool : MonoBehaviour
     
     private void InitializePool()
     {
-        // Используем префаб из ScriptableObject или резервный
         if (defaultBulletData != null && defaultBulletData.bulletPrefab != null)
         {
             bulletPrefab = defaultBulletData.bulletPrefab;
@@ -36,9 +38,16 @@ public class BulletPool : MonoBehaviour
             return;
         }
         
-        for (int i = 0; i < 1; i++) // Динамический размер пула
+        // Создаем начальный пул
+        ExpandPool(initialPoolSize);
+    }
+    
+    private void ExpandPool(int count)
+    {
+        for (int i = 0; i < count; i++)
         {
-            CreateNewBullet();
+            GameObject bullet = CreateNewBullet();
+            allBullets.Add(bullet);
         }
     }
     
@@ -52,54 +61,97 @@ public class BulletPool : MonoBehaviour
     
     public GameObject GetBullet()
     {
-        CleanPool();
+        CleanPool(); // Очищаем пул от уничтоженных пуль ПЕРЕД получением
+        
+        if (bulletPool.Count == 0)
+        {
+            // Если пул пуст, расширяем его
+            ExpandPool(expandAmount);
+            Debug.Log($"Pool expanded. Total bullets: {allBullets.Count}");
+        }
         
         if (bulletPool.Count > 0)
         {
             GameObject bullet = bulletPool.Dequeue();
+            
+            // Двойная проверка (на всякий случай)
             if (bullet != null)
             {
                 return bullet;
             }
         }
         
-        return CreateNewBullet();
+        // Если всё еще не получили пулю, создаем новую
+        GameObject newBullet = CreateNewBullet();
+        allBullets.Add(newBullet);
+        return newBullet;
     }
     
     public void ReturnBullet(GameObject bullet)
     {
         if (bullet == null) return;
         
+        // Проверяем, не уничтожена ли пуля
+        if (bullet.Equals(null)) return;
+        
         bullet.SetActive(false);
         bullet.transform.SetParent(transform);
         bullet.transform.position = Vector3.zero;
         bullet.transform.rotation = Quaternion.identity;
         
-        bulletPool.Enqueue(bullet);
+        // Проверяем, нет ли уже этой пули в пуле (на всякий случай)
+        if (!bulletPool.Contains(bullet))
+        {
+            bulletPool.Enqueue(bullet);
+        }
     }
     
+    // Улучшенная очистка пула
     private void CleanPool()
     {
         int initialCount = bulletPool.Count;
-        Queue<GameObject> cleanPool = new Queue<GameObject>();
         
-        foreach (var bullet in bulletPool)
+        // Создаем временный список для валидных пуль
+        List<GameObject> validBullets = new List<GameObject>();
+        
+        while (bulletPool.Count > 0)
         {
-            if (bullet != null)
+            GameObject bullet = bulletPool.Dequeue();
+            if (bullet != null && !bullet.Equals(null))
             {
-                cleanPool.Enqueue(bullet);
+                validBullets.Add(bullet);
             }
         }
         
-        bulletPool = cleanPool;
+        // Возвращаем только валидные пули обратно в очередь
+        foreach (GameObject bullet in validBullets)
+        {
+            bulletPool.Enqueue(bullet);
+        }
+        
+        // Логируем только если были удалены пули
+        if (initialCount != bulletPool.Count)
+        {
+            Debug.Log($"Pool cleaned: {initialCount} -> {bulletPool.Count}. Total created: {allBullets.Count}");
+        }
     }
     
-    public void UpdateBulletPrefab(GameObject newPrefab)
+    // Метод для полной переинициализации пула
+    public void ReinitializePool()
     {
-        if (newPrefab != null)
+        // Очищаем текущие пули
+        foreach (var bullet in allBullets)
         {
-            bulletPrefab = newPrefab;
-            // Можно очистить пул и пересоздать с новым префабом
+            if (bullet != null && !bullet.Equals(null))
+            {
+                Destroy(bullet);
+            }
         }
+        
+        bulletPool.Clear();
+        allBullets.Clear();
+        
+        // Создаем новый пул
+        ExpandPool(initialPoolSize);
     }
 }

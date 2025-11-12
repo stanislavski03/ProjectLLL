@@ -49,11 +49,11 @@ public class Generation : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            GenerateMap(5, 5);
+            GenerateMap(1, 1);
         }
     }
     private void Start()
     {
-        GenerateMap(5, 5);
+        GenerateMap(1, 1);
     }
 }

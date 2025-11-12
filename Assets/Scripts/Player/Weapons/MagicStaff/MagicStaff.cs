@@ -184,7 +184,7 @@ public class MagicStaff : Weapon
 
     public override float GetArea() => currentExplosionArea;
     public override float GetLifetime() => currentExplosionLifetime;
-    public override float GetExplosionCooldown() => currentExplosionCooldown;
+    public override float GetCooldown() => currentExplosionCooldown;
 
     public override string GetWeaponStats()
     {
@@ -192,7 +192,7 @@ public class MagicStaff : Weapon
         string statsString = baseStats +
             $"Explosion Area: {GetArea()}\n" +
             $"Explosion Lifetime: {GetLifetime()}\n" +
-            $"Explosion Cooldown: {GetExplosionCooldown()}\n" +
+            $"Explosion Cooldown: {GetCooldown()}\n" +
             $"Max Active Explosions: {currentMaxActiveExplosions}";
         return statsString;
     }

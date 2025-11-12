@@ -66,7 +66,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b8c140a7f99b87048a3240bf5043cb69, type: 3}
       propertyPath: m_Name
-      value: StrongMeleeEnemy 1
+      value: StrongMeleeEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b8c140a7f99b87048a3240bf5043cb69, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

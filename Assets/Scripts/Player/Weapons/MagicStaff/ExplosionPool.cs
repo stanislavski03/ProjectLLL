@@ -4,8 +4,11 @@ using UnityEngine;
 public class ExplosionPool : MonoBehaviour
 {
     [SerializeField] private MagicStaffDataSO defaultExplosionData;
+    [SerializeField] private int initialPoolSize = 3;
+    [SerializeField] private int expandAmount = 2;
     
     private Queue<GameObject> explosionPool = new Queue<GameObject>();
+    private List<GameObject> allExplosions = new List<GameObject>();
     private GameObject explosionPrefab;
 
     public static ExplosionPool Instance { get; private set; }
@@ -35,9 +38,15 @@ public class ExplosionPool : MonoBehaviour
             return;
         }
         
-        for (int i = 0; i < 5; i++)
+        ExpandPool(initialPoolSize);
+    }
+    
+    private void ExpandPool(int count)
+    {
+        for (int i = 0; i < count; i++)
         {
-            CreateNewExplosion();
+            GameObject explosion = CreateNewExplosion();
+            allExplosions.Add(explosion);
         }
     }
     
@@ -53,10 +62,15 @@ public class ExplosionPool : MonoBehaviour
     {
         CleanPool();
         
+        if (explosionPool.Count == 0)
+        {
+            ExpandPool(expandAmount);
+        }
+        
         if (explosionPool.Count > 0)
         {
             GameObject explosion = explosionPool.Dequeue();
-            if (explosion != null)
+            if (explosion != null && !explosion.Equals(null))
             {
                 explosion.SetActive(true);
                 return explosion;
@@ -64,18 +78,14 @@ public class ExplosionPool : MonoBehaviour
         }
         
         GameObject newExplosion = CreateNewExplosion();
+        allExplosions.Add(newExplosion);
         newExplosion.SetActive(true);
         return newExplosion;
     }
     
     public void ReturnExplosion(GameObject explosion)
     {
-        if (explosion == null) return;
-        
-        Explosion explosionComponent = explosion.GetComponent<Explosion>();
-        if (explosionComponent != null)
-        {
-        }
+        if (explosion == null || explosion.Equals(null)) return;
         
         explosion.SetActive(false);
         explosion.transform.SetParent(transform);
@@ -83,21 +93,43 @@ public class ExplosionPool : MonoBehaviour
         explosion.transform.rotation = Quaternion.identity;
         explosion.transform.localScale = Vector3.one;
         
-        explosionPool.Enqueue(explosion);
+        if (!explosionPool.Contains(explosion))
+        {
+            explosionPool.Enqueue(explosion);
+        }
     }
     
     private void CleanPool()
     {
-        Queue<GameObject> cleanPool = new Queue<GameObject>();
+        List<GameObject> validExplosions = new List<GameObject>();
         
-        foreach (var explosion in explosionPool)
+        while (explosionPool.Count > 0)
         {
-            if (explosion != null)
+            GameObject explosion = explosionPool.Dequeue();
+            if (explosion != null && !explosion.Equals(null))
             {
-                cleanPool.Enqueue(explosion);
+                validExplosions.Add(explosion);
             }
         }
         
-        explosionPool = cleanPool;
+        foreach (GameObject explosion in validExplosions)
+        {
+            explosionPool.Enqueue(explosion);
+        }
+    }
+    
+    public void ReinitializePool()
+    {
+        foreach (var explosion in allExplosions)
+        {
+            if (explosion != null && !explosion.Equals(null))
+            {
+                Destroy(explosion);
+            }
+        }
+        
+        explosionPool.Clear();
+        allExplosions.Clear();
+        ExpandPool(initialPoolSize);
     }
 }

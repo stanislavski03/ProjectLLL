@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultBulletData: {fileID: 11400000, guid: 5eeab649147316a498d5bed07dbb9342, type: 2}
+  initialPoolSize: 3
+  expandAmount: 5
 --- !u!4 &4323585
 Transform:
   m_ObjectHideFlags: 0
@@ -5195,6 +5197,7 @@ Transform:
   - {fileID: 2078851949}
   - {fileID: 46478632}
   - {fileID: 1960702268}
+  - {fileID: 606904908}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &423367928
@@ -7375,6 +7378,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582246321}
   m_CullTransparentMesh: 1
+--- !u!1 &606904907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 606904908}
+  - component: {fileID: 606904909}
+  m_Layer: 3
+  m_Name: Laser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &606904908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606904907}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 423367927}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &606904909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606904907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b5ff7e665d48c47949e481fc273b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: 50cdaffe215c046459138a7d1b170064, type: 2}
+  weaponData: {fileID: 11400000, guid: 123901a150b9164469e675bd63602d4c, type: 2}
+  currentLevel: 0
+  IsAvailable: 1
+  enemyDetector: {fileID: 423367930}
+  maxLaserLength: 15
+  maxLaserArea: 3
 --- !u!1 &627756070
 GameObject:
   m_ObjectHideFlags: 0
@@ -7903,6 +7957,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultExplosionData: {fileID: 11400000, guid: 06e681d8daf951b4fba073897729ad54, type: 2}
+  initialPoolSize: 3
+  expandAmount: 2
 --- !u!4 &649530105
 Transform:
   m_ObjectHideFlags: 0
@@ -12317,6 +12373,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042302970}
   m_CullTransparentMesh: 1
+--- !u!1 &1057559700
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1057559702}
+  - component: {fileID: 1057559701}
+  m_Layer: 0
+  m_Name: LaserBeamPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1057559701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057559700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d8b73dd99e6a1742a4af0d188bc45c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialPoolSize: 3
+  expandAmount: 5
+--- !u!4 &1057559702
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057559700}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 73.409744, y: -97.74176, z: 118.7489}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1081476798
 GameObject:
   m_ObjectHideFlags: 0
@@ -19896,6 +19998,7 @@ MonoBehaviour:
   - {fileID: 2078851950}
   - {fileID: 2131135986}
   - {fileID: 1960702269}
+  - {fileID: 606904909}
   numberOfCurrentWeaponList: 3
   levelUpController: {fileID: 500826768}
 --- !u!114 &1796658686
@@ -20079,7 +20182,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletEnemyPrefab: {fileID: 6286318592029805020, guid: a87495b8f1b72164bac7f2aa7ef198ba, type: 3}
-  _initialPoolSize: 2
+  _initialPoolSize: 3
+  _expandAmount: 3
 --- !u!4 &1799490103
 Transform:
   m_ObjectHideFlags: 0
@@ -25299,6 +25403,7 @@ SceneRoots:
   - {fileID: 4323585}
   - {fileID: 1799490103}
   - {fileID: 649530105}
+  - {fileID: 1057559702}
   - {fileID: 1393646199}
   - {fileID: 1211067669}
   - {fileID: 273320180}
