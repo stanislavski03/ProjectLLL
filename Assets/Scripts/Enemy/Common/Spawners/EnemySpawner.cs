@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private Camera _spawnCamera;
+    public Camera _spawnCamera;
     private Transform _playerTransform;
     
 

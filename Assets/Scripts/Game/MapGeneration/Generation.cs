@@ -1,20 +1,170 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
+using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Generation : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> gameObjectsList = new List<GameObject>();
-    List<List<GameObject>> generation = new List<List<GameObject>>();
-    NavMeshSurface[] allSurfaces;
+    [SerializeField] private List<GameObject> _tilesVariationList = new List<GameObject>();
+    private List<List<GameObject>> generation = new List<List<GameObject>>();
+    private NavMeshSurface[] allSurfaces;
+    public List<QuestData> _availableQuests = new List<QuestData>();
+    public List<QuestData> _allQuests = new List<QuestData>();
+
+    public int _questsOnMapMin = 2;
+    public int _questsOnMapMax = 3;
+
+    public int _mutationsOnMapMin = 3;
+    public int _mutationsOnMapMax = 4;
+
+    public void InitialiseGenerationList(int _width, int _height)
+    {
+        ClearGeneration();
+        for (int i = 0; i < _width; i++)
+        {
+            List<GameObject> row = new List<GameObject>();
+            generation.Add(row);
+
+            for (int j = 0; j < _height; j++)
+            {
+                row.Add(null);
+            }
+        }
+    }
+
+    public void AddMutationsChestsToTiles(int _width, int _height, int MutationsMin, int MutationsMax)
+    {
+        if (MutationsMin < 0)
+            MutationsMin = 0;
+
+        if (MutationsMax > _width * _height)
+            MutationsMax = _width * _height;
+
+        if (MutationsMin > MutationsMax)
+            MutationsMin = MutationsMax;
+
+        int MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1);
+        if (MutationsAmount >= _width * _height)
+        {
+            for (int i = 0; i < _width; i++)
+            {
+                for (int j = 0; j < _height; j++)
+                {
+                    generation[i][j].GetComponent<SpawnActivity>()._objectsOnTile.Add(ActivityOnTileType.Quest);
+                    generation[i][j].GetComponent<SpawnActivity>().SpawnMutationChest();
+            
+                }
+            }
+        }
+        else
+            for (int i = 0; i < MutationsAmount; i++)
+            {
+                SpawnActivity TileToSpawnQuest = generation[Random.Range(0, _width)][Random.Range(0, _height)].GetComponent<SpawnActivity>();
+                if (TileToSpawnQuest._objectsOnTile.Exists(activity => activity == ActivityOnTileType.Mutation))
+                {
+                    i--;
+                }
+                else
+                {
+                    TileToSpawnQuest._objectsOnTile.Add(ActivityOnTileType.Mutation);
+                    TileToSpawnQuest.SpawnMutationChest();
+                }
+            }
+    }
+
+    public void AddQuestsToTiles(int _width, int _height, int QuestsMin, int QuestsMax)
+    {
+        try
+        {
+
+            if (QuestsMin < 0)
+                QuestsMin = 0;
+
+            if (QuestsMax > _availableQuests.Count)
+                QuestsMax = _availableQuests.Count;
+
+            if (QuestsMax > _width * _height)
+                QuestsMax = _width * _height;
+
+            if (QuestsMin > QuestsMax)
+                QuestsMin = QuestsMax;
+
+
+
+            int QuestAmount = Random.Range(QuestsMin, QuestsMax + 1);
+
+            List<List<GameObject>> NotSpawned = new List<List<GameObject>>();
+
+            foreach (var row in generation)
+            {
+                NotSpawned.Add(new List<GameObject>(row));
+            }
+
+            for (int i = 0; i < QuestAmount; i++)
+            {
+                if (_availableQuests.Count <= 0)
+                {
+                    return;
+                }
+                int _randWidth = Random.Range(0, NotSpawned.Count);
+                int _randHeight = Random.Range(0, NotSpawned[_randWidth].Count);
+
+
+                GameObject TileToSpawnQuest = NotSpawned[_randWidth][_randHeight];
+                SpawnActivity ScriptToSpawnQuest = TileToSpawnQuest.GetComponent<SpawnActivity>();
+
+
+                if (ScriptToSpawnQuest._objectsOnTile.Exists(activity => activity == ActivityOnTileType.Quest))
+                {
+                    i--;
+                }
+                else
+                {
+
+                    ItemType QuestRewardType;
+                    switch (Random.Range(0, 3))
+                    {
+                        case 0:
+                            QuestRewardType = ItemType.Tecno;
+                            break;
+                        case 1:
+                            QuestRewardType = ItemType.Magic;
+                            break;
+                        default:
+                            QuestRewardType = ItemType.Universal;
+                            break;
+                    }
+                    QuestData questData = _availableQuests[Random.Range(0, _availableQuests.Count)];
+                    _availableQuests.Remove(questData);
+                    ScriptToSpawnQuest._objectsOnTile.Add(ActivityOnTileType.Quest);
+                    ScriptToSpawnQuest.SpawnQuestGiverOfType(questData, QuestRewardType);
+
+                    NotSpawned[_randWidth].RemoveAt(_randHeight);
+                    if (NotSpawned[_randWidth].Count == 0)
+                        NotSpawned.RemoveAt(_randWidth);
+
+
+
+                }
+            }
+        }
+        catch { }
+       
+
+    }
+
+
+
     public void GenerateMap(int _width, int _height)
     {
-        if (_width != 0 && _height != 0)
+        if (_width > 0 && _height > 0)
         {
+
             ClearGeneration();
+
             for (int i = 0; i < _width; i++)
             {
                 List<GameObject> row = new List<GameObject>();
@@ -22,22 +172,25 @@ public class Generation : MonoBehaviour
 
                 for (int j = 0; j < _height; j++)
                 {
-                    
-                    GameObject newObject = Instantiate(
-                        gameObjectsList[Random.Range(0, gameObjectsList.Count)],
-                        new Vector3(transform.position.x + i * 50, 0, transform.position.z + j * 50),
-                        Quaternion.identity,
-                        transform
-                    ); 
 
-                    row.Add(newObject);
+                        GameObject NewTile = Instantiate(
+                            _tilesVariationList[Random.Range(0, _tilesVariationList.Count)],
+                            new Vector3(transform.position.x + i * 50, 0, transform.position.z + j * 50),
+                            Quaternion.identity,
+                            transform
+                        );
+                        row.Add(NewTile);
                 }
             }
+            AddMutationsChestsToTiles(_width, _height, _mutationsOnMapMin, _mutationsOnMapMax);
+            AddQuestsToTiles(_width,_height, _questsOnMapMin, _questsOnMapMax);
             SetupNavMeshSurface();
 
 
         }
     }
+
+
 
     void SetupNavMeshSurface()
     {
@@ -80,12 +233,12 @@ public class Generation : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            GenerateMap(3, 2);
+            GenerateMap(3, 3);
         }
     }
     private void Start()
     {
         allSurfaces = GetComponents<NavMeshSurface>(); 
-        GenerateMap(3, 2);
+        GenerateMap(3, 3);
     }
 }

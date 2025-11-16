@@ -10,7 +10,7 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void OnEnable()
     {
-        _enemyHP.onDamage += GetDamage;
+        //_enemyHP.onDamage += GetDamage;
 
         _healhtBar.maxValue = _enemyHP.GetMaxHP();
         _healhtBar.minValue = 0;

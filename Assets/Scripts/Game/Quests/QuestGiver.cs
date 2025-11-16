@@ -5,29 +5,38 @@ using UnityEngine;
 
 public class QuestGiver : EInteractable
 {
-    [SerializeField] QuestData quest;
-    [NonSerialized] public bool _questComplete = false;
-    [SerializeField] private GameObject _rewardMenu;
-    [SerializeField] private ItemType _questType;
+    [SerializeField] private QuestData _quest;
+    private bool _questComplete = false;
+    public ItemType _questType;
 
+   public void SetQuest(QuestData Quest)
+    {
+        _quest = Quest;
+    }
+    
+    public void SetQuestType(ItemType type)
+    {
+        _questType = type;
+    }
+
+    public bool QuestComplete { get { return _questComplete; } }
     public override void Interact()
     {
-        if (!_questComplete)
+        if (!QuestComplete)
         {
-            quest._questGiver = this;
-            quest.OnQuestStart();
+            _quest._questGiver = this;
+            _quest.OnQuestStart();
             MakeNonReady();
             _canBeInteractedWith = false;
         }
         else 
         {
             ItemControllerSO.Instance.questType = _questType;
-            _rewardMenu.SetActive(true);
+            GameMenuController.Instance.GivePlayerItemReward();
             MakeNonReady();
             _canBeInteractedWith = false;
         } 
     }
-
     public override void SetComplete()
     {
         _canBeInteractedWith = true;

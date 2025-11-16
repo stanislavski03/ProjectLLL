@@ -17,7 +17,7 @@ public class EnemyHP : MonoBehaviour
     private PlayerEXP _playerEXP;
     private float _currentHP;
 
-    public event Action<float> onDamage;
+    //public event Action<float> onDamage;
 
     public int EnemyType = 0;
 
