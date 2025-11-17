@@ -96,16 +96,19 @@ public class PlayerStatsSO : ScriptableObject
         AreaMultiplier += value;
         _areaMultiplierChanged?.Invoke(AreaMultiplier);
     }
+
     public void ChangeSpeedMultiplier(float value)
     {
         SpeedMultiplier += value;
         _speedMultiplierChanged?.Invoke(SpeedMultiplier);
     }
+
     public void ChangeMoney(long value)
     {
         Money += value;
         _moneyChanged?.Invoke(Money);
     }
+
     public void ChangeMoveSpeed(float value)
     {
         MoveSpeed += value;

@@ -46,7 +46,6 @@ public class Explosion : MonoBehaviour
 
     private void SetupExplosion()
     {
-
         float finalScale = baseScale * currentArea;
         transform.localScale = new Vector3(finalScale, 0.001f, finalScale);
 
@@ -88,33 +87,12 @@ public class Explosion : MonoBehaviour
         foreach (var hitCollider in hitColliders)
         {
             EnemyHP enemy = hitCollider.GetComponent<EnemyHP>();
-            if (enemy != null)
+            if (enemy != null && !damagedEnemies.Contains(enemy))
             {
                 float actualDamage = staffSource != null ? staffSource.GetDamage() : currentDamage;
                 enemy.Damage(actualDamage);
+                damagedEnemies.Add(enemy);
             }
-        }
-    }
-
-    private IEnumerator DamageCoroutine()
-    {
-        while (isActive)
-        {
-            DamageEnemiesInRadius();
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!isActive) return;
-
-        EnemyHP enemy = other.GetComponent<EnemyHP>();
-        if (enemy != null && !damagedEnemies.Contains(enemy))
-        {
-            float actualDamage = staffSource != null ? staffSource.GetDamage() : currentDamage;
-            enemy.Damage(actualDamage);
-            damagedEnemies.Add(enemy);
         }
     }
 
@@ -168,12 +146,5 @@ public class Explosion : MonoBehaviour
             explosionEffect.Stop();
             explosionEffect.Clear();
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        float radius = (currentArea * baseScale) * 0.5f;
-        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

@@ -120,3 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 0}
   damageCollider: {fileID: 3970033129863969453}
+  baseScale: 1

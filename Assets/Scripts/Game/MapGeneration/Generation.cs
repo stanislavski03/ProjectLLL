@@ -251,44 +251,50 @@ public class Generation : MonoBehaviour
 
     void SetupNavMeshSurface()
     {
-        foreach (NavMeshSurface surface in allSurfaces)
+        if (allSurfaces != null)
         {
+            foreach (NavMeshSurface surface in allSurfaces)
+            {
 
-            surface.collectObjects = CollectObjects.Children;
-            surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
-            BuildNavMesh(surface);
+                surface.collectObjects = CollectObjects.Children;
+                surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+                BuildNavMesh(surface);
+            }
         }
     }
 
-    public void BuildNavMesh( NavMeshSurface parentSurface)
-    {       
+    public void BuildNavMesh(NavMeshSurface parentSurface)
+    {
         parentSurface.BuildNavMesh();
     }
 
     public void ClearGeneration()
     {
-
-        generation.Clear();
-        foreach (NavMeshSurface surface in allSurfaces)
+        if (allSurfaces != null)
         {
-            surface.RemoveData();
-            surface.navMeshData = null;
-        }
-        
-        NavMesh.RemoveAllNavMeshData();
-        foreach (Transform child in transform)
-        {
+            generation.Clear();
+            foreach (NavMeshSurface surface in allSurfaces)
+            {
+                surface.RemoveData();
+                surface.navMeshData = null;
+            }
 
-            Destroy(child.gameObject);
+            NavMesh.RemoveAllNavMeshData();
+            foreach (Transform child in transform)
+            {
 
+                Destroy(child.gameObject);
+
+            }
         }
+
 
     }
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             GenerateMap(3, 4);
         }

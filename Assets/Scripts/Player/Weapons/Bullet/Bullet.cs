@@ -4,7 +4,7 @@ public class Bullet : MonoBehaviour
 {
     [Header("Bullet Settings")]
     //[SerializeField] private LayerMask collisionLayers = Physics.DefaultRaycastLayers;
-    
+
     private Transform target;
     private float currentSpeed;
     private float currentLifetime;
@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            target=null;
+            target = null;
             transform.position += lastDirection * currentSpeed * Time.deltaTime;
         }
     }
@@ -68,7 +68,7 @@ public class Bullet : MonoBehaviour
 
                 float actualDamage = sourceWeapon != null ? sourceWeapon.GetDamage() : currentDamage;
                 enemy.Damage(actualDamage);
-            
+
             }
             ReturnToPool();
         }
@@ -76,7 +76,10 @@ public class Bullet : MonoBehaviour
 
     private void ReturnToPool()
     {
-        if (BulletPool.Instance != null)
+        // Отменяем все вызовы методов
+        CancelInvoke();
+
+        if (BulletPool.Instance != null && gameObject != null && gameObject.activeInHierarchy)
         {
             BulletPool.Instance.ReturnBullet(gameObject);
         }
@@ -87,5 +90,6 @@ public class Bullet : MonoBehaviour
         target = null;
         hasTarget = false;
         sourceWeapon = null;
+        lastDirection = Vector3.zero;
     }
 }

@@ -17,7 +17,7 @@ MonoBehaviour:
   CooldownReduction: 0.7
   AreaMultiplier: 1
   MaxHP: 3000
-  MoveSpeed: 10
+  MoveSpeed: 15
   SpeedMultiplier: 1
   Money: 120
   maxEXP: 100

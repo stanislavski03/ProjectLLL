@@ -5,7 +5,6 @@ public class BulletEnemy : MonoBehaviour
     [SerializeField] private float _speed = 10f;
     [SerializeField] private float _lifetime = 3f;
     [SerializeField] private float _damage = 10f;
-    [SerializeField] private LayerMask _collisionLayers = Physics.DefaultRaycastLayers;
 
     private Vector3 _direction;
     private float _currentLifetime;
@@ -20,7 +19,6 @@ public class BulletEnemy : MonoBehaviour
         {
             _playerHP = player.GetComponent<PlayerHP>();
         }
-
     }
 
     private void Update()
@@ -35,7 +33,6 @@ public class BulletEnemy : MonoBehaviour
         }
 
         transform.Translate(Vector3.forward * _speed * Time.deltaTime, Space.Self);
-        //CheckCollision();
     }
 
     private void OnEnable()
@@ -54,16 +51,6 @@ public class BulletEnemy : MonoBehaviour
     {
         HandleCollision(other);
     }
-
-    //private void CheckCollision()
-    //{
-    //    RaycastHit hit;
-    //    if (Physics.Raycast(transform.position, transform.forward, out hit,
-    //        _speed * Time.deltaTime + 0.1f, _collisionLayers))
-    //    {
-    //        HandleCollision(hit.collider);
-    //    }
-    //}
 
     private void HandleCollision(Collider collider)
     {
@@ -92,14 +79,15 @@ public class BulletEnemy : MonoBehaviour
 
     private void ReturnToPool()
     {
-        if (BulletEnemyPool.Instance != null)
+        CancelInvoke();
+        
+        if (BulletEnemyPool.Instance != null && gameObject != null && gameObject.activeInHierarchy)
         {
             BulletEnemyPool.Instance.ReturnBulletEnemy(gameObject);
         }
-        else
+        else if (gameObject != null)
         {
             gameObject.SetActive(false);
         }
     }
-    
 }
