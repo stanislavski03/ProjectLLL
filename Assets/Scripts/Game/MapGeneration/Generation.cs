@@ -5,6 +5,7 @@ using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Cysharp.Threading.Tasks;
 
 public class Generation : MonoBehaviour
 {
@@ -38,42 +39,60 @@ public class Generation : MonoBehaviour
 
     public void AddMutationsChestsToTiles(int _width, int _height, int MutationsMin, int MutationsMax)
     {
-        if (MutationsMin < 0)
-            MutationsMin = 0;
-
-        if (MutationsMax > _width * _height)
-            MutationsMax = _width * _height;
-
-        if (MutationsMin > MutationsMax)
-            MutationsMin = MutationsMax;
-
-        int MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1);
-        if (MutationsAmount >= _width * _height)
+        try
         {
-            for (int i = 0; i < _width; i++)
+            if (MutationsMin < 0)
+                MutationsMin = 0;
+
+            if (MutationsMax > _width * _height)
+                MutationsMax = _width * _height;
+
+            if (MutationsMin > MutationsMax)
+                MutationsMin = MutationsMax;
+
+            int MutationsAmount;
+            if (MutationsMax == MutationsMin)
+                MutationsAmount = MutationsMax;
+            else
+                MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1);
+            List<List<GameObject>> NotSpawned = new List<List<GameObject>>();
+
+            foreach (var row in generation)
             {
-                for (int j = 0; j < _height; j++)
+                NotSpawned.Add(new List<GameObject>(row));
+            }
+
+            if (MutationsAmount >= _width * _height)
+            {
+                for (int i = 0; i < _width; i++)
                 {
-                    generation[i][j].GetComponent<SpawnActivity>()._objectsOnTile.Add(ActivityOnTileType.Quest);
-                    generation[i][j].GetComponent<SpawnActivity>().SpawnMutationChest();
-            
+                    for (int j = 0; j < _height; j++)
+                    {
+                        NotSpawned[i][j].GetComponent<SpawnActivity>()._objectsOnTile.Add(ActivityOnTileType.Quest);
+                        NotSpawned[i][j].GetComponent<SpawnActivity>().SpawnMutationChest();
+                    }
                 }
             }
-        }
-        else
-            for (int i = 0; i < MutationsAmount; i++)
-            {
-                SpawnActivity TileToSpawnQuest = generation[Random.Range(0, _width)][Random.Range(0, _height)].GetComponent<SpawnActivity>();
-                if (TileToSpawnQuest._objectsOnTile.Exists(activity => activity == ActivityOnTileType.Mutation))
+            else
+                for (int i = 0; i < MutationsAmount; i++)
                 {
-                    i--;
-                }
-                else
-                {
+                    int _randWidth = Random.Range(0, NotSpawned.Count);
+                    int _randHeight = Random.Range(0, NotSpawned[_randWidth].Count);
+
+                    SpawnActivity TileToSpawnQuest = NotSpawned[_randWidth][_randHeight].GetComponent<SpawnActivity>();
                     TileToSpawnQuest._objectsOnTile.Add(ActivityOnTileType.Mutation);
                     TileToSpawnQuest.SpawnMutationChest();
+
+                    NotSpawned[_randWidth].RemoveAt(_randHeight);
+                    if (NotSpawned[_randWidth].Count == 0)
+                        NotSpawned.RemoveAt(_randWidth);
+                    if (NotSpawned.Count == 0)
+                    {
+                        return;
+                    }
                 }
-            }
+        }
+        catch { Debug.Log("AddMutationsChestsToTiles"); }
     }
 
     public void AddQuestsToTiles(int _width, int _height, int QuestsMin, int QuestsMax)
@@ -152,7 +171,7 @@ public class Generation : MonoBehaviour
                 }
             }
         }
-        catch { }
+        catch { Debug.Log("AddQuestsToTiles"); }
        
 
     }

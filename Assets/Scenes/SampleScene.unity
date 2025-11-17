@@ -1234,8 +1234,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 13844d2f07929a2488264fccb59c01e5, type: 2}
   _questsOnMapMin: 2
   _questsOnMapMax: 3
-  _mutationsOnMapMin: 5
-  _mutationsOnMapMax: 7
+  _mutationsOnMapMin: 6
+  _mutationsOnMapMax: 8
 --- !u!114 &147502947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5527,63 +5527,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439268859}
   m_CullTransparentMesh: 1
---- !u!1001 &443131820
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.2729378
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 29.354876
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2903608091789663233, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8577960892633087196, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
-      propertyPath: m_Name
-      value: MutationChest
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4e35773ce94d55d4abf9588a0505e708, type: 3}
 --- !u!1 &463095815
 GameObject:
   m_ObjectHideFlags: 0
@@ -24969,4 +24912,3 @@ SceneRoots:
   - {fileID: 195058266}
   - {fileID: 837624294}
   - {fileID: 147502945}
-  - {fileID: 443131820}
