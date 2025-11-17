@@ -18,8 +18,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 877b9980e9000b14181eeef065582d83, type: 2}
   - {fileID: 11400000, guid: f10b75399f70092469e0c3ca7a2678b7, type: 2}
   - {fileID: 11400000, guid: 55b6c0c232d2f7343a2289194e69a74c, type: 2}
-  PlayerMutationsPool:
-  - {fileID: 11400000, guid: 07927f0b09b2c564eb2e9654995c6f14, type: 2}
-  - {fileID: 11400000, guid: 07927f0b09b2c564eb2e9654995c6f14, type: 2}
-  - {fileID: 11400000, guid: c5189160fcc682444b89c9fe0a901a03, type: 2}
-  - {fileID: 11400000, guid: 877b9980e9000b14181eeef065582d83, type: 2}
+  PlayerMutationsPool: []

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: PlayerStatsSO
   m_EditorClassIdentifier: 
   playerName: "\u0418\u0433\u0440\u043E\u043A"
-  DamageMultiplier: 1
-  CooldownReduction: 1
+  DamageMultiplier: 101
+  CooldownReduction: 0.7
   AreaMultiplier: 1
   MaxHP: 3000
   MoveSpeed: 10
   SpeedMultiplier: 1
-  Money: 20200
+  Money: 120
   maxEXP: 100
   maxLevel: 30

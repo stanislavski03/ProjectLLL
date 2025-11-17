@@ -8,6 +8,7 @@ using UnityEngine.AI;
 
 public class Generation : MonoBehaviour
 {
+    [SerializeField] private GameObject _edgeWall;
     [SerializeField] private List<GameObject> _tilesVariationList = new List<GameObject>();
     private List<List<GameObject>> generation = new List<List<GameObject>>();
     private NavMeshSurface[] allSurfaces;
@@ -156,6 +157,42 @@ public class Generation : MonoBehaviour
 
     }
 
+    private void GenerateEdjeWalls()
+    {
+        foreach (List<GameObject> tileList in generation)
+        {
+            GameObject NewNorthWall = Instantiate(
+                           _edgeWall,
+                           new Vector3(tileList[0].transform.position.x, 0, tileList[0].transform.position.z - 50),
+                           Quaternion.Euler(0, 180, 0),
+                           transform
+                       );
+            GameObject NewSouthWall = Instantiate(
+                           _edgeWall,
+                           new Vector3(tileList[tileList.Count - 1].transform.position.x, 0, tileList[tileList.Count-1].transform.position.z +50),
+                           Quaternion.identity,
+                           transform
+                       );
+        }
+        foreach (GameObject tile in generation[0])
+        {
+            GameObject NewNorthWall = Instantiate(
+                           _edgeWall,
+                           new Vector3(tile.transform.position.x-50, 0, tile.transform.position.z),
+                           Quaternion.Euler(0, -90, 0),
+                           transform
+                       );
+        }
+        foreach (GameObject tile in generation[generation.Count -1])
+        {
+            GameObject NewNorthWall = Instantiate(
+                           _edgeWall,
+                           new Vector3(tile.transform.position.x +50, 0, tile.transform.position.z),
+                           Quaternion.Euler(0,90,0),
+                           transform
+                       );
+        }
+    }
 
 
     public void GenerateMap(int _width, int _height)
@@ -184,6 +221,7 @@ public class Generation : MonoBehaviour
             }
             AddMutationsChestsToTiles(_width, _height, _mutationsOnMapMin, _mutationsOnMapMax);
             AddQuestsToTiles(_width,_height, _questsOnMapMin, _questsOnMapMax);
+            GenerateEdjeWalls();
             SetupNavMeshSurface();
 
 
@@ -233,12 +271,12 @@ public class Generation : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            GenerateMap(3, 3);
+            GenerateMap(3, 4);
         }
     }
     private void Start()
     {
         allSurfaces = GetComponents<NavMeshSurface>(); 
-        GenerateMap(3, 3);
+        GenerateMap(3, 4);
     }
 }

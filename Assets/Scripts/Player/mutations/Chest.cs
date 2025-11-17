@@ -8,28 +8,24 @@ using Cysharp.Threading.Tasks;
 public class Chest : EInteractable
 {
     [SerializeField] MutationDataSO mutation;
-    [SerializeField] private GameObject _rewardMenu;
-    [SerializeField] private GameObject _cost;
-    [SerializeField] private GameObject _warning;
+
     public long moneyRequired;
 
     public override void MakeReady()
     {
         _isReady = true;
         _renderer.material.color += new Color(0.5f, 0.54f, 0);
-        TextMeshProUGUI ChestCost = _cost.GetComponentInChildren<TextMeshProUGUI>();
-        ChestCost.text = moneyRequired.ToString();
-        _cost.SetActive(true);
-        _cost.transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
+        //TextMeshProUGUI ChestCost = _cost.GetComponentInChildren<TextMeshProUGUI>();
+        //ChestCost.text = moneyRequired.ToString();
+        GameMenuController.Instance.ShowCostOnMutatiOnChest(transform);
     }
-
     public override void MakeNonReady()
     {
         if (_isReady)
         {
             _renderer.material.color -= new Color(0.5f, 0.54f, 0);
             _isReady = false;
-            _cost.SetActive(false);
+            GameMenuController.Instance.RemoveFromSceneCostOnMutatiOnChest();
         }
     }
 
@@ -39,21 +35,21 @@ public class Chest : EInteractable
         {
             PlayerStatsSO.Instance.Money -= moneyRequired;
             mutation.chest = this;
-            _rewardMenu.SetActive(true);
-            _cost.SetActive(false);
-            _warning.SetActive(false);
+            GameMenuController.Instance.GiveMutationReward();
+            GameMenuController.Instance.RemoveFromSceneCostOnMutatiOnChest();
+            GameMenuController.Instance.RemoveFromSceneWarningOnMutatiOnChest();
             Destroy(gameObject);
         }
         else
         {
-            _cost.SetActive(false);
-            _warning.SetActive(true);
-            _warning.transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
+            GameMenuController.Instance.RemoveFromSceneCostOnMutatiOnChest();
+
+            GameMenuController.Instance.ShowWarningOnMutatiOnChest(transform);
             await UniTask.WaitForSeconds(1);
-            _warning.SetActive(false);
+            GameMenuController.Instance.RemoveFromSceneWarningOnMutatiOnChest();
             if (_isReady)
-                _cost.SetActive(true);
-            
+                GameMenuController.Instance.ShowCostOnMutatiOnChest(transform);
+
 
         }
 
