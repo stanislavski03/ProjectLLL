@@ -50,6 +50,8 @@ public class Laser : Weapon
         if (playerStats != null)
         {
             playerStats._areaMultiplierChanged += OnAreaMultiplierChanged;
+            playerStats._damageMultiplierChanged += OnDamageMultiplierChanged;
+            playerStats._technoDamageMultiplierChanged += OnDamageMultiplierChanged;
         }
     }
 
@@ -60,7 +62,21 @@ public class Laser : Weapon
         if (playerStats != null)
         {
             playerStats._areaMultiplierChanged -= OnAreaMultiplierChanged;
+            playerStats._damageMultiplierChanged -= OnDamageMultiplierChanged;
+            playerStats._technoDamageMultiplierChanged -= OnDamageMultiplierChanged;
         }
+    }
+
+    private void OnDamageMultiplierChanged(float DamageMultiplier)
+    {
+        CalculateDamage(DamageMultiplier);
+    }
+
+    protected override void CalculateDamage(float DamageMultiplier)
+    {
+        base.CalculateDamage();
+        currentDamage *= DamageMultiplier;
+        
     }
 
     private void OnAreaMultiplierChanged(float areaMultiplier)

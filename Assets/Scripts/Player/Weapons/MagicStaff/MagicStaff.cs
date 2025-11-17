@@ -51,6 +51,8 @@ public class MagicStaff : Weapon
         if (playerStats != null)
         {
             playerStats._areaMultiplierChanged += OnAreaMultiplierChanged;
+            playerStats._damageMultiplierChanged += OnDamageMultiplierChanged;
+            playerStats._magicDamageMultiplierChanged += OnDamageMultiplierChanged;
         }
     }
 
@@ -61,12 +63,26 @@ public class MagicStaff : Weapon
         if (playerStats != null)
         {
             playerStats._areaMultiplierChanged -= OnAreaMultiplierChanged;
+            playerStats._damageMultiplierChanged -= OnDamageMultiplierChanged;
+            playerStats._magicDamageMultiplierChanged -= OnDamageMultiplierChanged;
         }
     }
 
     private void OnAreaMultiplierChanged(float areaMultiplier)
     {
         CalculateExplosionStats();
+    }
+
+    private void OnDamageMultiplierChanged(float DamageMultiplier)
+    {
+        CalculateDamage(DamageMultiplier);
+    }
+
+    protected override void CalculateDamage(float DamageMultiplier)
+    {
+        base.CalculateDamage();
+        currentDamage *= DamageMultiplier;
+        
     }
 
     protected override void CalculateAllStats()

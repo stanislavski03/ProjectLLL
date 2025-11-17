@@ -22,6 +22,7 @@ public class ItemRewardInfo : MonoBehaviour
 
     private void OnEnable()
     {
+        _questGiverType = ItemControllerSO.Instance.questType;
         SetItemsInfo();
         GameStateManager.Instance.PauseForLevelUp();
     }

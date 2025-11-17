@@ -9,6 +9,7 @@ public abstract class Weapon : MonoBehaviour
     protected float currentDamage;
     protected float currentCooldown;
     public int currentLevel = 0;
+    
 
     public bool IsAvailable = true;
     public Action AvailableChanged;
@@ -45,6 +46,10 @@ public abstract class Weapon : MonoBehaviour
             playerStats._cooldownReductionChanged += OnCooldownReductionChanged;
             playerStats._damageMultiplierChanged += OnDamageMultiplierChanged;
         }
+        else
+        {
+            Debug.Log("playerStats is null");
+        }
     }
 
     protected virtual void UnsubscribeFromPlayerStats()
@@ -53,6 +58,10 @@ public abstract class Weapon : MonoBehaviour
         {
             playerStats._cooldownReductionChanged -= OnCooldownReductionChanged;
             playerStats._damageMultiplierChanged -= OnDamageMultiplierChanged;
+        }
+        else
+        {
+            Debug.Log("playerStats is null");
         }
     }
 
@@ -74,7 +83,9 @@ public abstract class Weapon : MonoBehaviour
 
     private void OnDamageMultiplierChanged(float damageMultiplier)
     {
+        Debug.Log("OnDamageMultiplierChanged");
         CalculateAllStats();
+        Debug.Log("OnDamageMultiplierChanged");
     }
 
     // ГЛАВНЫЙ МЕТОД: РАСЧЕТ ВСЕХ СТАТОВ
@@ -87,6 +98,30 @@ public abstract class Weapon : MonoBehaviour
     // РАСЧЕТ УРОНА: базовый урон + бонусы уровня + множитель игрока
     protected virtual void CalculateDamage()
     {
+        float baseDamage = weaponData.baseDamage;
+        
+        // ДОБАВЛЯЕМ БОНУСЫ ОТ УРОВНЕЙ
+        if (weaponData.levelUpgrades != null)
+        {
+            for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
+            {
+                var upgrade = weaponData.levelUpgrades[i];
+                if (upgrade.level <= currentLevel)
+                {
+                    baseDamage += upgrade.damageBonus;
+                }
+            }
+        }
+        
+        // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
+        float damageMultiplier = playerStats.DamageMultiplier;
+        currentDamage = baseDamage * damageMultiplier;
+        
+    }
+
+    protected virtual void CalculateDamage(float DamageMultiplier)
+    {
+        Debug.Log("CalculateDamage");
         float baseDamage = weaponData.baseDamage;
         
         // ДОБАВЛЯЕМ БОНУСЫ ОТ УРОВНЕЙ

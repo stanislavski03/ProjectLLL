@@ -13,9 +13,10 @@ public class ItemDataSO : ScriptableObject
     public ItemType itemType;
     public bool HasOnEnemyDeathEvent;
     public bool HasOnSceneChangeEvent;
+    public bool HasOnDamageGiveEvent;
 
     public ItemControllerSO ItemController;
-    public void OnPick()
+    public virtual void OnPick()
     {
         ItemControllerSO.Instance.DistributeItem(this);
         isActive = true;
@@ -31,6 +32,11 @@ public class ItemDataSO : ScriptableObject
     public virtual void OnSceneChange()
     {
         Debug.Log("OnSceneChange");
+    }
+
+    public virtual void OnDamageGive()
+    {
+        Debug.Log("OnDamageGive");
     }
 
 }

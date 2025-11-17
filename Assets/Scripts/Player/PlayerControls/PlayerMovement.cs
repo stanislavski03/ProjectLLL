@@ -14,8 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private float _targetSpeed;
     
     // Параметры плавности
-    [SerializeField] private float _acceleration = 35f;
-    [SerializeField] private float _deceleration = 90f;
+    [SerializeField] private float _acceleration = 45f;
+    [SerializeField] private float _deceleration = 120f;
     
     // Свойство для доступа к скорости извне (для аниматора)
     public float CurrentSpeed => _currentVelocity;
