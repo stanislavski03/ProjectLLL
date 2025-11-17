@@ -22,13 +22,13 @@ public class Generation : MonoBehaviour
 
                 for (int j = 0; j < _height; j++)
                 {
-                    
+
                     GameObject newObject = Instantiate(
                         gameObjectsList[Random.Range(0, gameObjectsList.Count)],
                         new Vector3(transform.position.x + i * 50, 0, transform.position.z + j * 50),
                         Quaternion.identity,
                         transform
-                    ); 
+                    );
 
                     row.Add(newObject);
                 }
@@ -41,37 +41,43 @@ public class Generation : MonoBehaviour
 
     void SetupNavMeshSurface()
     {
-        foreach (NavMeshSurface surface in allSurfaces)
+        if (allSurfaces != null)
         {
+            foreach (NavMeshSurface surface in allSurfaces)
+            {
 
-            surface.collectObjects = CollectObjects.Children;
-            surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
-            BuildNavMesh(surface);
+                surface.collectObjects = CollectObjects.Children;
+                surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+                BuildNavMesh(surface);
+            }
         }
     }
 
-    public void BuildNavMesh( NavMeshSurface parentSurface)
-    {       
+    public void BuildNavMesh(NavMeshSurface parentSurface)
+    {
         parentSurface.BuildNavMesh();
     }
 
     public void ClearGeneration()
     {
-
-        generation.Clear();
-        foreach (NavMeshSurface surface in allSurfaces)
+        if (allSurfaces != null)
         {
-            surface.RemoveData();
-            surface.navMeshData = null;
-        }
-        
-        NavMesh.RemoveAllNavMeshData();
-        foreach (Transform child in transform)
-        {
+            generation.Clear();
+            foreach (NavMeshSurface surface in allSurfaces)
+            {
+                surface.RemoveData();
+                surface.navMeshData = null;
+            }
 
-            Destroy(child.gameObject);
+            NavMesh.RemoveAllNavMeshData();
+            foreach (Transform child in transform)
+            {
 
+                Destroy(child.gameObject);
+
+            }
         }
+
 
     }
 
@@ -85,6 +91,7 @@ public class Generation : MonoBehaviour
     }
     private void Start()
     {
+        allSurfaces = GetComponents<NavMeshSurface>();
         GenerateMap(3, 2);
     }
 }
