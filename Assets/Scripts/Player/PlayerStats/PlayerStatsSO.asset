@@ -21,7 +21,7 @@ MonoBehaviour:
   MaxHP: 3000
   MoveSpeed: 15
   SpeedMultiplier: 1
-  Money: 5970
+  Money: 6270
   maxEXP: 100
   maxLevel: 30
   invincibility: 0
