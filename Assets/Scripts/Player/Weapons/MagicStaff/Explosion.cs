@@ -14,9 +14,10 @@ public class Explosion : MonoBehaviour
     private float currentDamage;
     private MagicStaff staffSource;
 
-    private List<EnemyHP> damagedEnemies = new List<EnemyHP>();
+    private HashSet<EnemyHP> enemiesInField = new HashSet<EnemyHP>();
     private bool isActive = false;
     private Coroutine lifecycleCoroutine;
+    private Coroutine damageOverTimeCoroutine;
 
     public bool IsActive => isActive;
 
@@ -41,6 +42,7 @@ public class Explosion : MonoBehaviour
         if (gameObject.activeInHierarchy)
         {
             lifecycleCoroutine = StartCoroutine(ExplosionLifecycle());
+            damageOverTimeCoroutine = StartCoroutine(DamageOverTime());
         }
     }
 
@@ -52,6 +54,7 @@ public class Explosion : MonoBehaviour
         if (damageCollider != null)
         {
             damageCollider.radius = 0.5f;
+            damageCollider.isTrigger = true;
         }
 
         if (explosionEffect != null)
@@ -62,43 +65,65 @@ public class Explosion : MonoBehaviour
         }
 
         isActive = true;
-        damagedEnemies.Clear();
+        enemiesInField.Clear();
     }
 
     private IEnumerator ExplosionLifecycle()
     {
-        float timer = 0f;
-
-        while (timer < currentLifetime && isActive)
-        {
-            DamageEnemiesInRadius();
-            timer += 0.5f;
-            yield return new WaitForSeconds(0.5f);
-        }
-
+        yield return new WaitForSeconds(currentLifetime);
         FinishExplosion();
     }
 
-    private void DamageEnemiesInRadius()
+    private IEnumerator DamageOverTime()
     {
-        float radius = (currentArea * baseScale) * 0.5f;
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
-
-        foreach (var hitCollider in hitColliders)
+        float damageInterval = 0.5f; // Урон каждые 0.5 секунд
+        
+        while (isActive)
         {
-            EnemyHP enemy = hitCollider.GetComponent<EnemyHP>();
-            if (enemy != null && !damagedEnemies.Contains(enemy))
+            // Наносим урон всем врагам в поле
+            foreach (var enemy in new List<EnemyHP>(enemiesInField))
             {
-                float actualDamage = staffSource != null ? staffSource.GetDamage() : currentDamage;
-                enemy.Damage(actualDamage);
-                damagedEnemies.Add(enemy);
+                if (enemy != null)
+                {
+                    float actualDamage = staffSource != null ? staffSource.GetDamage() : currentDamage;
+                    enemy.Damage(actualDamage);
+                }
             }
+            
+            yield return new WaitForSeconds(damageInterval);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isActive) return;
+
+        EnemyHP enemy = other.GetComponent<EnemyHP>();
+        if (enemy != null && !enemiesInField.Contains(enemy))
+        {
+            enemiesInField.Add(enemy);
+            
+            // Наносим урон сразу при входе в поле
+            float actualDamage = staffSource != null ? staffSource.GetDamage() : currentDamage;
+            enemy.Damage(actualDamage);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!isActive) return;
+
+        EnemyHP enemy = other.GetComponent<EnemyHP>();
+        if (enemy != null && enemiesInField.Contains(enemy))
+        {
+            enemiesInField.Remove(enemy);
         }
     }
 
     private void FinishExplosion()
     {
         isActive = false;
+        enemiesInField.Clear();
 
         if (explosionEffect != null)
         {
@@ -122,6 +147,7 @@ public class Explosion : MonoBehaviour
         if (isActive && lifecycleCoroutine == null)
         {
             lifecycleCoroutine = StartCoroutine(ExplosionLifecycle());
+            damageOverTimeCoroutine = StartCoroutine(DamageOverTime());
         }
     }
 
@@ -132,13 +158,20 @@ public class Explosion : MonoBehaviour
             StopCoroutine(lifecycleCoroutine);
             lifecycleCoroutine = null;
         }
+        
+        if (damageOverTimeCoroutine != null)
+        {
+            StopCoroutine(damageOverTimeCoroutine);
+            damageOverTimeCoroutine = null;
+        }
+        
         ResetExplosion();
     }
 
     private void ResetExplosion()
     {
         isActive = false;
-        damagedEnemies.Clear();
+        enemiesInField.Clear();
         staffSource = null;
 
         if (explosionEffect != null)

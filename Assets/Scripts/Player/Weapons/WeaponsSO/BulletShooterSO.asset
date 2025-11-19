@@ -18,6 +18,7 @@ MonoBehaviour:
   baseDamage: 10
   baseCooldown: 1
   maxLevel: 2
+  weaponType: 0
   levelUpgrades:
   - level: 1
     areaBonus: 0
@@ -28,7 +29,7 @@ MonoBehaviour:
     upgradeDescription: 
   - level: 2
     areaBonus: 0
-    damageBonus: 1000
+    damageBonus: 1
     cooldownReduction: 0.8
     lifetimeBonus: 0
     speedBonus: 0

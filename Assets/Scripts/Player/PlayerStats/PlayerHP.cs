@@ -41,6 +41,7 @@ public class PlayerHP : MonoBehaviour
         ItemControllerSO.Instance.ActivateOnDamageGiveEvent();
         if (PlayerStatsSO.Instance.invincibility == false)
         {
+            PlayerHitEffect.Instance.TakeHit();
             _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, MaxHP);
             Changed?.Invoke(_currentHP);
             if (_currentHP == 0) Death();

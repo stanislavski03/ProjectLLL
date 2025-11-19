@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
 
 public class EnemyHP : MonoBehaviour
 {
@@ -16,22 +15,20 @@ public class EnemyHP : MonoBehaviour
 
     private PlayerEXP _playerEXP;
     private float _currentHP;
-
-    //public event Action<float> onDamage;
+    private EnemyHitEffect hitEffect;
 
     public int EnemyType = 0;
 
-
-
     private void Start()
     {
-            
-
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
         {
             _playerEXP = player.GetComponent<PlayerEXP>();
         }
+        
+        // Получаем компонент эффекта
+        hitEffect = GetComponent<EnemyHitEffect>();
     }
 
     private void OnEnable()
@@ -41,15 +38,8 @@ public class EnemyHP : MonoBehaviour
             InitializeStats();
         }
         catch { }
-
-
-
     }
 
-    private void OnDisable()
-    {
-        
-    }
     private void InitializeStats()
     {
         _maxHP = _initializedStats._maxHealth;
@@ -63,21 +53,27 @@ public class EnemyHP : MonoBehaviour
     {
         return _currentHP;
     }
+    
     public float GetMaxHP()
     {
         return _maxHP;
     }
 
-
-    public void Damage(float damageAmmount)
+    public void Damage(float damageAmount)
     {
-        _currentHP -= damageAmmount;
-        if (_currentHP <= 0) Death();
+        _currentHP -= damageAmount;
+        
+        // Активируем эффект попадания
+        if (hitEffect != null)
+            hitEffect.TakeHit();
+            
+        if (_currentHP <= 0) 
+            Death();
     }
 
-    public void Heal(float healAmmount)
+    public void Heal(float healAmount)
     {
-        _currentHP += healAmmount;
+        _currentHP += healAmount;
     }
 
     private void Death()
@@ -86,12 +82,13 @@ public class EnemyHP : MonoBehaviour
         ExpOnDeath();
         if (_pool != null)
             _pool.GetEnemyBackToPool(gameObject);
-        else Destroy(gameObject);
+        else 
+            Destroy(gameObject);
 
         ItemControllerSO.Instance.ActivateOnEnemyDeathEvent(gameObject);
-
         QuestManager.Instance?.OnEnemyKilled(EnemyType);
     }
+    
     private void ExpOnDeath() 
     {
         if (UnityEngine.Random.Range(1f, 100f) <= _expDropPercent)
