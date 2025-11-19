@@ -1,16 +1,15 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerStatsSO _statsSO;
 
     private PlayerInput _playerInput;
-    private Vector2 _moveDirection;
+    private Vector2 _moveInput;
     private Rigidbody rb;
-    private Vector3 _lastVelocity;
+    
+    public bool IsMoving { get; private set; }
 
     private bool isPaused;
 
@@ -18,14 +17,20 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerInput = new PlayerInput();
         rb = GetComponent<Rigidbody>();
-
     }
 
     private void Update()
     {
         if (isPaused) return;
+        _moveInput = _playerInput.Player.Move.ReadValue<Vector2>();
 
-        _moveDirection = _playerInput.Player.Move.ReadValue<Vector2>();
+        IsMoving = _moveInput.magnitude > 0.1f;
+    }
+
+    private void FixedUpdate()
+    {
+        if (isPaused) return;
+        
         Move();
     }
 
@@ -40,18 +45,20 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Move()
-{
-    if (isPaused) return;
-
-    float scaledMoveSpeed = _statsSO.MoveSpeed;
-    Vector3 offset = new Vector3(_moveDirection.x, 0f, _moveDirection.y) * scaledMoveSpeed;
-    rb.velocity = offset;
-    
-    if (offset != Vector3.zero)
     {
-        Quaternion targetRotation = Quaternion.LookRotation(offset);
-        rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, 10 * Time.deltaTime);
+        Vector3 moveDirection = new Vector3(_moveInput.x, 0f, _moveInput.y);
+        
+        if (moveDirection.magnitude > 0.1f)
+        {
+            moveDirection = moveDirection.normalized * _statsSO.MoveSpeed;
+            rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
+            
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, 10 * Time.fixedDeltaTime);
+        }
+        else
+        {
+            rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+        }
     }
-}
-
 }

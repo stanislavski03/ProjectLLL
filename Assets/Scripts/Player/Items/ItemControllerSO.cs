@@ -14,7 +14,7 @@ public class ItemControllerSO : ScriptableObject
         {
             if (_instance == null)
             {
-                // Ищем существующий экземпляр
+                // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 var guids = AssetDatabase.FindAssets("t:ItemControllerSO");
                 if (guids.Length > 0)
                 {
@@ -22,7 +22,7 @@ public class ItemControllerSO : ScriptableObject
                     _instance = AssetDatabase.LoadAssetAtPath<ItemControllerSO>(path);
                 }
 
-                // Если не нашли, создаем новый
+                // пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
                 if (_instance == null)
                 {
                     Debug.LogWarning("ItemControllerSO not found in project. Please create one via Assets/Create/Items/Item Controller");
@@ -61,6 +61,7 @@ public class ItemControllerSO : ScriptableObject
 
     public List<ItemDataSO> OnEnemyDeathPool = new List<ItemDataSO>();
     public List<ItemDataSO> OnSceneChangePool = new List<ItemDataSO>();
+    public List<ItemDataSO> OnDamageGivePool = new List<ItemDataSO>();
 
     private List<List<ItemDataSO>> _allPools;
     public List<List<ItemDataSO>> AllPools
@@ -79,14 +80,15 @@ public class ItemControllerSO : ScriptableObject
                     itemActivePool,
                     itemPassivePool,
                     OnEnemyDeathPool,
-                    OnSceneChangePool
+                    OnSceneChangePool,
+                    OnDamageGivePool
                 };
             }
             return _allPools;
         }
     }
 
-    // Для работы в Runtime (без AssetDatabase)
+    // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ Runtime (пїЅпїЅпїЅ AssetDatabase)
     public static void SetInstance(ItemControllerSO instance)
     {
         _instance = instance;
@@ -98,7 +100,7 @@ public class ItemControllerSO : ScriptableObject
 
     private void OnEnable()
     {
-        // Автоматически устанавливаем себя как инстанс при загрузке
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if (_instance == null)
         {
             _instance = this;
@@ -167,6 +169,10 @@ public class ItemControllerSO : ScriptableObject
         {
             OnSceneChangePool.Add(item);
         }
+        if (item.HasOnDamageGiveEvent)
+        {
+            OnDamageGivePool.Add(item);
+        }
     }
 
     public void ActivateOnEnemyDeathEvent(GameObject enemy)
@@ -187,6 +193,17 @@ public class ItemControllerSO : ScriptableObject
             foreach (ItemDataSO item in OnSceneChangePool)
             {
                 item.OnSceneChange();
+            }
+        }
+    }
+
+    public void ActivateOnDamageGiveEvent()
+    {
+        if (OnDamageGivePool.Count > 0)
+        {
+            foreach (ItemDataSO item in OnDamageGivePool)
+            {
+                item.OnDamageGive();
             }
         }
     }

@@ -12,6 +12,7 @@ public class WeaponDataSO : ScriptableObject
     public float baseDamage = 10f;
     public float baseCooldown = 1f;
     public int maxLevel = 6;
+    public WeaponType weaponType = WeaponType.Universal;
     
     [Header("Level Progression")]
     public LevelUpgrade[] levelUpgrades;

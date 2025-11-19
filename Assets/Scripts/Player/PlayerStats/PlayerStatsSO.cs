@@ -11,6 +11,8 @@ public class PlayerStatsSO : ScriptableObject
     
     [Header("Player Stats")]
     public float DamageMultiplier = 1;
+    public float MagicDamageMultiplier = 1;
+    public float TechnoDamageMultiplier = 1;
     public float CooldownReduction = 1;
     public float AreaMultiplier = 1;
     public float MaxHP = 100;
@@ -22,8 +24,12 @@ public class PlayerStatsSO : ScriptableObject
 
     public int maxEXP = 100;
     public int maxLevel = 30;
+
+    public bool invincibility = false;
     
     public event Action<float> _damageMultiplierChanged;
+    public event Action<float> _magicDamageMultiplierChanged;
+    public event Action<float> _technoDamageMultiplierChanged;
     public event Action<float> _cooldownReductionChanged;
     public event Action<float> _areaMultiplierChanged;
     public event Action<float> _speedMultiplierChanged;
@@ -65,6 +71,8 @@ public class PlayerStatsSO : ScriptableObject
     public void UpdateAllPlayerStats()
     {
         _damageMultiplierChanged?.Invoke(DamageMultiplier);
+        _magicDamageMultiplierChanged?.Invoke(MagicDamageMultiplier);
+        _technoDamageMultiplierChanged?.Invoke(TechnoDamageMultiplier);
         _cooldownReductionChanged?.Invoke(CooldownReduction);
         _areaMultiplierChanged?.Invoke(AreaMultiplier);
         _speedMultiplierChanged?.Invoke(SpeedMultiplier);
@@ -77,6 +85,19 @@ public class PlayerStatsSO : ScriptableObject
     {
         DamageMultiplier += value;
         _damageMultiplierChanged?.Invoke(DamageMultiplier);
+        Debug.Log("ChangeDamageMultiplier PlayerSO");
+    }
+
+    public void ChangeMagicDamageMultiplier(float value)
+    {
+        MagicDamageMultiplier += value;
+        _magicDamageMultiplierChanged?.Invoke(MagicDamageMultiplier);
+    }
+
+    public void ChangeTechnoDamageMultiplier(float value)
+    {
+        TechnoDamageMultiplier += value;
+        _technoDamageMultiplierChanged?.Invoke(TechnoDamageMultiplier);
     }
 
     public void ChangeMaxHp(float value)
@@ -96,16 +117,19 @@ public class PlayerStatsSO : ScriptableObject
         AreaMultiplier += value;
         _areaMultiplierChanged?.Invoke(AreaMultiplier);
     }
+
     public void ChangeSpeedMultiplier(float value)
     {
         SpeedMultiplier += value;
         _speedMultiplierChanged?.Invoke(SpeedMultiplier);
     }
+
     public void ChangeMoney(long value)
     {
         Money += value;
         _moneyChanged?.Invoke(Money);
     }
+
     public void ChangeMoveSpeed(float value)
     {
         MoveSpeed += value;

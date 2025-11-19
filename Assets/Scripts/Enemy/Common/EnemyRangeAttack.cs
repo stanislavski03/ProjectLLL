@@ -6,6 +6,8 @@ public class EnemyRangeAttack : MonoBehaviour
 {
     [SerializeField] private Transform _bulletSpawn;
     [SerializeField] private EnemyConfig _initializedStats;
+    [SerializeField] private Animator animator;
+
     public bool shouldShoot = false;
     
     private float _attackCooldown;
@@ -19,6 +21,7 @@ public class EnemyRangeAttack : MonoBehaviour
     private Transform _playerTransform;
     private Coroutine _shootingCoroutine;
     private bool _isShooting = false;
+    private bool _isPreparing = false;
     RaycastHit hit;
 
     private bool isPaused;
@@ -26,6 +29,7 @@ public class EnemyRangeAttack : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -33,6 +37,9 @@ public class EnemyRangeAttack : MonoBehaviour
         if (isPaused) return;
 
         if (_playerTransform == null) return;
+
+        animator.SetBool("IsPreparing", _isPreparing);
+        animator.SetBool("IsShooting", _isShooting);
 
         float distance = Vector3.Distance(transform.position, _playerTransform.position);
 
@@ -49,6 +56,7 @@ public class EnemyRangeAttack : MonoBehaviour
         else
         {
             shouldShoot = false;
+            _isPreparing = false;
         }
 
         if (shouldShoot && !_isShooting)
@@ -104,7 +112,9 @@ public class EnemyRangeAttack : MonoBehaviour
 
     private IEnumerator ShootingRoutine()
     {
+        _isPreparing = true;
         yield return new WaitForSeconds(_prepareTime); 
+        _isPreparing = false;
 
         while (true)
         {

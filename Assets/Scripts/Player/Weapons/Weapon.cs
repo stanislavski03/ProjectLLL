@@ -9,6 +9,7 @@ public abstract class Weapon : MonoBehaviour
     protected float currentDamage;
     protected float currentCooldown;
     public int currentLevel = 0;
+    
 
     public bool IsAvailable = true;
     public Action AvailableChanged;
@@ -45,6 +46,10 @@ public abstract class Weapon : MonoBehaviour
             playerStats._cooldownReductionChanged += OnCooldownReductionChanged;
             playerStats._damageMultiplierChanged += OnDamageMultiplierChanged;
         }
+        else
+        {
+            Debug.Log("playerStats is null");
+        }
     }
 
     protected virtual void UnsubscribeFromPlayerStats()
@@ -53,6 +58,10 @@ public abstract class Weapon : MonoBehaviour
         {
             playerStats._cooldownReductionChanged -= OnCooldownReductionChanged;
             playerStats._damageMultiplierChanged -= OnDamageMultiplierChanged;
+        }
+        else
+        {
+            Debug.Log("playerStats is null");
         }
     }
 
@@ -74,7 +83,9 @@ public abstract class Weapon : MonoBehaviour
 
     private void OnDamageMultiplierChanged(float damageMultiplier)
     {
+        Debug.Log("OnDamageMultiplierChanged");
         CalculateAllStats();
+        Debug.Log("OnDamageMultiplierChanged");
     }
 
     // ГЛАВНЫЙ МЕТОД: РАСЧЕТ ВСЕХ СТАТОВ
@@ -108,10 +119,34 @@ public abstract class Weapon : MonoBehaviour
         
     }
 
+    protected virtual void CalculateDamage(float DamageMultiplier)
+    {
+        Debug.Log("CalculateDamage");
+        float baseDamage = weaponData.baseDamage;
+        
+        // ДОБАВЛЯЕМ БОНУСЫ ОТ УРОВНЕЙ
+        if (weaponData.levelUpgrades != null)
+        {
+            for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
+            {
+                var upgrade = weaponData.levelUpgrades[i];
+                if (upgrade.level <= currentLevel)
+                {
+                    baseDamage += upgrade.damageBonus;
+                }
+            }
+        }
+        
+        // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
+        float damageMultiplier = playerStats.DamageMultiplier;
+        currentDamage = baseDamage * damageMultiplier;
+        
+    }
+
     protected virtual void CalculateCooldown()
     {
         float baseCooldown = weaponData.baseCooldown;
-        
+
         if (weaponData.levelUpgrades != null)
         {
             for (int i = 0; i < weaponData.levelUpgrades.Length; i++)
@@ -123,9 +158,9 @@ public abstract class Weapon : MonoBehaviour
                 }
             }
         }
-        
+
         baseCooldown = Mathf.Max(baseCooldown, 0.05f);
-        
+
         // ПРИМЕНЯЕМ МНОЖИТЕЛЬ ИГРОКА
         float cooldownMultiplier = playerStats.CooldownReduction;
         currentCooldown = baseCooldown * cooldownMultiplier;
@@ -187,12 +222,11 @@ public abstract class Weapon : MonoBehaviour
         return weaponData.description;
     }
 
-    public float GetCooldown() => currentCooldown;
-    public float GetDamage() => currentDamage;
+    public virtual float GetCooldown() => currentCooldown;
+    public virtual float GetDamage() => currentDamage;
     public virtual float GetArea() => 0f;
-    public virtual float GetBulletSpeed() => 0f;
+    public virtual float GetProjectileSpeed() => 0f;
     public virtual float GetLifetime() => 0f;
-    public virtual float GetExplosionCooldown() => 0f;
     public virtual int GetDamageType() => 0;
 
     public virtual string GetWeaponStats()

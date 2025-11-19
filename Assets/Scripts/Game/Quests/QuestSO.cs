@@ -10,7 +10,6 @@ public class QuestSO : SingletonScriptableObject<QuestSO>
     public string QuestName;
     public string QuestDescription;
     public int GoldReward = 0;
-    public List<ItemDataSO> ItemsReward = new List<ItemDataSO>();
     public int QuestId;
 
     public bool NeedReStartEvent = false;

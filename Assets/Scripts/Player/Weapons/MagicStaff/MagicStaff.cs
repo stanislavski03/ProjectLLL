@@ -51,6 +51,8 @@ public class MagicStaff : Weapon
         if (playerStats != null)
         {
             playerStats._areaMultiplierChanged += OnAreaMultiplierChanged;
+            playerStats._damageMultiplierChanged += OnDamageMultiplierChanged;
+            playerStats._magicDamageMultiplierChanged += OnDamageMultiplierChanged;
         }
     }
 
@@ -61,12 +63,26 @@ public class MagicStaff : Weapon
         if (playerStats != null)
         {
             playerStats._areaMultiplierChanged -= OnAreaMultiplierChanged;
+            playerStats._damageMultiplierChanged -= OnDamageMultiplierChanged;
+            playerStats._magicDamageMultiplierChanged -= OnDamageMultiplierChanged;
         }
     }
 
     private void OnAreaMultiplierChanged(float areaMultiplier)
     {
         CalculateExplosionStats();
+    }
+
+    private void OnDamageMultiplierChanged(float DamageMultiplier)
+    {
+        CalculateDamage(DamageMultiplier);
+    }
+
+    protected override void CalculateDamage(float DamageMultiplier)
+    {
+        base.CalculateDamage();
+        currentDamage *= DamageMultiplier;
+        
     }
 
     protected override void CalculateAllStats()
@@ -184,7 +200,7 @@ public class MagicStaff : Weapon
 
     public override float GetArea() => currentExplosionArea;
     public override float GetLifetime() => currentExplosionLifetime;
-    public override float GetExplosionCooldown() => currentExplosionCooldown;
+    public override float GetCooldown() => currentExplosionCooldown;
 
     public override string GetWeaponStats()
     {
@@ -192,7 +208,7 @@ public class MagicStaff : Weapon
         string statsString = baseStats +
             $"Explosion Area: {GetArea()}\n" +
             $"Explosion Lifetime: {GetLifetime()}\n" +
-            $"Explosion Cooldown: {GetExplosionCooldown()}\n" +
+            $"Explosion Cooldown: {GetCooldown()}\n" +
             $"Max Active Explosions: {currentMaxActiveExplosions}";
         return statsString;
     }

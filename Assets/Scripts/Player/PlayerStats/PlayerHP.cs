@@ -30,7 +30,7 @@ public class PlayerHP : MonoBehaviour
     {
         PlayerStatsSO.Instance._maxHpChanged += maxHPChanged;
     }
-    
+
     private void OnDisable()
     {
         PlayerStatsSO.Instance._maxHpChanged -= maxHPChanged;
@@ -38,9 +38,13 @@ public class PlayerHP : MonoBehaviour
 
     public void Damage(float damageAmmount)
     {
-        _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, MaxHP);
-        Changed?.Invoke(_currentHP);
-        if (_currentHP == 0) Death();
+        ItemControllerSO.Instance.ActivateOnDamageGiveEvent();
+        if (PlayerStatsSO.Instance.invincibility == false)
+        {
+            _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, MaxHP);
+            Changed?.Invoke(_currentHP);
+            if (_currentHP == 0) Death();
+        }
     }
 
     public void Heal(float healAmmount)
