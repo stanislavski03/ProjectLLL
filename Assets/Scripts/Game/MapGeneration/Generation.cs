@@ -44,8 +44,10 @@ public class Generation : MonoBehaviour
             if (MutationsMin < 0)
                 MutationsMin = 0;
 
-            if (MutationsMax > _width * _height)
-                MutationsMax = _width * _height;
+            // Исправление: корректное ограничение максимального количества
+            int maxPossibleMutations = _width * _height;
+            if (MutationsMax > maxPossibleMutations)
+                MutationsMax = maxPossibleMutations;
 
             if (MutationsMin > MutationsMax)
                 MutationsMin = MutationsMax;
@@ -54,96 +56,104 @@ public class Generation : MonoBehaviour
             if (MutationsMax == MutationsMin)
                 MutationsAmount = MutationsMax;
             else
-                MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1);
-            List<List<GameObject>> NotSpawned = new List<List<GameObject>>();
+                MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1); // +1 потому что Random.Range исключает верхнюю границу для int
 
+            // Создаем список всех доступных тайлов
+            List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
             {
-                NotSpawned.Add(new List<GameObject>(row));
+                foreach (var tile in row)
+                {
+                    if (tile != null)
+                        allTiles.Add(tile);
+                }
             }
 
-            if (MutationsAmount >= _width * _height)
+            // Если запрошено больше мутаций, чем тайлов, ограничиваем
+            if (MutationsAmount > allTiles.Count)
+                MutationsAmount = allTiles.Count;
+
+            // Перемешиваем список тайлов
+            for (int i = 0; i < allTiles.Count; i++)
             {
-                for (int i = 0; i < _width; i++)
+                int randomIndex = Random.Range(i, allTiles.Count);
+                GameObject temp = allTiles[i];
+                allTiles[i] = allTiles[randomIndex];
+                allTiles[randomIndex] = temp;
+            }
+
+            // Размещаем мутации
+            for (int i = 0; i < MutationsAmount && i < allTiles.Count; i++)
+            {
+                SpawnActivity tileSpawnActivity = allTiles[i].GetComponent<SpawnActivity>();
+                if (tileSpawnActivity != null)
                 {
-                    for (int j = 0; j < _height; j++)
-                    {
-                        NotSpawned[i][j].GetComponent<SpawnActivity>()._objectsOnTile.Add(ActivityOnTileType.Quest);
-                        NotSpawned[i][j].GetComponent<SpawnActivity>().SpawnMutationChest();
-                    }
+                    tileSpawnActivity._objectsOnTile.Add(ActivityOnTileType.Mutation);
+                    tileSpawnActivity.SpawnMutationChest();
                 }
             }
-            else
-                for (int i = 0; i < MutationsAmount; i++)
-                {
-                    int _randWidth = Random.Range(0, NotSpawned.Count);
-                    int _randHeight = Random.Range(0, NotSpawned[_randWidth].Count);
-
-                    SpawnActivity TileToSpawnQuest = NotSpawned[_randWidth][_randHeight].GetComponent<SpawnActivity>();
-                    TileToSpawnQuest._objectsOnTile.Add(ActivityOnTileType.Mutation);
-                    TileToSpawnQuest.SpawnMutationChest();
-
-                    NotSpawned[_randWidth].RemoveAt(_randHeight);
-                    if (NotSpawned[_randWidth].Count == 0)
-                        NotSpawned.RemoveAt(_randWidth);
-                    if (NotSpawned.Count == 0)
-                    {
-                        return;
-                    }
-                }
         }
-        catch { Debug.Log("AddMutationsChestsToTiles"); }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"AddMutationsChestsToTiles error: {e.Message}");
+        }
     }
 
     public void AddQuestsToTiles(int _width, int _height, int QuestsMin, int QuestsMax)
     {
         try
         {
-
             if (QuestsMin < 0)
                 QuestsMin = 0;
 
-            if (QuestsMax > _availableQuests.Count)
-                QuestsMax = _availableQuests.Count;
-
-            if (QuestsMax > _width * _height)
-                QuestsMax = _width * _height;
+            // Исправление: корректное ограничение максимального количества
+            int maxPossibleQuests = _width * _height;
+            if (QuestsMax > maxPossibleQuests)
+                QuestsMax = maxPossibleQuests;
 
             if (QuestsMin > QuestsMax)
                 QuestsMin = QuestsMax;
 
-
-
             int QuestAmount = Random.Range(QuestsMin, QuestsMax + 1);
 
-            List<List<GameObject>> NotSpawned = new List<List<GameObject>>();
-
+            // Создаем список всех доступных тайлов
+            List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
             {
-                NotSpawned.Add(new List<GameObject>(row));
+                foreach (var tile in row)
+                {
+                    if (tile != null)
+                        allTiles.Add(tile);
+                }
             }
 
+            // Если нет доступных квестов или тайлов, выходим
+            if (_availableQuests.Count <= 0 || allTiles.Count <= 0)
+            {
+                Debug.LogWarning("No available quests or tiles to spawn quests on");
+                return;
+            }
+
+            // Ограничиваем количество квестов доступными тайлами и квестами
+            QuestAmount = Mathf.Min(QuestAmount, allTiles.Count, _availableQuests.Count);
+
+            // Перемешиваем список тайлов
+            for (int i = 0; i < allTiles.Count; i++)
+            {
+                int randomIndex = Random.Range(i, allTiles.Count);
+                GameObject temp = allTiles[i];
+                allTiles[i] = allTiles[randomIndex];
+                allTiles[randomIndex] = temp;
+            }
+
+            // Размещаем квесты
             for (int i = 0; i < QuestAmount; i++)
             {
-                if (_availableQuests.Count <= 0)
+                GameObject tile = allTiles[i];
+                SpawnActivity tileSpawnActivity = tile.GetComponent<SpawnActivity>();
+
+                if (tileSpawnActivity != null && !tileSpawnActivity._objectsOnTile.Exists(activity => activity == ActivityOnTileType.Quest))
                 {
-                    return;
-                }
-                int _randWidth = Random.Range(0, NotSpawned.Count);
-                int _randHeight = Random.Range(0, NotSpawned[_randWidth].Count);
-
-
-                GameObject TileToSpawnQuest = NotSpawned[_randWidth][_randHeight];
-                SpawnActivity ScriptToSpawnQuest = TileToSpawnQuest.GetComponent<SpawnActivity>();
-
-
-                if (ScriptToSpawnQuest._objectsOnTile.Exists(activity => activity == ActivityOnTileType.Quest))
-                {
-                    i--;
-                }
-                else
-                {
-
                     ItemType QuestRewardType;
                     switch (Random.Range(0, 3))
                     {
@@ -157,68 +167,74 @@ public class Generation : MonoBehaviour
                             QuestRewardType = ItemType.Universal;
                             break;
                     }
+
                     QuestData questData = _availableQuests[Random.Range(0, _availableQuests.Count)];
                     _availableQuests.Remove(questData);
-                    ScriptToSpawnQuest._objectsOnTile.Add(ActivityOnTileType.Quest);
-                    ScriptToSpawnQuest.SpawnQuestGiverOfType(questData, QuestRewardType);
 
-                    NotSpawned[_randWidth].RemoveAt(_randHeight);
-                    if (NotSpawned[_randWidth].Count == 0)
-                        NotSpawned.RemoveAt(_randWidth);
-
-
-
+                    tileSpawnActivity._objectsOnTile.Add(ActivityOnTileType.Quest);
+                    tileSpawnActivity.SpawnQuestGiverOfType(questData, QuestRewardType);
                 }
             }
         }
-        catch { Debug.Log("AddQuestsToTiles"); }
-       
-
+        catch (System.Exception e)
+        {
+            Debug.LogError($"AddQuestsToTiles error: {e.Message}");
+        }
     }
 
     private void GenerateEdjeWalls()
     {
+        if (generation.Count == 0) return;
+
         foreach (List<GameObject> tileList in generation)
         {
+            if (tileList.Count == 0) continue;
+
             GameObject NewNorthWall = Instantiate(
-                           _edgeWall,
-                           new Vector3(tileList[0].transform.position.x, 0, tileList[0].transform.position.z - 50),
-                           Quaternion.Euler(0, 180, 0),
-                           transform
-                       );
+                _edgeWall,
+                new Vector3(tileList[0].transform.position.x, 0, tileList[0].transform.position.z - 50),
+                Quaternion.Euler(0, 180, 0),
+                transform
+            );
             GameObject NewSouthWall = Instantiate(
-                           _edgeWall,
-                           new Vector3(tileList[tileList.Count - 1].transform.position.x, 0, tileList[tileList.Count-1].transform.position.z +50),
-                           Quaternion.identity,
-                           transform
-                       );
+                _edgeWall,
+                new Vector3(tileList[tileList.Count - 1].transform.position.x, 0, tileList[tileList.Count - 1].transform.position.z + 50),
+                Quaternion.identity,
+                transform
+            );
         }
-        foreach (GameObject tile in generation[0])
+
+        if (generation[0].Count > 0)
         {
-            GameObject NewNorthWall = Instantiate(
-                           _edgeWall,
-                           new Vector3(tile.transform.position.x-50, 0, tile.transform.position.z),
-                           Quaternion.Euler(0, -90, 0),
-                           transform
-                       );
+            foreach (GameObject tile in generation[0])
+            {
+                GameObject NewWestWall = Instantiate(
+                    _edgeWall,
+                    new Vector3(tile.transform.position.x - 50, 0, tile.transform.position.z),
+                    Quaternion.Euler(0, -90, 0),
+                    transform
+                );
+            }
         }
-        foreach (GameObject tile in generation[generation.Count -1])
+
+        if (generation.Count > 0 && generation[generation.Count - 1].Count > 0)
         {
-            GameObject NewNorthWall = Instantiate(
-                           _edgeWall,
-                           new Vector3(tile.transform.position.x +50, 0, tile.transform.position.z),
-                           Quaternion.Euler(0,90,0),
-                           transform
-                       );
+            foreach (GameObject tile in generation[generation.Count - 1])
+            {
+                GameObject NewEastWall = Instantiate(
+                    _edgeWall,
+                    new Vector3(tile.transform.position.x + 50, 0, tile.transform.position.z),
+                    Quaternion.Euler(0, 90, 0),
+                    transform
+                );
+            }
         }
     }
-
 
     public void GenerateMap(int _width, int _height)
     {
         if (_width > 0 && _height > 0)
         {
-
             ClearGeneration();
 
             for (int i = 0; i < _width; i++)
@@ -228,26 +244,22 @@ public class Generation : MonoBehaviour
 
                 for (int j = 0; j < _height; j++)
                 {
-
-                        GameObject NewTile = Instantiate(
-                            _tilesVariationList[Random.Range(0, _tilesVariationList.Count)],
-                            new Vector3(transform.position.x + i * 50, 0, transform.position.z + j * 50),
-                            Quaternion.identity,
-                            transform
-                        );
-                        row.Add(NewTile);
+                    GameObject NewTile = Instantiate(
+                        _tilesVariationList[Random.Range(0, _tilesVariationList.Count)],
+                        new Vector3(transform.position.x + i * 50, 0, transform.position.z + j * 50),
+                        Quaternion.identity,
+                        transform
+                    );
+                    row.Add(NewTile);
                 }
             }
+
             AddMutationsChestsToTiles(_width, _height, _mutationsOnMapMin, _mutationsOnMapMax);
-            AddQuestsToTiles(_width,_height, _questsOnMapMin, _questsOnMapMax);
+            AddQuestsToTiles(_width, _height, _questsOnMapMin, _questsOnMapMax);
             GenerateEdjeWalls();
             SetupNavMeshSurface();
-
-
         }
     }
-
-
 
     void SetupNavMeshSurface()
     {
@@ -255,7 +267,6 @@ public class Generation : MonoBehaviour
         {
             foreach (NavMeshSurface surface in allSurfaces)
             {
-
                 surface.collectObjects = CollectObjects.Children;
                 surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
                 BuildNavMesh(surface);
@@ -270,38 +281,37 @@ public class Generation : MonoBehaviour
 
     public void ClearGeneration()
     {
+        // Очистка NavMesh
         if (allSurfaces != null)
         {
-            generation.Clear();
             foreach (NavMeshSurface surface in allSurfaces)
             {
                 surface.RemoveData();
                 surface.navMeshData = null;
             }
-
             NavMesh.RemoveAllNavMeshData();
-            foreach (Transform child in transform)
-            {
-
-                Destroy(child.gameObject);
-
-            }
         }
 
+        // Очистка дочерних объектов
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
 
+        generation.Clear();
     }
-
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            GenerateMap(3, 4);
+            GenerateMap(3, 3);
         }
     }
+
     private void Start()
     {
-        allSurfaces = GetComponents<NavMeshSurface>(); 
-        GenerateMap(3, 4);
+        allSurfaces = GetComponents<NavMeshSurface>();
+        GenerateMap(3, 3);
     }
 }

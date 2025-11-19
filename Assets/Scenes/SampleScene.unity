@@ -1226,10 +1226,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3d1d465283233a1438acf9c9190a4ebc, type: 2}
   - {fileID: 11400000, guid: 13844d2f07929a2488264fccb59c01e5, type: 2}
   _allQuests: []
-  _questsOnMapMin: 2
-  _questsOnMapMax: 3
-  _mutationsOnMapMin: 3
-  _mutationsOnMapMax: 4
+  _questsOnMapMin: 99
+  _questsOnMapMax: 99
+  _mutationsOnMapMin: 99
+  _mutationsOnMapMax: 99
 --- !u!114 &147502947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12405,8 +12405,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1039283549}
-  playerMovement: {fileID: 1039283550}
-  DamageGiveShield: {fileID: 1230506419}
+  playerMovement: {fileID: 0}
+  DamageGiveShield: {fileID: 0}
 --- !u!1 &1042302970
 GameObject:
   m_ObjectHideFlags: 0
@@ -14195,11 +14195,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216517097}
   m_CullTransparentMesh: 1
---- !u!1 &1230506419 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5754751112851060181, guid: 0826b9f42760f9b418409aabf9cc1d40, type: 3}
-  m_PrefabInstance: {fileID: 332256121}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1230506420 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5747657869292942093, guid: 0826b9f42760f9b418409aabf9cc1d40, type: 3}
@@ -19937,7 +19932,7 @@ MonoBehaviour:
   - {fileID: 2078851950}
   - {fileID: 2131135986}
   - {fileID: 1960702269}
-  - {fileID: 606904909}
+  - {fileID: 0}
   numberOfCurrentWeaponList: 3
   levelUpController: {fileID: 500826768}
 --- !u!114 &1796658686
