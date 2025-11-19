@@ -9,14 +9,34 @@ public class QuestGiver : EInteractable
     private bool _questComplete = false;
     public ItemType _questType;
 
-   public void SetQuest(QuestData Quest)
+    public void SetQuest(QuestData Quest)
     {
         _quest = Quest;
     }
-    
+
     public void SetQuestType(ItemType type)
     {
         _questType = type;
+    }
+
+    public override void MakeReady()
+    {
+        base.MakeReady();
+        if (_questComplete)
+        {
+            GameMenuController.Instance.ShowQuestRewardInfo(transform, _quest.questRewardInfo);
+        }
+        else
+        {
+            GameMenuController.Instance.ShowQuestInfo(transform, _quest.questInfo);
+        }
+            
+    }
+    public override void MakeNonReady()
+    {
+        base.MakeNonReady();
+        GameMenuController.Instance.RemoveFromSceneQuestInfo();
+        GameMenuController.Instance.RemoveFromSceneQuestRewardInfo();
     }
 
     public bool QuestComplete { get { return _questComplete; } }
@@ -29,13 +49,13 @@ public class QuestGiver : EInteractable
             MakeNonReady();
             _canBeInteractedWith = false;
         }
-        else 
+        else
         {
             ItemControllerSO.Instance.questType = _questType;
             GameMenuController.Instance.GivePlayerItemReward();
             MakeNonReady();
             _canBeInteractedWith = false;
-        } 
+        }
     }
     public override void SetComplete()
     {

@@ -12,6 +12,9 @@ public class QuestData : QuestSO
     public bool finished = false;
     public bool canceled = false;
 
+    public string questInfo = "Выполни для меня задание а я тебе заплачу";
+    public string questRewardInfo = "Отличная работа, возьми награду";
+
     public QuestGiver _questGiver;
 
 
