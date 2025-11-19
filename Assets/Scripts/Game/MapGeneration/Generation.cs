@@ -11,6 +11,9 @@ public class Generation : MonoBehaviour
 {
     [SerializeField] private GameObject _edgeWall;
     [SerializeField] private List<GameObject> _tilesVariationList = new List<GameObject>();
+    [SerializeField] private int _generationHeight = 3;
+    [SerializeField] private int _generationWidth = 3;
+
     private List<List<GameObject>> generation = new List<List<GameObject>>();
     private NavMeshSurface[] allSurfaces;
     public List<QuestData> _availableQuests = new List<QuestData>();
@@ -258,6 +261,8 @@ public class Generation : MonoBehaviour
             AddQuestsToTiles(_width, _height, _questsOnMapMin, _questsOnMapMax);
             GenerateEdjeWalls();
             SetupNavMeshSurface();
+            Vector3 spawnpoint = generation[_width / 2][_height/2].transform.position;
+            Player.Instance.transform.position = spawnpoint;
         }
     }
 
@@ -305,13 +310,13 @@ public class Generation : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            GenerateMap(3, 3);
+            GenerateMap(_generationHeight, _generationWidth);
         }
     }
 
     private void Start()
     {
         allSurfaces = GetComponents<NavMeshSurface>();
-        GenerateMap(3, 3);
+        GenerateMap(_generationHeight, _generationWidth);
     }
 }
