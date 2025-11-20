@@ -14,6 +14,8 @@ public class Generation : MonoBehaviour
     [SerializeField] private int _generationHeight = 3;
     [SerializeField] private int _generationWidth = 3;
 
+    public static Generation Instance { get; private set; }
+
     private List<List<GameObject>> generation = new List<List<GameObject>>();
     private NavMeshSurface[] allSurfaces;
     public List<QuestData> _availableQuests = new List<QuestData>();
@@ -24,6 +26,18 @@ public class Generation : MonoBehaviour
 
     public int _mutationsOnMapMin = 3;
     public int _mutationsOnMapMax = 4;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
 
     public void InitialiseGenerationList(int _width, int _height)
     {
@@ -133,7 +147,6 @@ public class Generation : MonoBehaviour
             // Если нет доступных квестов или тайлов, выходим
             if (_availableQuests.Count <= 0 || allTiles.Count <= 0)
             {
-                Debug.LogWarning("No available quests or tiles to spawn quests on");
                 return;
             }
 
