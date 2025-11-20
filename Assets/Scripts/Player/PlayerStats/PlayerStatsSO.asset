@@ -17,11 +17,11 @@ MonoBehaviour:
   MagicDamageMultiplier: 1
   TechnoDamageMultiplier: 1
   CooldownReduction: 1
-  AreaMultiplier: 1
-  MaxHP: 3000
+  AreaMultiplier: 3
+  MaxHP: 500
   MoveSpeed: 15
   SpeedMultiplier: 1
-  Money: 11270
+  Money: 22920
   maxEXP: 100
   maxLevel: 30
   invincibility: 0

@@ -25,21 +25,26 @@ public class EnemyHitEffect : MonoBehaviour
         // Останавливаем предыдущую корутину если она есть
         if (flashCoroutine != null)
             StopCoroutine(flashCoroutine);
-        
-        // Запускаем новую корутину
-        flashCoroutine = StartCoroutine(FlashOnce());
+
+// Запускаем новую корутину
+            flashCoroutine = StartCoroutine(FlashOnce());
+       
+
     }
     
     private IEnumerator FlashOnce()
     {
+            
         // Включаем красный цвет
         SetColorToRed();
         
-        // Ждем указанное время
-        yield return new WaitForSeconds(flashDuration);
+            // Ждем указанное время
+            yield return new WaitForSeconds(flashDuration);
+
+            // Возвращаем оригинальный цвет
+            SetColorToOriginal();
         
-        // Возвращаем оригинальный цвет
-        SetColorToOriginal();
+       
     }
     
     private void SetColorToRed()
