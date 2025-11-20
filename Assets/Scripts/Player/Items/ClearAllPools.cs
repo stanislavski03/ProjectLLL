@@ -11,6 +11,7 @@ public class ClearAllPools : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             ItemControllerSO.Instance.ClearAllPools();
+            WeaponController.Instance.ClearPool();
         }
     }
 }

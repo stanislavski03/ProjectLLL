@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class LvlUpWeaponItemsInfo : MonoBehaviour
 {
-    private List<Weapon> _currentWeaponList = new List<Weapon>();
+    public List<Weapon> _currentWeaponList = new List<Weapon>();
     private List<Weapon> weaponList = new List<Weapon>();
 
     public List<GameObject> ItemsList;
@@ -140,6 +140,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
     {
         SetWeaponList();
         TransferRandomObjects();
+        WeaponsPanel.Instance.SetWeaponsInfo();
 
         // Скрываем все элементы
         foreach (var item in ItemsList)

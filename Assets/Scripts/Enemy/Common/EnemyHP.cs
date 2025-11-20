@@ -63,8 +63,8 @@ public class EnemyHP : MonoBehaviour
     {
         _currentHP -= damageAmount;
         
-        // Активируем эффект попадания
-        if (hitEffect != null)
+        
+        if (hitEffect != null && _currentHP > 0)
             hitEffect.TakeHit();
             
         if (_currentHP <= 0) 

@@ -21,6 +21,7 @@ MonoBehaviour:
   baseCooldown: 3
   maxLevel: 3
   weaponType: 1
+  reputationsAmount: -30
   levelUpgrades:
   - level: 1
     areaBonus: 0

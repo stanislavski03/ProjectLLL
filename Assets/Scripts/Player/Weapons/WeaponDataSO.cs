@@ -13,9 +13,13 @@ public class WeaponDataSO : ScriptableObject
     public float baseCooldown = 1f;
     public int maxLevel = 6;
     public WeaponType weaponType = WeaponType.Universal;
+    public float reputationsAmount = 0;
     
     [Header("Level Progression")]
     public LevelUpgrade[] levelUpgrades;
+
+    [Header("Weapon")]
+    public Weapon currentWeapon;
 }
 
 [System.Serializable]

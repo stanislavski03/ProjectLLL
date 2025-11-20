@@ -24,5 +24,6 @@ MonoBehaviour:
   HasOnEnemyDeathEvent: 0
   HasOnSceneChangeEvent: 0
   HasOnDamageGiveEvent: 0
+  ReputationAmount: 15
   ItemController: {fileID: 11400000, guid: 97b34af25ad8de94db5c4409b170984d, type: 2}
   DamageMultiplier: 15

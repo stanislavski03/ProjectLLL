@@ -5,7 +5,7 @@ public class LaserPool : MonoBehaviour
 {
     [Header("Pool Settings")]
     [SerializeField] private int initialPoolSize = 5;
-    [SerializeField] private int expandAmount = 3;
+    // [SerializeField] private int expandAmount = 3;
 
     private Queue<LaserBeam> laserPool = new Queue<LaserBeam>();
     private List<LaserBeam> allLasers = new List<LaserBeam>();

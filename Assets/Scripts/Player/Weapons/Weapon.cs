@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -37,6 +38,7 @@ public abstract class Weapon : MonoBehaviour
         {
             return;
         }
+        weaponData.currentWeapon = this;
     }
 
     protected virtual void SubscribeToPlayerStats()
@@ -176,6 +178,8 @@ public abstract class Weapon : MonoBehaviour
         if (currentLevel == 0)
         {
             this.gameObject.SetActive(true);
+            PlayerStatsSO.Instance.ChangeReputation(weaponData.reputationsAmount);
+            WeaponController.Instance.currentPlayerWeapons.Add(weaponData);
         }
 
         int levelsAdded = 0;

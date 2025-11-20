@@ -26,7 +26,6 @@ public class EnemyHitEffect : MonoBehaviour
         if (flashCoroutine != null)
             StopCoroutine(flashCoroutine);
 
-// Запускаем новую корутину
             flashCoroutine = StartCoroutine(FlashOnce());
        
 

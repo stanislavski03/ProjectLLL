@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using Unity.Mathematics;
 
 [CreateAssetMenu(fileName = "Player Stats", menuName = "Player Stats")]
 public class PlayerStatsSO : ScriptableObject
@@ -16,11 +17,11 @@ public class PlayerStatsSO : ScriptableObject
     public float CooldownReduction = 1;
     public float AreaMultiplier = 1;
     public float MaxHP = 100;
-
-    //not realised
+    
     public float MoveSpeed = 10;
     public float SpeedMultiplier = 1;
     public long Money = 0;
+    public float Reputation = 50;
 
     public int maxEXP = 100;
     public int maxLevel = 30;
@@ -34,6 +35,7 @@ public class PlayerStatsSO : ScriptableObject
     public event Action<float> _areaMultiplierChanged;
     public event Action<float> _speedMultiplierChanged;
     public event Action<float> _moneyChanged;
+    public event Action<float> _reputationChanged;
     public event Action<float> _moveSpeedChanged;
     public event Action<float> _maxHpChanged;
     //public event Action<float> _fireDamageMultiplierChanged;
@@ -77,6 +79,7 @@ public class PlayerStatsSO : ScriptableObject
         _areaMultiplierChanged?.Invoke(AreaMultiplier);
         _speedMultiplierChanged?.Invoke(SpeedMultiplier);
         _moneyChanged?.Invoke(Money);
+        _reputationChanged?.Invoke(Reputation);
         _moveSpeedChanged?.Invoke(MoveSpeed);
         _maxHpChanged?.Invoke(MaxHP);
     }
@@ -128,6 +131,12 @@ public class PlayerStatsSO : ScriptableObject
     {
         Money += value;
         _moneyChanged?.Invoke(Money);
+    }
+
+    public void ChangeReputation(float value)
+    {
+        Reputation = Mathf.Clamp(Reputation + value, 0, 100);
+        _reputationChanged?.Invoke(Reputation);
     }
 
     public void ChangeMoveSpeed(float value)

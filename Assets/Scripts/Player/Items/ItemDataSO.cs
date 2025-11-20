@@ -15,12 +15,15 @@ public class ItemDataSO : ScriptableObject
     public bool HasOnSceneChangeEvent;
     public bool HasOnDamageGiveEvent;
 
+    public float ReputationAmount = 0;
+
     public ItemControllerSO ItemController;
     public virtual void OnPick()
     {
         ItemControllerSO.Instance.DistributeItem(this);
         isActive = true;
         ItemsPanel.Instance.SetItemsInfo();
+        PlayerStatsSO.Instance.ChangeReputation(ReputationAmount);
         // ItemsPanel.Instance.ClearItemList();
     }
 
