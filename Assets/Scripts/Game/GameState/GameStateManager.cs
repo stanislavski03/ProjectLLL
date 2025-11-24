@@ -43,6 +43,7 @@ public class GameStateManager : MonoBehaviour
     {
         if (IsPaused)
         {
+            SimpleFog.Instance.SetFogSmooth(SimpleFog.Instance.defaultFogDensity);
             MenuCanvas.SetActive(false);
             InventoryCanvas.SetActive(false);
             ItemsPanel.Instance.gameObject.SetActive(true);
@@ -57,6 +58,7 @@ public class GameStateManager : MonoBehaviour
         else
         {
             SetPaused(true, PauseType.EscPause);
+            SimpleFog.Instance.SetFogSmooth(SimpleFog.Instance.pauseFogDensity);
             MenuCanvas.SetActive(true);
             QuestPanel.Instance.SetQuestsInfo();
         }
