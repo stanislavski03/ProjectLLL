@@ -13,6 +13,8 @@ public class WeaponsPanel : MonoBehaviour
     public List<WeaponDataSO> AllPlayerWeapons;
     public List<WeaponDataSO> currentPlayerWeapons;
 
+    int NeedIndex = 0;
+
 
 
     private void Awake()
@@ -34,12 +36,14 @@ public class WeaponsPanel : MonoBehaviour
 
         int indexOfCurrentItemForSetACtive = 0;
 
-
+        NeedIndex = 0;
         for (int i = 0; i < transform.childCount; i++)
         {
-            items[i] = transform.GetChild(i);
+            if(transform.GetChild(i).CompareTag("uiScriptElement")){
+                items[NeedIndex] = transform.GetChild(i);
+                NeedIndex++;
+                }
         }
-
         for (int i = 0; i < currentPlayerWeapons.Count; i++)
         {
 

@@ -8,6 +8,8 @@ public class ItemsPanel : MonoBehaviour
 {
     public static ItemsPanel Instance { get; private set; }
 
+    int NeedIndex = 0;
+
     public List<ItemDataSO> AllPlayerItems;
 
     private void Awake()
@@ -30,10 +32,14 @@ public class ItemsPanel : MonoBehaviour
 
         int indexOfCurrentItemForSetACtive = 0;
 
+        NeedIndex = 0;
 
         for (int i = 0; i < transform.childCount; i++)
         {
-            items[i] = transform.GetChild(i);
+            if(transform.GetChild(i).CompareTag("uiScriptElement")){
+                items[NeedIndex] = transform.GetChild(i);
+                NeedIndex++;
+                }
         }
 
         for (int i = 0; i < AllPlayerItems.Count; i++)

@@ -12,6 +12,7 @@ public class ClearAllPools : MonoBehaviour
         {
             ItemControllerSO.Instance.ClearAllPools();
             WeaponController.Instance.ClearPool();
+            MutationControllerSO.Instance.ClearAllMutations();
         }
     }
 }

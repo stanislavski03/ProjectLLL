@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyMeleeDmg : MonoBehaviour
 {
+    [SerializeField] private Animator animator;
     private float _damage;
     private float _damageCooldown;
 
@@ -12,12 +13,15 @@ public class EnemyMeleeDmg : MonoBehaviour
     private NavMeshAgent _agent;
     private bool _canDamage = true;
     private bool isPaused;
+    private bool _isAttacking = false;
+    private bool _isInCollisionWithPlayer = false;
     //private bool isDestroyed = false;
 
     [SerializeField] private EnemyConfig _initializedStats;
     private void OnEnable()
     {
         _agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         try
         {
             _damage = _initializedStats._damage;
@@ -32,6 +36,17 @@ public class EnemyMeleeDmg : MonoBehaviour
         StopAllCoroutines();
     }
 
+    private void Update()
+    {
+        animator.SetBool("IsAttacking", _isAttacking);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out PlayerHP player))
+            _isInCollisionWithPlayer = true;
+    }
+
     private void OnCollisionStay(Collision collision)
     {
         if (isPaused) return;
@@ -39,10 +54,17 @@ public class EnemyMeleeDmg : MonoBehaviour
             MeleeAttack(collision);
     }
 
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out PlayerHP player))
+            _isInCollisionWithPlayer = false;
+    }
+
     private void MeleeAttack(Collision collision)
     {
         if (collision.gameObject.TryGetComponent(out PlayerHP player) && _cooldownTimer <= 0 && enabled)
         {
+
             player.Damage(_damage);
             StartCoroutine(DamageCooldown());
         }
@@ -50,6 +72,7 @@ public class EnemyMeleeDmg : MonoBehaviour
     private IEnumerator DamageCooldown()
     {
         _canDamage = false;
+        _isAttacking = true;
         float speed = _agent.speed;
         _agent.speed = 0;
         for (_cooldownTimer = _damageCooldown; _cooldownTimer > 0; _cooldownTimer -= 0.1f)
@@ -58,6 +81,8 @@ public class EnemyMeleeDmg : MonoBehaviour
         }
         _agent.speed = speed;
         _canDamage = true;
+        if(!_isInCollisionWithPlayer)
+            _isAttacking = false;
     }
 
     //public void ReturnToPool()

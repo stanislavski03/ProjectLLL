@@ -34,6 +34,7 @@ public class MutationRewardInfo : MonoBehaviour
     public void SetMutationInfo()
     {
         TransferRandomObjects();
+        MutationsPanel.Instance.SetMutationInfo();
 
 
 
@@ -75,6 +76,7 @@ public class MutationRewardInfo : MonoBehaviour
             MutationControllerSO.Instance.AddMutation(mutation);
             GameStateManager.Instance.ResumeGame();
             _mutationRewardCanvas.SetActive(false);
+            SetMutationInfo();
         }
 
 
