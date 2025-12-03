@@ -9,12 +9,15 @@ using Cysharp.Threading.Tasks;
 
 public class Generation : MonoBehaviour
 {
+
     [SerializeField] private GameObject _edgeWall;
     [SerializeField] private List<GameObject> _tilesVariationList = new List<GameObject>();
     [SerializeField] private int _generationHeight = 3;
     [SerializeField] private int _generationWidth = 3;
+    [SerializeField] private List<QuestData> transitionQuests = new List<QuestData>();
 
     public static Generation Instance { get; private set; }
+
 
     private List<List<GameObject>> generation = new List<List<GameObject>>();
     private NavMeshSurface[] allSurfaces;
@@ -133,6 +136,27 @@ public class Generation : MonoBehaviour
 
             int QuestAmount = Random.Range(QuestsMin, QuestsMax + 1);
 
+            // Размещаем квесты выхода
+
+            int transitionQuestSide = Random.Range(0, 4);
+            QuestData TransitionQuest = transitionQuests[Random.Range(0, transitionQuests.Count)];
+            switch (transitionQuestSide)
+            {
+                case 0:
+                    generation[0][Random.Range(0, _width)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    break;
+                case 1:
+                    generation[_height-1][Random.Range(0, _width)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    break;
+                case 2:
+                    generation[Random.Range(0, _height)][0].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    break;
+                case 3:
+                    generation[Random.Range(0, _height)][_width-1].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    break;
+            }
+
+
             // Создаем список всех доступных тайлов
             List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
@@ -161,6 +185,8 @@ public class Generation : MonoBehaviour
                 allTiles[i] = allTiles[randomIndex];
                 allTiles[randomIndex] = temp;
             }
+
+
 
             // Размещаем квесты
             for (int i = 0; i < QuestAmount; i++)

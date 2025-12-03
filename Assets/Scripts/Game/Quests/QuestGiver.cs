@@ -8,6 +8,7 @@ public class QuestGiver : EInteractable
     [SerializeField] private QuestData _quest;
     private bool _questComplete = false;
     public ItemType _questType;
+    public bool _transitionQuest = false;
 
     public void SetQuest(QuestData Quest)
     {
@@ -52,7 +53,16 @@ public class QuestGiver : EInteractable
         else
         {
             ItemControllerSO.Instance.questType = _questType;
-            GameMenuController.Instance.GivePlayerItemReward();
+            if (!_transitionQuest)
+            {
+                GameMenuController.Instance.GivePlayerItemReward();
+            }
+            else
+            {
+                TransitionManager.Instance.TransitPlayerToNextLevel();
+            }
+
+
             MakeNonReady();
             _canBeInteractedWith = false;
         }

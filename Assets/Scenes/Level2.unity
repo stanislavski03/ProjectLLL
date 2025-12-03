@@ -285,6 +285,8 @@ MonoBehaviour:
   - {fileID: 9129400684376881136, guid: f28f062f76dd4d141a36216da5e8686a, type: 3}
   _generationHeight: 4
   _generationWidth: 4
+  transitionQuests:
+  - {fileID: 11400000, guid: 13844d2f07929a2488264fccb59c01e5, type: 2}
   _availableQuests:
   - {fileID: 11400000, guid: 3d1d465283233a1438acf9c9190a4ebc, type: 2}
   - {fileID: 11400000, guid: 13844d2f07929a2488264fccb59c01e5, type: 2}

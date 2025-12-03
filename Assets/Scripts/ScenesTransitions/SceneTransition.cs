@@ -10,12 +10,8 @@ public class SceneTransition : MonoBehaviour
     {
         if (other.GetComponent<Player>())
         {
-            TransitPlayerToNextLevel(1);
+            TransitionManager.Instance.TransitPlayerToNextLevel();
             Generation.Instance.GenerateMap(6,6);
         }
-    }
-    private void TransitPlayerToNextLevel(int number)
-    {
-        SceneManager.LoadScene(number);
     }
 }

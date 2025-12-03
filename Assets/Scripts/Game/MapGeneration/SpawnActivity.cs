@@ -31,4 +31,14 @@ public class SpawnActivity : MonoBehaviour
             transform);
     }
 
+    public void SpawnTransitionQuest(QuestData Quest)
+    {
+        GameObject QuestGiverSpawned = Instantiate(_questGiver,
+            new Vector3(_questGiverSpawnPoint.position.x, _questGiver.transform.position.y, _questGiverSpawnPoint.position.z),
+            Quaternion.identity,
+            transform);
+        QuestGiverSpawned.GetComponent<QuestGiver>()._transitionQuest = true;
+        QuestGiverSpawned.GetComponent<QuestGiver>().SetQuest(Quest);
+    }
+
 }
