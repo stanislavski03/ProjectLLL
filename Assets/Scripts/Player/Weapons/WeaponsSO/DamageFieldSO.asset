@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c4ecd4dcd24244881a4c8b168f1275, type: 3}
   m_Name: DamageFieldSO
   m_EditorClassIdentifier: 
-  weaponName: "\u0417\u043E\u043D\u0430 \u0443\u0440\u043E\u043D\u0430"
+  weaponName: "\u0437\u043E\u043D\u0430 \u0443\u0440\u043E\u043D\u0430"
   description: "\u041D\u0430\u043D\u043E\u0441\u0438\u0442 \u0443\u0440\u043E\u043D
     \u0432\u043E\u043A\u0440\u0443\u0433 \u0438\u0433\u0440\u043E\u043A\u0430"
   icon: {fileID: 21300000, guid: 125d5bcb8cdc6c24aa5b70d5c7c5aecf, type: 3}
@@ -20,6 +20,7 @@ MonoBehaviour:
   baseCooldown: 1
   maxLevel: 3
   weaponType: 0
+  reputationsAmount: 0
   levelUpgrades:
   - level: 1
     areaBonus: 0
@@ -44,4 +45,5 @@ MonoBehaviour:
     speedBonus: 0
     upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
       \u0440\u0430\u0437\u043C\u0435\u0440 \u0437\u043E\u043D\u044B +++"
+  currentWeapon: {fileID: 0}
   baseArea: 7.5
