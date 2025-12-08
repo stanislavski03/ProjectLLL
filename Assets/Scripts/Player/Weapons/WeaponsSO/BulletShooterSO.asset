@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0ef784d6ee02b94883e2ae9aee8fae9, type: 3}
   m_Name: BulletShooterSO
   m_EditorClassIdentifier: 
-  weaponName: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
+  weaponName: "\u043F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
   description: "\u0421\u0442\u0440\u0435\u043B\u044F\u0435\u0442 \u043F\u0443\u043B\u044F\u043C\u0438"
   icon: {fileID: 21300000, guid: 1c7c7208c7152ed4aa071e93abb2db9c, type: 3}
   baseDamage: 10
   baseCooldown: 1
   maxLevel: 2
   weaponType: 0
+  reputationsAmount: 0
   levelUpgrades:
   - level: 1
     areaBonus: 0
@@ -35,6 +36,8 @@ MonoBehaviour:
     speedBonus: 0
     upgradeDescription: "\u0411\u043E\u043D\u0443\u0441 \u043A \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u0438
       \u0441\u0442\u0440\u0435\u043B\u044C\u0431\u044B"
+  currentWeapon: {fileID: 0}
+  shootClip: {fileID: 8300000, guid: 8401456349c492a489ed90469e317e43, type: 3}
   bulletSpeed: 10
   bulletLifetime: 3
   damageType: 0

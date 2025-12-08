@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInput _playerInput;
     private Vector2 _moveInput;
     private Rigidbody rb;
+
+    public AudioClip walkClip;
     
     public bool IsMoving { get; private set; }
 
@@ -25,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
         _moveInput = _playerInput.Player.Move.ReadValue<Vector2>();
 
         IsMoving = _moveInput.magnitude > 0.1f;
+
+        
     }
 
     private void FixedUpdate()
@@ -48,8 +52,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 moveDirection = new Vector3(_moveInput.x, 0f, _moveInput.y);
         
+        
         if (moveDirection.magnitude > 0.1f)
         {
+            AudioManager.Instance.PlayWalk(walkClip);
             moveDirection = moveDirection.normalized * _statsSO.MoveSpeed;
             rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
             
@@ -59,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+            AudioManager.Instance.StopWalk();
         }
     }
 }

@@ -8,6 +8,7 @@ using UnityEditor;
 public class PlayerHP : MonoBehaviour
 {
     [SerializeField] private PlayerStatsSO _statsSO;
+    [SerializeField] private GameObject _deathPanel;
 
 
     public float _currentHP;
@@ -16,6 +17,8 @@ public class PlayerHP : MonoBehaviour
     public bool isAlive = true;
 
     private float healCount;
+
+    public AudioClip hitClip;
 
     public event Action<float> Changed;
     public event Action<float> MaxHpChanged;
@@ -41,6 +44,7 @@ public class PlayerHP : MonoBehaviour
         ItemControllerSO.Instance.ActivateOnDamageGiveEvent();
         if (PlayerStatsSO.Instance.invincibility == false)
         {
+            AudioManager.Instance.PlayHit(hitClip);
             PlayerHitEffect.Instance.TakeHit();
             _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, MaxHP);
             Changed?.Invoke(_currentHP);
@@ -65,6 +69,9 @@ public class PlayerHP : MonoBehaviour
 
     private void Death()
     {
+        
+        _deathPanel.SetActive(true);
+        GameStateManager.Instance.PauseForLevelUp();
         Destroy(gameObject);
     }
 }

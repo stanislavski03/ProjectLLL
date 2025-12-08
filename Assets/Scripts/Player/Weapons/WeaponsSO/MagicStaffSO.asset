@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9752a02eb35e5c41920713f7ac47686, type: 3}
   m_Name: MagicStaffSO
   m_EditorClassIdentifier: 
-  weaponName: "\u041C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u043F\u043E\u0441\u043E\u0445"
+  weaponName: "\u043C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u043F\u043E\u0441\u043E\u0445"
   description: "\u0412\u044B\u0437\u044B\u0432\u0430\u0435\u0442 \u0432\u044B\u0441\u0442\u0440\u0435\u043B\u044B 
     \u0441 \u043D\u0435\u0431\u0430 \u043F\u043E \u0431\u043B\u0438\u0436\u0430\u0439\u0448\u0435\u043C\u0443
     \u0432\u0440\u0430\u0433\u0443"
@@ -47,6 +47,8 @@ MonoBehaviour:
     upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
       \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0441\u0442\u0440\u0435\u043B\u044C\u0431\u044B
       \u0438 \u0443\u0440\u043E\u043D"
+  currentWeapon: {fileID: 0}
+  shootClip: {fileID: 8300000, guid: 5e1a9f876d3dafd47bc6b3dde25135fa, type: 3}
   explosionArea: 3
   explosionLifetime: 3
   explosionCooldown: 1

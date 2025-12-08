@@ -5,6 +5,8 @@ using UnityEngine;
 public class InitializationManager : MonoBehaviour
 {
 
+    public AudioClip musicClip;
+
     void Start()
     {
         ItemControllerSO.Instance.ClearAllPools();
@@ -13,6 +15,8 @@ public class InitializationManager : MonoBehaviour
 
         
         ResetPlayerStats();
+
+        AudioManager.Instance.PlayMusic(musicClip);
     }
 
     public void ResetPlayerStats()
@@ -23,7 +27,7 @@ public class InitializationManager : MonoBehaviour
         stats.TechnoDamageMultiplier = 1;
         stats.CooldownReduction = 1;
         stats.AreaMultiplier = 1;
-        stats.MaxHP = 1000;
+        stats.MaxHP = 100;
         stats.MoveSpeed = 15;
         stats.SpeedMultiplier = 1;
         stats.Money = 100;

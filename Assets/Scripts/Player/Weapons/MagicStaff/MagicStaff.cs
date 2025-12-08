@@ -168,6 +168,9 @@ public class MagicStaff : Weapon
         Enemy closestEnemy = enemyDetector?.GetClosestEnemy();
         if (closestEnemy == null) return;
 
+        if(weaponData.shootClip)
+            AudioManager.Instance.PlayShoot(weaponData.shootClip);
+
         Vector3 explosionPosition = closestEnemy.transform.position;
         explosionPosition.y = 0f;
 

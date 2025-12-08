@@ -173,6 +173,9 @@ public class Laser : Weapon
         Enemy closestEnemy = enemyDetector?.GetClosestEnemy();
         if (closestEnemy == null) return;
 
+        if(weaponData.shootClip)
+            AudioManager.Instance.PlayShoot(weaponData.shootClip);
+
         // Получаем луч из пула с материалом
         LaserBeam laserBeam = LaserPool.Instance.GetLaser(
             currentLaserLength,

@@ -6,6 +6,21 @@ public class CameraChanger : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera _gameVirtualCamera;
     [SerializeField] private CinemachineVirtualCamera _menuVirtualCamera;
 
+    public static CameraChanger Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+    
+
+
     private void Start()
     {
         GameStateManager.Instance.OnPauseStateChanged += OnPauseChanged;
@@ -39,13 +54,13 @@ public class CameraChanger : MonoBehaviour
         }
     }
 
-    private void SwitchToGameCamera()
+    public void SwitchToGameCamera()
     {
         _gameVirtualCamera.Priority = 10;
         _menuVirtualCamera.Priority = 0;
     }
 
-    private void SwitchToMenuCamera()
+    public void SwitchToMenuCamera()
     {
         _menuVirtualCamera.Priority = 10;
         _gameVirtualCamera.Priority = 0;
