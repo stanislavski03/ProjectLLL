@@ -20,6 +20,7 @@ public class WeaponDataSO : ScriptableObject
 
     [Header("Weapon")]
     public Weapon currentWeapon;
+    public AudioClip shootClip;
 }
 
 [System.Serializable]

@@ -43,6 +43,7 @@ public class GameStateManager : MonoBehaviour
     {
         if (IsPaused)
         {
+            AudioManager.Instance.ResumeMusic();
             SimpleFog.Instance.SetFogSmooth(SimpleFog.Instance.defaultFogDensity);
             MenuCanvas.SetActive(false);
             InventoryCanvas.SetActive(false);
@@ -67,9 +68,20 @@ public class GameStateManager : MonoBehaviour
     public void SetPaused(bool paused, PauseType pauseType = PauseType.EscPause)
     {
         if (IsPaused == paused && CurrentPauseType == pauseType) return;
-
+        
         IsPaused = paused;
         CurrentPauseType = paused ? pauseType : PauseType.None;
+        
+        // Управление музыкой
+        if (paused && pauseType == PauseType.EscPause)
+        {
+            AudioManager.Instance.PauseMusic();
+        }
+        else if (!paused)
+        {
+            // Возобновляем музыку при снятии ЛЮБОЙ паузы
+            AudioManager.Instance.ResumeMusic();
+        }
         
         if (!IsInCountdown)
         {
@@ -77,6 +89,12 @@ public class GameStateManager : MonoBehaviour
         }
         
         OnPauseStateChanged?.Invoke(IsPaused, CurrentPauseType);
+    }
+
+    public void ResumeGame()
+    {
+        AudioManager.Instance.ResumeMusic();
+        SetPaused(false);
     }
 
     public void StartCountdown()
@@ -93,5 +111,4 @@ public class GameStateManager : MonoBehaviour
 
     public void PauseGame() => SetPaused(true, PauseType.EscPause);
     public void PauseForLevelUp() => SetPaused(true, PauseType.LevelUpPause);
-    public void ResumeGame() => SetPaused(false);
 }

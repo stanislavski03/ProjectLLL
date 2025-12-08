@@ -150,6 +150,8 @@ public class BulletShooter : Weapon
         {
             return;
         }
+        if(weaponData.shootClip)
+            AudioManager.Instance.PlayShoot(weaponData.shootClip);
 
         bulletObj.SetActive(true);
         bulletObj.transform.position = bulletSpawn.position;

@@ -5,6 +5,8 @@ using UnityEngine;
 public class InitializationManager : MonoBehaviour
 {
 
+    public AudioClip musicClip;
+
     void Start()
     {
         ItemControllerSO.Instance.ClearAllPools();
@@ -13,6 +15,8 @@ public class InitializationManager : MonoBehaviour
 
         
         ResetPlayerStats();
+
+        AudioManager.Instance.PlayMusic(musicClip);
     }
 
     public void ResetPlayerStats()

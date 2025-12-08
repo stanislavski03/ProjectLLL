@@ -18,6 +18,8 @@ public class PlayerHP : MonoBehaviour
 
     private float healCount;
 
+    public AudioClip hitClip;
+
     public event Action<float> Changed;
     public event Action<float> MaxHpChanged;
 
@@ -42,6 +44,7 @@ public class PlayerHP : MonoBehaviour
         ItemControllerSO.Instance.ActivateOnDamageGiveEvent();
         if (PlayerStatsSO.Instance.invincibility == false)
         {
+            AudioManager.Instance.PlayHit(hitClip);
             PlayerHitEffect.Instance.TakeHit();
             _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, MaxHP);
             Changed?.Invoke(_currentHP);
