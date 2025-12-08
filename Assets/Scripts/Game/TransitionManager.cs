@@ -24,5 +24,9 @@ public class TransitionManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
+    public void TransitPlayerToLevel(int i)
+    {
+        SceneManager.LoadScene(i);
+    }
 
 }

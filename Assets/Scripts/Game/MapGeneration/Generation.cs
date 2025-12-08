@@ -143,16 +143,16 @@ public class Generation : MonoBehaviour
             switch (transitionQuestSide)
             {
                 case 0:
-                    generation[0][Random.Range(0, _width)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    generation[0][Random.Range(0, _height)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
                     break;
                 case 1:
-                    generation[_height-1][Random.Range(0, _width)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    generation[_width-1][Random.Range(0, _height)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
                     break;
                 case 2:
-                    generation[Random.Range(0, _height)][0].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    generation[Random.Range(0, _width)][0].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
                     break;
                 case 3:
-                    generation[Random.Range(0, _height)][_width-1].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    generation[Random.Range(0, _width)][_height - 1].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
                     break;
             }
 
