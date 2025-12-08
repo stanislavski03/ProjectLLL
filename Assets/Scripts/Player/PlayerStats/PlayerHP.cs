@@ -10,6 +10,24 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private PlayerStatsSO _statsSO;
     [SerializeField] private GameObject _deathPanel;
 
+     public static PlayerHP Instance { get; private set; }
+
+    private void Awake()
+    {
+        
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        MaxHP = _statsSO.MaxHP;
+        _currentHP = MaxHP;
+    }
+
 
     public float _currentHP;
 
@@ -22,12 +40,6 @@ public class PlayerHP : MonoBehaviour
 
     public event Action<float> Changed;
     public event Action<float> MaxHpChanged;
-
-    private void Awake()
-    {
-        MaxHP = _statsSO.MaxHP;
-        _currentHP = MaxHP;
-    }
 
     private void OnEnable()
     {
@@ -48,6 +60,16 @@ public class PlayerHP : MonoBehaviour
             PlayerHitEffect.Instance.TakeHit();
             _currentHP = Mathf.Clamp(_currentHP - damageAmmount, 0, MaxHP);
             Changed?.Invoke(_currentHP);
+            if(_currentHP/MaxHP * 100 <= 50)
+            {
+                AudioManager.Instance.SetMusicPitch(_currentHP/MaxHP + 0.4f);
+            }
+            else
+            {
+                AudioManager.Instance.ResetMusicPitch();
+            }
+            FindObjectOfType<FinalVignette>()?.TriggerDamageVignette();
+
             if (_currentHP == 0) Death();
         }
     }
@@ -55,6 +77,15 @@ public class PlayerHP : MonoBehaviour
     public void Heal(float healAmmount)
     {
         _currentHP = Mathf.Clamp(_currentHP + healAmmount, 0, MaxHP);
+        if(_currentHP/MaxHP * 100 <= 50)
+            {
+                AudioManager.Instance.SetMusicPitch(_currentHP/MaxHP + 0.4f);
+            }
+            else
+            {
+                AudioManager.Instance.ResetMusicPitch();
+            }
+            FindObjectOfType<FinalVignette>()?.TriggerHealVignette();
         Changed?.Invoke(_currentHP);
     }
 

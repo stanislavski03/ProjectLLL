@@ -18,6 +18,8 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
 
     public LevelUpController levelUpController;
 
+    public AudioClip lvlUpClip;
+
     private void Start()
     {
         SubscribeToAllWeapons();
@@ -26,6 +28,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
 
     private void OnEnable()
     {
+        AudioManager.Instance.PlayLevelUp(lvlUpClip);
         SubscribeToAllWeapons();
         SetWeaponList();
     }
@@ -220,6 +223,8 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
         {
             levelUpController.OnItemSelected(itemIndex);
         }
+
+        LevelUpController.Instance.UiClickSound();
     }
 
     // ДОБАВИМ метод для принудительного обновления UI

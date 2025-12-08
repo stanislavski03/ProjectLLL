@@ -18,6 +18,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c5189160fcc682444b89c9fe0a901a03, type: 2}
   - {fileID: 11400000, guid: f10b75399f70092469e0c3ca7a2678b7, type: 2}
   - {fileID: 11400000, guid: 55b6c0c232d2f7343a2289194e69a74c, type: 2}
-  PlayerMutations:
-  - mutation: {fileID: 11400000, guid: f10b75399f70092469e0c3ca7a2678b7, type: 2}
-    count: 1
+  PlayerMutations: []
+  SuccessfulOpenChest: {fileID: 8300000, guid: f56ab5063e71eea45b3d0bd31e1c9d23, type: 3}
+  ErrorOpenChest: {fileID: 8300000, guid: 7e9ee6dc04a5d40d1a5dfc4beb9865e7, type: 3}

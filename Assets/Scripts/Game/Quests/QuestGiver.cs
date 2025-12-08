@@ -42,6 +42,7 @@ public class QuestGiver : EInteractable
     public bool QuestComplete { get { return _questComplete; } }
     public override void Interact()
     {
+        AudioManager.Instance.PlayQuest(QuestManager.Instance.QuestClip);
         if (!QuestComplete)
         {
             _quest._questGiver = this;

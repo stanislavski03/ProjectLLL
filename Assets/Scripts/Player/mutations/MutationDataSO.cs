@@ -12,6 +12,8 @@ public class MutationDataSO : ScriptableObject
     [Header("Base Stats")]
     public float bonus;
 
+    
+
     public virtual void OnPick()
     {
         Debug.Log("мутация взята");

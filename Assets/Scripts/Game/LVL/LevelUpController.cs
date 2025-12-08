@@ -10,10 +10,27 @@ public class LevelUpController : MonoBehaviour
     [SerializeField] private RectTransform[] buttons;
     [SerializeField] private GameObject panelItems;
 
+    public AudioClip uiClickClip;
+
     private LvlUpWeaponItemsInfo itemsInfo;
     private bool isLevelUpActive = false;
     // Инициализация Моста unitask
     private UniTaskCompletionSource<bool> _levelUpCompletionSource;
+
+    public static LevelUpController Instance;
+
+     private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            //DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -45,6 +62,11 @@ public class LevelUpController : MonoBehaviour
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
         PrepareButtons();
+    }
+
+    public void UiClickSound()
+    {
+        AudioManager.Instance.PlayClick(uiClickClip);
     }
 
     private void PrepareButtons()

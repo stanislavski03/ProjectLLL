@@ -75,12 +75,12 @@ public class GameStateManager : MonoBehaviour
         // Управление музыкой
         if (paused && pauseType == PauseType.EscPause)
         {
-            AudioManager.Instance.PauseMusic();
+            AudioManager.Instance.DuckMusic();
         }
         else if (!paused)
         {
             // Возобновляем музыку при снятии ЛЮБОЙ паузы
-            AudioManager.Instance.ResumeMusic();
+            AudioManager.Instance.UnduckMusic();
         }
         
         if (!IsInCountdown)
@@ -93,7 +93,7 @@ public class GameStateManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        AudioManager.Instance.ResumeMusic();
+        AudioManager.Instance.UnduckMusic();
         SetPaused(false);
     }
 
