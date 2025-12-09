@@ -77,6 +77,7 @@ public class MutationRewardInfo : MonoBehaviour
             GameStateManager.Instance.ResumeGame();
             _mutationRewardCanvas.SetActive(false);
             SetMutationInfo();
+            LevelUpController.Instance.UiClickSound();
         }
 
 

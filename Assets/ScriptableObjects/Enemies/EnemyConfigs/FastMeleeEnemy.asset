@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyName: Enemy
   _damage: 10
-  _cooldown: 1
+  _cooldown: 0.4
   _maxHealth: 50
   _moveSpeed: 8
   _moveSpeedDeviation: 0.5
   _expOnDeath: 10
-  _size: 1
+  _size: 0.5
   _range: 0
   _projectileSpeed: 0
   _projectileLifetime: 0

@@ -1,7 +1,6 @@
-using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SimpleFog : MonoBehaviour
 {
@@ -22,11 +21,32 @@ public class SimpleFog : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        // Подписываемся на событие загрузки сцены
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        // Отписываемся при уничтожении объекта
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Принудительно применяем настройки тумана при загрузке новой сцены
+        ApplyFogSettings();
     }
 
     void Start()
+    {
+        ApplyFogSettings();
+    }
+
+    private void ApplyFogSettings()
     {
         RenderSettings.fog = true;
         RenderSettings.fogColor = fogColor;

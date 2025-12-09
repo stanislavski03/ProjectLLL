@@ -44,6 +44,10 @@ public class MutationControllerSO : ScriptableObject
     [Header("Player Mutations")]
     public List<MutationEntry> PlayerMutations = new List<MutationEntry>();
 
+
+    public AudioClip SuccessfulOpenChest;
+    public AudioClip ErrorOpenChest;
+
     private static MutationControllerSO _instance;
     public static MutationControllerSO Instance
     {

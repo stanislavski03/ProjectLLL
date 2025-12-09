@@ -13,6 +13,10 @@ public class AudioManager : MonoBehaviour
     public AudioSource walkSource;
     public AudioSource hitSource;
     public AudioSource shootSource;
+    public AudioSource openChestSource;
+    public AudioSource QuestSource;
+    public AudioSource levelUpSource;
+    public AudioSource uiClickSource;
 
     [Header("Audio Mixer (опционально)")]
     public AudioMixer audioMixer;
@@ -68,6 +72,13 @@ public class AudioManager : MonoBehaviour
             musicSource.playOnAwake = false;
         }
 
+        if (uiClickSource == null)
+        {
+            uiClickSource = gameObject.AddComponent<AudioSource>();
+            uiClickSource.playOnAwake = false;
+            uiClickSource.loop = false;
+        }
+
         if (walkSource == null)
         {
             walkSource = gameObject.AddComponent<AudioSource>();
@@ -88,6 +99,28 @@ public class AudioManager : MonoBehaviour
             shootSource.playOnAwake = false;
             shootSource.loop = false;
         }
+
+        if (openChestSource == null)
+        {
+            openChestSource = gameObject.AddComponent<AudioSource>();
+            openChestSource.playOnAwake = false;
+            openChestSource.loop = false;
+        }
+
+        if (QuestSource == null)
+        {
+            QuestSource = gameObject.AddComponent<AudioSource>();
+            QuestSource.playOnAwake = false;
+            QuestSource.loop = false;
+        }
+
+        if (levelUpSource == null)
+        {
+            levelUpSource = gameObject.AddComponent<AudioSource>();
+            levelUpSource.playOnAwake = false;
+            levelUpSource.loop = false;
+        }
+
     }
 
     // === МЕТОДЫ ВОСПРОИЗВЕДЕНИЯ ===
@@ -148,6 +181,44 @@ public class AudioManager : MonoBehaviour
         shootSource.Stop();
     }
 
+    public void PlayOpenChest(AudioClip clip, float volumeScale = 1f)
+    {
+        if (clip != null)
+        {
+            // Всегда играем, даже если звук уже играет (перезаписываем)
+            openChestSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+        }
+    }
+
+    public void PlayQuest(AudioClip clip, float volumeScale = 1f)
+    {
+        if (clip != null)
+        {
+            // Всегда играем, даже если звук уже играет (перезаписываем)
+            QuestSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+        }
+    }
+
+    public void PlayLevelUp(AudioClip clip, float volumeScale = 1f)
+    {
+        if (clip != null)
+        {
+            // Всегда играем, даже если звук уже играет (перезаписываем)
+            levelUpSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+        }
+    }
+
+
+
+    public void PlayClick(AudioClip clip, float volumeScale = 1f)
+    {
+        if (clip != null)
+        {
+            // Всегда играем, даже если звук уже играет (перезаписываем)
+            uiClickSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+        }
+    }
+
     public void PauseMusic()
     {
         if (musicSource != null && musicSource.isPlaying)
@@ -157,7 +228,7 @@ public class AudioManager : MonoBehaviour
             Debug.Log("Music paused");
         }
     }
-    
+
     public void ResumeMusic()
     {
         if (musicSource != null && isMusicPaused)
@@ -173,7 +244,7 @@ public class AudioManager : MonoBehaviour
             Debug.Log("Music started (wasn't playing)");
         }
     }
-    
+
     public void StopMusic()
     {
         if (musicSource != null)
@@ -182,7 +253,7 @@ public class AudioManager : MonoBehaviour
             isMusicPaused = false;
         }
     }
-    
+
     public void PlayMusic(AudioClip clip, bool loop = true, float volumeScale = 1f)
     {
         if (clip != null)
@@ -193,6 +264,86 @@ public class AudioManager : MonoBehaviour
             musicSource.Play();
             isMusicPaused = false;
         }
+    }
+
+    public void DuckMusic(float duckAmount = 0.5f, float fadeDuration = 0.5f)
+    {
+        if (musicSource != null && musicSource.isPlaying)
+        {
+            StartCoroutine(DuckMusicCoroutine(duckAmount, fadeDuration));
+        }
+    }
+
+    public void UnduckMusic(float fadeDuration = 0.5f)
+    {
+        if (musicSource != null)
+        {
+            StartCoroutine(UnduckMusicCoroutine(fadeDuration));
+        }
+    }
+
+    private IEnumerator DuckMusicCoroutine(float targetDuckAmount, float duration)
+    {
+        float startVolume = musicSource.volume;
+        float targetVolume = startVolume * targetDuckAmount;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime; // Используем unscaled чтобы работало на паузе
+            float t = elapsedTime / duration;
+            musicSource.volume = Mathf.Lerp(startVolume, targetVolume, t);
+            yield return null;
+        }
+
+        musicSource.volume = targetVolume;
+    }
+
+    private IEnumerator UnduckMusicCoroutine(float duration)
+    {
+        float startVolume = musicSource.volume;
+        float targetVolume = musicSource.volume / (musicSource.volume / (musicVolume * masterVolume));
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            float t = elapsedTime / duration;
+            musicSource.volume = Mathf.Lerp(startVolume, targetVolume, t);
+            yield return null;
+        }
+
+        musicSource.volume = targetVolume;
+    }
+
+    public void SetMusicPitch(float pitch, float transitionDuration = 1f)
+    {
+        if(pitch < 0.5f) pitch = 0.5f;
+        if (musicSource != null)
+        {
+            StartCoroutine(ChangePitchCoroutine(pitch, transitionDuration));
+        }
+    }
+
+    public void ResetMusicPitch(float transitionDuration = 1f)
+    {
+        SetMusicPitch(1f, transitionDuration);
+    }
+
+    private IEnumerator ChangePitchCoroutine(float targetPitch, float duration)
+    {
+        float startPitch = musicSource.pitch;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            float t = elapsedTime / duration;
+            musicSource.pitch = Mathf.Lerp(startPitch, targetPitch, t);
+            yield return null;
+        }
+
+        musicSource.pitch = targetPitch;
     }
 
     // === НАСТРОЙКА ГРОМКОСТИ ===
@@ -222,6 +373,9 @@ public class AudioManager : MonoBehaviour
     {
         UpdateSFXVolume();
         UpdateMusicVolume();
+
+        if (uiClickSource != null)
+            uiClickSource.volume = QuestSource.volume;
     }
 
     private void UpdateSFXVolume()
@@ -237,6 +391,15 @@ public class AudioManager : MonoBehaviour
 
         if (shootSource != null)
             shootSource.volume = shootSource.volume;
+
+        if (openChestSource != null)
+            openChestSource.volume = openChestSource.volume;
+
+        if (QuestSource != null)
+            QuestSource.volume = QuestSource.volume;
+
+        if (levelUpSource != null)
+            levelUpSource.volume = QuestSource.volume;
     }
 
     private void UpdateMusicVolume()

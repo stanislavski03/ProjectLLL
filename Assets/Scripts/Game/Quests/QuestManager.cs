@@ -11,6 +11,8 @@ public class QuestManager : MonoBehaviour
     [SerializeField] public List<QuestData> activeQuests = new List<QuestData>();
     [SerializeField] private List<QuestData> canceledQuests = new List<QuestData>();
 
+    public AudioClip QuestClip;
+
     public event Action _onQuestRegistered;
     public event Action _onQuestFinished;
 
