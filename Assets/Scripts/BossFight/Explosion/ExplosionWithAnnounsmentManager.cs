@@ -35,6 +35,7 @@ public class ExplosionWithAnnounsmentManager : MonoBehaviour
         Explosion.SetActive(true);
         await UniTask.WaitForSeconds(_lavaExistanceTime);
         Explosion.SetActive(false);
+        Destroy(gameObject);
     }
 
     private IEnumerator StartAnnouncement()

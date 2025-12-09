@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinotaurLavaExplosion : MonoBehaviour
+public class ExplosionByMinotaur : MonoBehaviour
 {
 
     [SerializeField] private float _explosionDamage;
