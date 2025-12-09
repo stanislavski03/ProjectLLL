@@ -279,10 +279,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948bc1531133b0f44a8d1bfe0488087e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _edgeWall: {fileID: 9092254135465942245, guid: cadc646b9ac6ea94cb7bd56276d32c11, type: 3}
+  _edgeWall: {fileID: 9092254135465942245, guid: 0cbe2f32d3b8f7d4b9186ebb2143d4ed, type: 3}
+  _edgeWallCorner: {fileID: 9092254135465942245, guid: 7d3981e857d59df40aed8ef269d7ee39, type: 3}
   _tilesVariationList:
-  - {fileID: 1281290826586595624, guid: 76e898ed24252ec45897aded8f3d142a, type: 3}
-  - {fileID: 9129400684376881136, guid: f28f062f76dd4d141a36216da5e8686a, type: 3}
+  - {fileID: 1281290826586595624, guid: 4b8001edc246ebe43af57136fdff3c0e, type: 3}
+  - {fileID: 9129400684376881136, guid: 23ab0312fa933b544ab5e7086eeb3140, type: 3}
   _generationHeight: 4
   _generationWidth: 4
   _availableQuests:
@@ -361,8 +362,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.94509804, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 1, g: 0.41016182, b: 0.2588235, a: 1}
+  m_Intensity: 0.6
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -404,7 +405,7 @@ Light:
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0.5
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -439,7 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b0b698d3cb9b44daf3b2de1ee947a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DirectionNeeded: {x: 17, y: 17, z: 0}
+  DirectionNeeded: {x: 130, y: 17, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

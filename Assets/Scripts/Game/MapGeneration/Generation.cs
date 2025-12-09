@@ -10,6 +10,7 @@ using Cysharp.Threading.Tasks;
 public class Generation : MonoBehaviour
 {
     [SerializeField] private GameObject _edgeWall;
+    [SerializeField] private GameObject _edgeWallCorner;
     [SerializeField] private List<GameObject> _tilesVariationList = new List<GameObject>();
     [SerializeField] private int _generationHeight = 3;
     [SerializeField] private int _generationWidth = 3;
@@ -61,7 +62,7 @@ public class Generation : MonoBehaviour
             if (MutationsMin < 0)
                 MutationsMin = 0;
 
-            // Исправление: корректное ограничение максимального количества
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             int maxPossibleMutations = _width * _height;
             if (MutationsMax > maxPossibleMutations)
                 MutationsMax = maxPossibleMutations;
@@ -73,9 +74,9 @@ public class Generation : MonoBehaviour
             if (MutationsMax == MutationsMin)
                 MutationsAmount = MutationsMax;
             else
-                MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1); // +1 потому что Random.Range исключает верхнюю границу для int
+                MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1); // +1 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Random.Range пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ int
 
-            // Создаем список всех доступных тайлов
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
             {
@@ -86,11 +87,11 @@ public class Generation : MonoBehaviour
                 }
             }
 
-            // Если запрошено больше мутаций, чем тайлов, ограничиваем
+            // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (MutationsAmount > allTiles.Count)
                 MutationsAmount = allTiles.Count;
 
-            // Перемешиваем список тайлов
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             for (int i = 0; i < allTiles.Count; i++)
             {
                 int randomIndex = Random.Range(i, allTiles.Count);
@@ -99,7 +100,7 @@ public class Generation : MonoBehaviour
                 allTiles[randomIndex] = temp;
             }
 
-            // Размещаем мутации
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             for (int i = 0; i < MutationsAmount && i < allTiles.Count; i++)
             {
                 SpawnActivity tileSpawnActivity = allTiles[i].GetComponent<SpawnActivity>();
@@ -123,7 +124,7 @@ public class Generation : MonoBehaviour
             if (QuestsMin < 0)
                 QuestsMin = 0;
 
-            // Исправление: корректное ограничение максимального количества
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             int maxPossibleQuests = _width * _height;
             if (QuestsMax > maxPossibleQuests)
                 QuestsMax = maxPossibleQuests;
@@ -133,7 +134,7 @@ public class Generation : MonoBehaviour
 
             int QuestAmount = Random.Range(QuestsMin, QuestsMax + 1);
 
-            // Создаем список всех доступных тайлов
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
             {
@@ -144,16 +145,16 @@ public class Generation : MonoBehaviour
                 }
             }
 
-            // Если нет доступных квестов или тайлов, выходим
+            // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             if (_availableQuests.Count <= 0 || allTiles.Count <= 0)
             {
                 return;
             }
 
-            // Ограничиваем количество квестов доступными тайлами и квестами
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             QuestAmount = Mathf.Min(QuestAmount, allTiles.Count, _availableQuests.Count);
 
-            // Перемешиваем список тайлов
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             for (int i = 0; i < allTiles.Count; i++)
             {
                 int randomIndex = Random.Range(i, allTiles.Count);
@@ -162,7 +163,7 @@ public class Generation : MonoBehaviour
                 allTiles[randomIndex] = temp;
             }
 
-            // Размещаем квесты
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             for (int i = 0; i < QuestAmount; i++)
             {
                 GameObject tile = allTiles[i];
@@ -201,6 +202,12 @@ public class Generation : MonoBehaviour
     private void GenerateEdjeWalls()
     {
         if (generation.Count == 0) return;
+
+        // РџРѕР»СѓС‡Р°РµРј РіСЂР°РЅРёС†С‹ РєР°СЂС‚С‹
+        float minX = generation[0][0].transform.position.x;
+        float maxX = generation[generation.Count - 1][generation.Count - 1].transform.position.x;
+        float minZ = generation[0][0].transform.position.z;
+        float maxZ = generation[0][generation.Count - 1].transform.position.z;
 
         foreach (List<GameObject> tileList in generation)
         {
@@ -245,6 +252,38 @@ public class Generation : MonoBehaviour
                 );
             }
         }
+
+        // Р”РѕР±Р°РІР»СЏРµРј СѓРіР»РѕРІС‹Рµ СЃС‚РµРЅС‹
+        if (_edgeWallCorner != null)
+        {
+            GameObject northWestCorner = Instantiate(
+                _edgeWallCorner,
+                new Vector3(minX - 50, 0, minZ - 50),
+                Quaternion.Euler(0, -90, 0),
+                transform
+            );
+
+            GameObject northEastCorner = Instantiate(
+                _edgeWallCorner,
+                new Vector3(maxX + 50, 0, minZ - 50),
+                Quaternion.Euler(0, -180, 0),
+                transform
+            );
+
+            GameObject southWestCorner = Instantiate(
+                _edgeWallCorner,
+                new Vector3(minX - 50, 0, maxZ + 50),
+                Quaternion.identity,
+                transform
+            );
+
+            GameObject southEastCorner = Instantiate(
+                _edgeWallCorner,
+                new Vector3(maxX + 50, 0, maxZ + 50),
+                Quaternion.Euler(0, 90, 0),
+                transform
+            );
+        }
     }
 
     public void GenerateMap(int _width, int _height)
@@ -272,9 +311,10 @@ public class Generation : MonoBehaviour
 
             AddMutationsChestsToTiles(_width, _height, _mutationsOnMapMin, _mutationsOnMapMax);
             AddQuestsToTiles(_width, _height, _questsOnMapMin, _questsOnMapMax);
-            GenerateEdjeWalls();
+            
             SetupNavMeshSurface();
-            Vector3 spawnpoint = generation[_width / 2][_height/2].transform.position;
+            GenerateEdjeWalls();
+            Vector3 spawnpoint = generation[_width / 2][_height / 2].transform.position;
             Player.Instance.transform.position = spawnpoint;
         }
     }
@@ -299,7 +339,7 @@ public class Generation : MonoBehaviour
 
     public void ClearGeneration()
     {
-        // Очистка NavMesh
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ NavMesh
         if (allSurfaces != null)
         {
             foreach (NavMeshSurface surface in allSurfaces)
@@ -310,7 +350,7 @@ public class Generation : MonoBehaviour
             NavMesh.RemoveAllNavMeshData();
         }
 
-        // Очистка дочерних объектов
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);

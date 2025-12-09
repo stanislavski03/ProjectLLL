@@ -2638,6 +2638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _edgeWall: {fileID: 9092254135465942245, guid: cadc646b9ac6ea94cb7bd56276d32c11, type: 3}
+  _edgeWallCorner: {fileID: 9092254135465942245, guid: f0cb413963c1ef14c93c4d1f1eb456e8, type: 3}
   _tilesVariationList:
   - {fileID: 1281290826586595624, guid: 76e898ed24252ec45897aded8f3d142a, type: 3}
   - {fileID: 9129400684376881136, guid: f28f062f76dd4d141a36216da5e8686a, type: 3}
@@ -9418,7 +9419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5359ece4d3dd10c448c32c0996f2f953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 6551425951544708776, guid: dd3c4fc84eb2bba4784d648d19a780e1, type: 3}
+  enemyPrefab: {fileID: 4705110521873467974, guid: 276118883af7fbe48a0ecfd7d2147af3, type: 3}
 --- !u!4 &475291480
 Transform:
   m_ObjectHideFlags: 0
@@ -18624,7 +18625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6603774, g: 0.3582236, b: 0.3582236, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

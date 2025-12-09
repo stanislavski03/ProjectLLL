@@ -9,7 +9,15 @@ public class Chest : EInteractable
 {
     [SerializeField] MutationDataSO mutation;
 
+    private Animator openChestAnimator;
+
     public long moneyRequired;
+
+    private void Start()
+    {
+        openChestAnimator = GetComponent<Animator>();
+        openChestAnimator.SetBool("IsOpen", false);
+    }
 
     public override void MakeReady()
     {
@@ -33,12 +41,14 @@ public class Chest : EInteractable
     {
         if (PlayerStatsSO.Instance.Money >= moneyRequired)
         {
+            openChestAnimator.SetBool("IsOpen", true);
             AudioManager.Instance.PlayOpenChest(MutationControllerSO.Instance.SuccessfulOpenChest);
             PlayerStatsSO.Instance.Money -= moneyRequired;
             mutation.chest = this;
             GameMenuController.Instance.GiveMutationReward();
             GameMenuController.Instance.RemoveFromSceneCostOnMutatiOnChest();
             GameMenuController.Instance.RemoveFromSceneWarningOnMutatiOnChest();
+            await UniTask.WaitForSeconds(1.5f);
             Destroy(gameObject);
         }
         else
