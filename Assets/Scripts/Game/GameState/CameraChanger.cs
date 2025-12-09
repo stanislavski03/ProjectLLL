@@ -16,7 +16,6 @@ public class CameraChanger : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
     
 

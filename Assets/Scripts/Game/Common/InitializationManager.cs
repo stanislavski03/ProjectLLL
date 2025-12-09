@@ -32,7 +32,7 @@ public class InitializationManager : MonoBehaviour
         stats.SpeedMultiplier = 1;
         stats.Money = 100;
         stats.Reputation = 50;
-        stats.maxEXP = 100;
+        stats.maxEXP = 500;
         stats.maxLevel = 30;
         stats.invincibility = false;
     }

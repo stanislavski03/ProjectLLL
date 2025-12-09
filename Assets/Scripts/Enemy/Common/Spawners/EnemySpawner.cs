@@ -6,9 +6,14 @@ using UnityEngine.UIElements;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public static EnemySpawner Instance { get; private set; }
     public Camera _spawnCamera;
     private Transform _playerTransform;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -92,4 +97,24 @@ public class EnemySpawner : MonoBehaviour
     {
         EnemyPoolList.instance._strongMeleeEnemy.GetEnemy(position);
     }
+
+
+
+    public void SpawnSmallMeleeEnemy()
+    {
+        SpawnSmallMeleeEnemy(GetRandomEdgePoint());
+    }
+    public void SpawnSmallRangedEnemy()
+    {
+        SpawnSmallRangedEnemy(GetRandomEdgePoint());
+    }
+    public void SpawnFastMeleeEnemy()
+    {
+        SpawnFastMeleeEnemy(GetRandomEdgePoint());
+    }
+    public void SpawnStrongMeleeEnemy()
+    {
+        SpawnStrongMeleeEnemy(GetRandomEdgePoint());
+    }
+
 }

@@ -135,6 +135,28 @@ public class Generation : MonoBehaviour
             int QuestAmount = Random.Range(QuestsMin, QuestsMax + 1);
 
             // ������� ������ ���� ��������� ������
+            // ��������� ������ ������
+
+            int transitionQuestSide = Random.Range(0, 4);
+            QuestData TransitionQuest = transitionQuests[Random.Range(0, transitionQuests.Count)];
+            switch (transitionQuestSide)
+            {
+                case 0:
+                    generation[0][Random.Range(0, _height)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    break;
+                case 1:
+                    generation[_width-1][Random.Range(0, _height)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    break;
+                case 2:
+                    generation[Random.Range(0, _width)][0].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    break;
+                case 3:
+                    generation[Random.Range(0, _width)][_height - 1].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    break;
+            }
+
+
+            // ������� ������ ���� ��������� ������
             List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
             {

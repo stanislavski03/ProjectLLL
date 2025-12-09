@@ -29,9 +29,9 @@ public class PlayerEXP : MonoBehaviour
     {
         _currentEXP += EXPamount;
         int countOfLevelUps = 1;
-        if (EXPamount >= 100)
+        if (EXPamount >= MaxEXP)
         {
-            countOfLevelUps = Mathf.FloorToInt(EXPamount / 100);
+            countOfLevelUps = Mathf.FloorToInt(EXPamount / MaxEXP);
             // Обрабатываем несколько уровней
             HandleMultipleLevelUps(countOfLevelUps).Forget();
         }
