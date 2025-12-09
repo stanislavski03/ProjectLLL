@@ -15,7 +15,7 @@ MonoBehaviour:
   _enemyName: Minotaur
   _damage: 50
   _cooldown: 3
-  _maxHealth: 5000
+  _maxHealth: 999999
   _moveSpeed: 5
   _moveSpeedDeviation: 0
   _expOnDeath: 10

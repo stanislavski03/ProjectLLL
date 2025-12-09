@@ -15,7 +15,7 @@ MonoBehaviour:
   _enemyName: Small Melee Enemy
   _damage: 10
   _cooldown: 1
-  _maxHealth: 120
+  _maxHealth: 100
   _moveSpeed: 5
   _moveSpeedDeviation: 0.4
   _expOnDeath: 10

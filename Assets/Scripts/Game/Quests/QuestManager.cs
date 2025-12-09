@@ -45,7 +45,6 @@ public class QuestManager : MonoBehaviour
             _onQuestFinished?.Invoke();
             activeQuests.Remove(quest);
             completedQuests.Add(quest);
-            Debug.Log($"Квест пройден: {quest.QuestName}. Активных квестов: {activeQuests.Count}");
         }
     }
 
@@ -55,13 +54,11 @@ public class QuestManager : MonoBehaviour
         {
             canceledQuests.Add(quest);
             activeQuests.Remove(quest);
-            Debug.Log($"Квест отменён: {quest.QuestName}. Активных квестов: {activeQuests.Count}");
         }
     }
 
     public void OnEnemyKilled(int enemyType = 0)
     {
-        Debug.Log($"Враг убит! Тип врага: {enemyType}");
 
         var questsToUpdate = activeQuests.ToList();
 
@@ -73,7 +70,6 @@ public class QuestManager : MonoBehaviour
             {
                 if (enemyKillerQuest.TypesOfEnemy.Contains(enemyType))
                 {
-                    Debug.Log($"Обновился квест: {quest.QuestName} (тип врага: {enemyType})");
                     quest.UpdateQuest(1);
                 }
             }

@@ -15,7 +15,7 @@ MonoBehaviour:
   _enemyName: Enemy
   _damage: 10
   _cooldown: 0.4
-  _maxHealth: 50
+  _maxHealth: 60
   _moveSpeed: 8
   _moveSpeedDeviation: 0.5
   _expOnDeath: 10

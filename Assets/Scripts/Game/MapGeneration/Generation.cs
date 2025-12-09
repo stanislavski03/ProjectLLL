@@ -14,6 +14,7 @@ public class Generation : MonoBehaviour
     [SerializeField] private List<GameObject> _tilesVariationList = new List<GameObject>();
     [SerializeField] private int _generationHeight = 3;
     [SerializeField] private int _generationWidth = 3;
+    [SerializeField] private List<QuestData> transitionQuests = new List<QuestData>();
 
     public static Generation Instance { get; private set; }
 

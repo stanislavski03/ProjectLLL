@@ -15,7 +15,7 @@ MonoBehaviour:
   _enemyName: Small Ranged Enemy
   _damage: 10
   _cooldown: 1
-  _maxHealth: 100
+  _maxHealth: 150
   _moveSpeed: 3.5
   _moveSpeedDeviation: 0.1
   _expOnDeath: 10
