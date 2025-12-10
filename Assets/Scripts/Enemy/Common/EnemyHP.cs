@@ -78,7 +78,6 @@ public class EnemyHP : MonoBehaviour
 
     private void Death()
     {
-        Debug.Log("HOLY, HE'S DEAD!");
         ExpOnDeath();
         if (_pool != null)
             _pool.GetEnemyBackToPool(gameObject);

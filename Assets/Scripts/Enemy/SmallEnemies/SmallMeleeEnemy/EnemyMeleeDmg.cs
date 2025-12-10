@@ -20,10 +20,17 @@ public class EnemyMeleeDmg : MonoBehaviour
     [SerializeField] private EnemyConfig _initializedStats;
     private void OnEnable()
     {
+        _canDamage = true;
+        _isAttacking = false;
+
         _agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        try{
+            animator = GetComponent<Animator>();
+        }
+        catch { }
         try
         {
+
             _damage = _initializedStats._damage;
             _damageCooldown = _initializedStats._cooldown;
         }
@@ -38,7 +45,11 @@ public class EnemyMeleeDmg : MonoBehaviour
 
     private void Update()
     {
-        animator.SetBool("IsAttacking", _isAttacking);
+        try
+        {
+            animator.SetBool("IsAttacking", _isAttacking);
+        }
+        catch { }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -64,9 +75,12 @@ public class EnemyMeleeDmg : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out PlayerHP player) && _cooldownTimer <= 0 && enabled)
         {
-
-            player.Damage(_damage);
-            StartCoroutine(DamageCooldown());
+            try
+            {
+                player.Damage(_damage);
+                StartCoroutine(DamageCooldown());
+            }
+            catch { }
         }
     }
     private IEnumerator DamageCooldown()

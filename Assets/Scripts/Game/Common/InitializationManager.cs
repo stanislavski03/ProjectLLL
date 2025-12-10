@@ -27,12 +27,12 @@ public class InitializationManager : MonoBehaviour
         stats.TechnoDamageMultiplier = 1;
         stats.CooldownReduction = 1;
         stats.AreaMultiplier = 1;
-        stats.MaxHP = 100;
+        stats.MaxHP = 300;
         stats.MoveSpeed = 15;
         stats.SpeedMultiplier = 1;
         stats.Money = 100;
         stats.Reputation = 50;
-        stats.maxEXP = 100;
+        stats.maxEXP = 500;
         stats.maxLevel = 30;
         stats.invincibility = false;
     }
