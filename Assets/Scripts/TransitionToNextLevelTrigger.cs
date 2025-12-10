@@ -9,7 +9,7 @@ public class TransitionToNextLevelTrigger : MonoBehaviour
     {
         if (other.GetComponent<Player>())
         {
-            TransitionManager.Instance.TransitPlayerToLevel(2);
+            TransitionManager.Instance.TransitPlayerToLevel(3);
         }
     }
 }
