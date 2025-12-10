@@ -43,6 +43,9 @@ public class PlayerStatsSO : ScriptableObject
     //public event Action<float> _energyDamageMultiplierChanged;
 
     private static PlayerStatsSO _instance;
+
+
+
     public static PlayerStatsSO Instance
     {
         get
@@ -68,6 +71,11 @@ public class PlayerStatsSO : ScriptableObject
     private void Awake()
     {
         UpdateAllPlayerStats();
+    }
+
+    public void ExpandEXP()
+    {
+        maxEXP += 150;
     }
 
     public void UpdateAllPlayerStats()

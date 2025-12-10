@@ -16,12 +16,12 @@ MonoBehaviour:
   DamageMultiplier: 1
   MagicDamageMultiplier: 1
   TechnoDamageMultiplier: 1
-  CooldownReduction: 0.7
-  AreaMultiplier: 3
-  MaxHP: 100
+  CooldownReduction: 1
+  AreaMultiplier: 1
+  MaxHP: 300
   MoveSpeed: 15
   SpeedMultiplier: 1
-  Money: 650
+  Money: 100
   Reputation: 50
   maxEXP: 500
   maxLevel: 30

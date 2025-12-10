@@ -20,6 +20,9 @@ public class EnemyMeleeDmg : MonoBehaviour
     [SerializeField] private EnemyConfig _initializedStats;
     private void OnEnable()
     {
+        _canDamage = true;
+        _isAttacking = false;
+
         _agent = GetComponent<NavMeshAgent>();
         try{
             animator = GetComponent<Animator>();

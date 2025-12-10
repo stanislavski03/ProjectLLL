@@ -63,7 +63,6 @@ public class Generation : MonoBehaviour
             if (MutationsMin < 0)
                 MutationsMin = 0;
 
-            // �����������: ���������� ����������� ������������� ����������
             int maxPossibleMutations = _width * _height;
             if (MutationsMax > maxPossibleMutations)
                 MutationsMax = maxPossibleMutations;
@@ -75,9 +74,8 @@ public class Generation : MonoBehaviour
             if (MutationsMax == MutationsMin)
                 MutationsAmount = MutationsMax;
             else
-                MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1); // +1 ������ ��� Random.Range ��������� ������� ������� ��� int
+                MutationsAmount = Random.Range(MutationsMin, MutationsMax + 1); 
 
-            // ������� ������ ���� ��������� ������
             List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
             {
@@ -88,11 +86,9 @@ public class Generation : MonoBehaviour
                 }
             }
 
-            // ���� ��������� ������ �������, ��� ������, ������������
             if (MutationsAmount > allTiles.Count)
                 MutationsAmount = allTiles.Count;
 
-            // ������������ ������ ������
             for (int i = 0; i < allTiles.Count; i++)
             {
                 int randomIndex = Random.Range(i, allTiles.Count);
@@ -101,7 +97,6 @@ public class Generation : MonoBehaviour
                 allTiles[randomIndex] = temp;
             }
 
-            // ��������� �������
             for (int i = 0; i < MutationsAmount && i < allTiles.Count; i++)
             {
                 SpawnActivity tileSpawnActivity = allTiles[i].GetComponent<SpawnActivity>();
@@ -125,7 +120,6 @@ public class Generation : MonoBehaviour
             if (QuestsMin < 0)
                 QuestsMin = 0;
 
-            // �����������: ���������� ����������� ������������� ����������
             int maxPossibleQuests = _width * _height;
             if (QuestsMax > maxPossibleQuests)
                 QuestsMax = maxPossibleQuests;
@@ -135,8 +129,6 @@ public class Generation : MonoBehaviour
 
             int QuestAmount = Random.Range(QuestsMin, QuestsMax + 1);
 
-            // ������� ������ ���� ��������� ������
-            // ��������� ������ ������
 
             int transitionQuestSide = Random.Range(0, 4);
             QuestData TransitionQuest = transitionQuests[Random.Range(0, transitionQuests.Count)];
@@ -156,8 +148,6 @@ public class Generation : MonoBehaviour
                     break;
             }
 
-
-            // ������� ������ ���� ��������� ������
             List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
             {
@@ -168,16 +158,13 @@ public class Generation : MonoBehaviour
                 }
             }
 
-            // ���� ��� ��������� ������� ��� ������, �������
             if (_availableQuests.Count <= 0 || allTiles.Count <= 0)
             {
                 return;
             }
 
-            // ������������ ���������� ������� ���������� ������� � ��������
             QuestAmount = Mathf.Min(QuestAmount, allTiles.Count, _availableQuests.Count);
 
-            // ������������ ������ ������
             for (int i = 0; i < allTiles.Count; i++)
             {
                 int randomIndex = Random.Range(i, allTiles.Count);
@@ -186,7 +173,6 @@ public class Generation : MonoBehaviour
                 allTiles[randomIndex] = temp;
             }
 
-            // ��������� ������
             for (int i = 0; i < QuestAmount; i++)
             {
                 GameObject tile = allTiles[i];
@@ -325,7 +311,7 @@ public class Generation : MonoBehaviour
                     GameObject NewTile = Instantiate(
                         _tilesVariationList[Random.Range(0, _tilesVariationList.Count)],
                         new Vector3(transform.position.x + i * 50, 0, transform.position.z + j * 50),
-                        Quaternion.identity,
+                        Quaternion.Euler(0, Random.Range(0,4) * 90,0),
                         transform
                     );
                     row.Add(NewTile);

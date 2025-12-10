@@ -13,7 +13,7 @@ public class MinotourBossUnickAttacks : MonoBehaviour
 
 
 
-    private float cooldownTimer = 1;
+    [SerializeField] private float cooldownTimer = 4;
     private float cooldown = 0;
     private bool isAttacking = false;
     NavMeshAgent NavMesh;

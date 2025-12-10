@@ -18,7 +18,7 @@ public class SpawnActivity : MonoBehaviour
     {
         GameObject QuestGiverSpawned = Instantiate(_questGiver,
             new Vector3(_questGiverSpawnPoint.position.x, _questGiver.transform.position.y, _questGiverSpawnPoint.position.z), 
-            Quaternion.identity, 
+            Quaternion.Euler(0, 180, 0), 
             transform);
         QuestGiverSpawned.GetComponent<QuestGiver>().SetQuestType(QuestType);
         QuestGiverSpawned.GetComponent<QuestGiver>().SetQuest(Quest);
@@ -27,7 +27,7 @@ public class SpawnActivity : MonoBehaviour
     {
         GameObject MutationSpawned = Instantiate(_mutationChest,
             new Vector3(_mutationChestSpawnPoint.position.x, _mutationChest.transform.position.y, _mutationChestSpawnPoint.position.z),
-            Quaternion.identity,
+            Quaternion.Euler(0, 180, 0),
             transform);
     }
 
@@ -35,7 +35,7 @@ public class SpawnActivity : MonoBehaviour
     {
         GameObject QuestGiverSpawned = Instantiate(_questGiver,
             new Vector3(_questGiverSpawnPoint.position.x, _questGiver.transform.position.y, _questGiverSpawnPoint.position.z),
-            Quaternion.identity,
+            Quaternion.Euler(0,180,0),
             transform);
         QuestGiverSpawned.GetComponent<QuestGiver>()._transitionQuest = true;
         QuestGiverSpawned.GetComponent<QuestGiver>().SetQuest(Quest);

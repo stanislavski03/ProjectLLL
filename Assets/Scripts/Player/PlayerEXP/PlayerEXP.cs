@@ -34,6 +34,7 @@ public class PlayerEXP : MonoBehaviour
             countOfLevelUps = Mathf.FloorToInt(EXPamount / MaxEXP);
             // Обрабатываем несколько уровней
             HandleMultipleLevelUps(countOfLevelUps).Forget();
+            
         }
         else if (_currentEXP >= MaxEXP)
         {
@@ -50,22 +51,32 @@ public class PlayerEXP : MonoBehaviour
     {
         for (int i = 0; i < countOfLevelUps; i++)
         {
-            _currentLVL += 1;
-            LVLChanged?.Invoke(_currentLVL);
+
+            
+            
 
             if (_currentEXP >= MaxEXP)
             {
+
                 _currentEXP -= MaxEXP;
+
+                _statsSO.ExpandEXP();
+                _currentLVL += 1;
+                LVLChanged?.Invoke(_currentLVL);
+
+                // Показываем окно выбора и ЖДЕМ, пока игрок не сделает выбор
+                await ShowLevelUpAndWait();
+
+                // Обновляем UI после каждого уровня
+                UpdateUI();
+
+                // Небольшая пауза между уровнями (опционально)
+                await UniTask.Delay(100);
             }
+            else
+                break;
+            
 
-            // Показываем окно выбора и ЖДЕМ, пока игрок не сделает выбор
-            await ShowLevelUpAndWait();
-
-            // Обновляем UI после каждого уровня
-            UpdateUI();
-
-            // Небольшая пауза между уровнями (опционально)
-            await UniTask.Delay(100);
         }
     }
 
