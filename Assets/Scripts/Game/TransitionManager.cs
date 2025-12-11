@@ -29,6 +29,20 @@ public class TransitionManager : MonoBehaviour
     {
         if (GameStateManager.Instance.IsPaused)
             GameStateManager.Instance.ResumeGame();
+
+        if (i == 0) {
+            GameObject[] bullshit = FindObjectsOfType<GameObject>();
+
+            foreach (GameObject go in bullshit)
+            {
+                if (go.GetComponent<DontDestroyOnLoadScript>())
+                {
+                    Destroy(go);
+                }
+            }
+        }
+
+
         SceneManager.LoadScene(i);
     }
 
