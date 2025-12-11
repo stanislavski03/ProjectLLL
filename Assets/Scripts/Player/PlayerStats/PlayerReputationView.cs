@@ -13,6 +13,7 @@ public class PlayerReputationView : MonoBehaviour
     void Start()
     {
         UpdateProgressBar(PlayerStatsSO.Instance.Reputation);
+        
     }
 
     private void OnEnable()

@@ -10,7 +10,7 @@ public class GameStateManager : MonoBehaviour
     public PauseType CurrentPauseType { get; private set; }
     public event Action<bool, PauseType> OnPauseStateChanged;
     public GameObject MenuCanvas;
-    public GameObject InventoryCanvas;
+    public GameObject SettingsCanvas;
 
     public enum PauseType
     {
@@ -46,7 +46,7 @@ public class GameStateManager : MonoBehaviour
             AudioManager.Instance.ResumeMusic();
             SimpleFog.Instance.SetFogSmooth(SimpleFog.Instance.defaultFogDensity);
             MenuCanvas.SetActive(false);
-            InventoryCanvas.SetActive(false);
+            SettingsCanvas.SetActive(false);
             ItemsPanel.Instance.gameObject.SetActive(true);
             SetPaused(false);
 

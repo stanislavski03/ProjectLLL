@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New UniversalDamageBoostItem Data", menuName = "Items/UniversalDamageBoostItem Data")]

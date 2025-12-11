@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,10 +23,12 @@ public class TransitionManager : MonoBehaviour
 
     public void TransitPlayerToNextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void TransitPlayerToLevel(int i)
     {
+        if (GameStateManager.Instance.IsPaused)
+            GameStateManager.Instance.ResumeGame();
         SceneManager.LoadScene(i);
     }
 

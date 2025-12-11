@@ -5,32 +5,8 @@ using Unity.VisualScripting;
 using System;
 
 [CreateAssetMenu(fileName = "New Item Controller", menuName = "Items/Item Controller")]
-public class ItemControllerSO : ScriptableObject
+public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
 {
-    private static ItemControllerSO _instance;
-    public static ItemControllerSO Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                // ���� ������������ ���������
-                var guids = AssetDatabase.FindAssets("t:ItemControllerSO");
-                if (guids.Length > 0)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                    _instance = AssetDatabase.LoadAssetAtPath<ItemControllerSO>(path);
-                }
-
-                // ���� �� �����, ������� �����
-                if (_instance == null)
-                {
-                    Debug.LogWarning("ItemControllerSO not found in project. Please create one via Assets/Create/Items/Item Controller");
-                }
-            }
-            return _instance;
-        }
-    }
 
 
 
@@ -88,28 +64,9 @@ public class ItemControllerSO : ScriptableObject
         }
     }
 
-    // ��� ������ � Runtime (��� AssetDatabase)
-    public static void SetInstance(ItemControllerSO instance)
-    {
-        _instance = instance;
-    }
     private void Awake()
     {
         ClearAllPools();
-    }
-
-    private void OnEnable()
-    {
-        // ������������� ������������� ���� ��� ������� ��� ��������
-        if (_instance == null)
-        {
-            _instance = this;
-        }
-        else if (_instance != this)
-        {
-            Debug.LogWarning($"Multiple ItemControllerSO instances detected. Using existing instance: {_instance.name}", this);
-        }
-        
     }
 
     public void InsertItemInPool(ItemDataSO item, List<ItemDataSO> Pool)

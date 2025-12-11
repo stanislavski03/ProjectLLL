@@ -179,7 +179,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4323583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5414295
@@ -3106,7 +3106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 560.37695, y: -494.2881}
+  m_AnchoredPosition: {x: 560.10394, y: -494.44153}
   m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &110341018
@@ -3876,6 +3876,7 @@ GameObject:
   - component: {fileID: 163084749}
   - component: {fileID: 163084752}
   - component: {fileID: 163084751}
+  - component: {fileID: 163084753}
   - component: {fileID: 163084754}
   - component: {fileID: 163084755}
   m_Layer: 5
@@ -3944,6 +3945,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163084748}
   m_CullTransparentMesh: 1
+--- !u!114 &163084753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163084748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b19d03778c3c08343861adf5aa82dbc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &163084754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4431,7 +4444,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 195058265}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &196221532
@@ -6194,7 +6207,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 273320177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &276526259
@@ -7839,7 +7852,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 346985026}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &348119351
@@ -8943,7 +8956,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1160.377, y: -94.288086}
+  m_AnchoredPosition: {x: 1160.104, y: -94.44153}
   m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &445578509
@@ -9987,8 +10000,8 @@ MonoBehaviour:
   uiClickSource: {fileID: 1361790271}
   audioMixer: {fileID: 24100000, guid: e3ba5231832369349a8056c0c7b23ebd, type: 2}
   masterVolume: 0.5
-  sfxVolume: 1
-  musicVolume: 1
+  sfxVolume: 0.5
+  musicVolume: 0.5
 --- !u!114 &500826774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12521,7 +12534,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 649530103}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &662960116
@@ -14025,7 +14038,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1160.377, y: -494.2881}
+  m_AnchoredPosition: {x: 1160.104, y: -494.44153}
   m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &747781722
@@ -16132,7 +16145,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 837624293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &841953891
@@ -17658,7 +17671,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 929409044}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &943896354
@@ -20443,7 +20456,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1057559700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1059258664
@@ -24155,7 +24168,7 @@ GameObject:
   - component: {fileID: 1211067668}
   - component: {fileID: 1211067667}
   - component: {fileID: 1211067666}
-  - component: {fileID: 1211067671}
+  - component: {fileID: 1211067670}
   m_Layer: 5
   m_Name: WorldSpaceCanvas
   m_TagString: Untagged
@@ -24249,7 +24262,7 @@ RectTransform:
   m_AnchoredPosition: {x: 54.5, y: 3.14}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1211067671
+--- !u!114 &1211067670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24258,7 +24271,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1211067665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1216334099
@@ -27586,7 +27599,6 @@ GameObject:
   - component: {fileID: 1393646197}
   - component: {fileID: 1393646196}
   - component: {fileID: 1393646200}
-  - component: {fileID: 1393646201}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -27710,18 +27722,6 @@ MonoBehaviour:
   _itemRewardMenu: {fileID: 537986630}
   _questInfoPanel: {fileID: 1277580230}
   _questRewardInfoPanel: {fileID: 1258392769}
---- !u!114 &1393646201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1393646195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1401455930
 GameObject:
   m_ObjectHideFlags: 0
@@ -28015,7 +28015,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 560.37695, y: -94.288086}
+  m_AnchoredPosition: {x: 560.10394, y: -94.44153}
   m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1415624528
@@ -29646,7 +29646,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1507705995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1516805186
@@ -29836,7 +29836,7 @@ GameObject:
   - component: {fileID: 1527915473}
   m_Layer: 3
   m_Name: musicSource
-  m_TagString: Music
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31408,7 +31408,7 @@ GameObject:
   - component: {fileID: 1670788047}
   - component: {fileID: 1670788046}
   m_Layer: 5
-  m_Name: VFXVolume
+  m_Name: SFXVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33601,7 +33601,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1799490101}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1799505161
@@ -35080,22 +35080,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 500826774}
-        m_TargetAssemblyTypeName: TransitionManager, Assembly-CSharp
-        m_MethodName: TransitPlayerToLevel
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 299565547}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 299565552}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: QuitGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -35218,7 +35206,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1885103094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
+  m_Script: {fileID: 11500000, guid: 6900a926333411b43af2a5145b4c83aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1889689163
@@ -35484,7 +35472,6 @@ GameObject:
   - component: {fileID: 1901419980}
   - component: {fileID: 1901419979}
   - component: {fileID: 1901419982}
-  - component: {fileID: 1901419983}
   m_Layer: 5
   m_Name: SettingsCanvas
   m_TagString: Untagged
@@ -35589,21 +35576,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resolutionDropdown: {fileID: 1033147189}
   qualityDropdown: {fileID: 565941851}
---- !u!114 &1901419983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901419977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8141010463199f8478e0aa2ffc36ab21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MasterSlider: {fileID: 100857949}
-  VFXSlider: {fileID: 803023907}
-  MusicSlider: {fileID: 346035504}
 --- !u!1 &1904950849
 GameObject:
   m_ObjectHideFlags: 0

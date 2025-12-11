@@ -316,6 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6442288734075925150}
   - component: {fileID: 7089248662053792005}
+  - component: {fileID: 150156109346382523}
   m_Layer: 9
   m_Name: BossArena1
   m_TagString: Ground
@@ -359,6 +360,19 @@ MonoBehaviour:
   _questGiverSpawnPoint: {fileID: 0}
   _mutationChest: {fileID: 7056306788243686916, guid: ce88085c07b5e3d4b8717cfb4a91f0b0, type: 3}
   _mutationChestSpawnPoint: {fileID: 0}
+--- !u!114 &150156109346382523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281290826586595624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398db115b7459a849aed28cc56797e5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newMusic: {fileID: 8300000, guid: b7501a20c06ef20469c1419fea37f021, type: 3}
 --- !u!1 &1741621071255888017
 GameObject:
   m_ObjectHideFlags: 0

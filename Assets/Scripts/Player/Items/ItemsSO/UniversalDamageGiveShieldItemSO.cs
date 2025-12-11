@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 
 [CreateAssetMenu(fileName = "New UniversalDamageGiveShieldItemSO Data", menuName = "Items/UniversalDamageGiveShieldItemSO Data")]
 public class UniversalDamageGiveShieldItemSO : ItemDataSO

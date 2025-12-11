@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 
 [CreateAssetMenu(fileName = "New Mutation Controller", menuName = "Mutations/Mutation Controller")]
-public class MutationControllerSO : ScriptableObject
+public class MutationControllerSO : SingletonScriptableObject<MutationControllerSO>
 {
     [System.Serializable]
     public class MutationEntry
@@ -47,29 +47,6 @@ public class MutationControllerSO : ScriptableObject
 
     public AudioClip SuccessfulOpenChest;
     public AudioClip ErrorOpenChest;
-
-    private static MutationControllerSO _instance;
-    public static MutationControllerSO Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                var guids = AssetDatabase.FindAssets("t:MutationControllerSO");
-                if (guids.Length > 0)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                    _instance = AssetDatabase.LoadAssetAtPath<MutationControllerSO>(path);
-                }
-
-                if (_instance == null)
-                {
-                    Debug.LogWarning("MutationControllerSO not found in project. Please create one via Assets/Create/Mutations/Mutation Controller");
-                }
-            }
-            return _instance;
-        }
-    }
 
     public void AddMutation(MutationDataSO mutation)
     {
