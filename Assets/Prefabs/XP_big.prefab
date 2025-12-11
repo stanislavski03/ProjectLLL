@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7834904218656396060}
   - component: {fileID: 2075086262667562075}
   m_Layer: 0
-  m_Name: XP_middle
+  m_Name: XP_big
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e793ff6a3996ad6459247ab6c3f03ee7, type: 2}
+  - {fileID: 2100000, guid: 0483583ce34e1bc489326a7d530c8936, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,5 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ace8cf32768df429be3a3dc66ee756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _EXPamount: 100
-  _moneyAmount: 50
+  _EXPamount: 200
+  _moneyAmount: 200

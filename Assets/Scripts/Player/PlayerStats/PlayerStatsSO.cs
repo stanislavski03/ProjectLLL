@@ -27,6 +27,8 @@ public class PlayerStatsSO : ScriptableObject
     public int maxLevel = 30;
 
     public bool invincibility = false;
+
+    public float CurrentKills = 0;
     
     public event Action<float> _damageMultiplierChanged;
     public event Action<float> _magicDamageMultiplierChanged;
@@ -38,6 +40,7 @@ public class PlayerStatsSO : ScriptableObject
     public event Action<float> _reputationChanged;
     public event Action<float> _moveSpeedChanged;
     public event Action<float> _maxHpChanged;
+    public event Action<float> _killsChanged;
     //public event Action<float> _fireDamageMultiplierChanged;
     //public event Action<float> _iceDamageMultiplierChanged;
     //public event Action<float> _energyDamageMultiplierChanged;
@@ -90,6 +93,7 @@ public class PlayerStatsSO : ScriptableObject
         _reputationChanged?.Invoke(Reputation);
         _moveSpeedChanged?.Invoke(MoveSpeed);
         _maxHpChanged?.Invoke(MaxHP);
+        _killsChanged?.Invoke(CurrentKills);
     }
 
     public void ChangeDamageMultiplier(float value)
@@ -151,6 +155,12 @@ public class PlayerStatsSO : ScriptableObject
     {
         MoveSpeed += value;
         _moveSpeedChanged?.Invoke(MoveSpeed);
+    }
+
+    public void ChangeKills(long value)
+    {
+        CurrentKills += value;
+        _killsChanged?.Invoke(CurrentKills);
     }
 
 }

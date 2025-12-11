@@ -43,7 +43,7 @@ public class Chest : EInteractable
         {
             openChestAnimator.SetBool("IsOpen", true);
             AudioManager.Instance.PlayOpenChest(MutationControllerSO.Instance.SuccessfulOpenChest);
-            PlayerStatsSO.Instance.Money -= moneyRequired;
+            PlayerStatsSO.Instance.ChangeMoney(-moneyRequired);
             mutation.chest = this;
             GameMenuController.Instance.GiveMutationReward();
             GameMenuController.Instance.RemoveFromSceneCostOnMutatiOnChest();

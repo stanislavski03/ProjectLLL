@@ -86,6 +86,7 @@ public class EnemyHP : MonoBehaviour
 
         ItemControllerSO.Instance.ActivateOnEnemyDeathEvent(gameObject);
         QuestManager.Instance?.OnEnemyKilled(EnemyType);
+        PlayerStatsSO.Instance.ChangeKills(1);
     }
     
     private void ExpOnDeath() 

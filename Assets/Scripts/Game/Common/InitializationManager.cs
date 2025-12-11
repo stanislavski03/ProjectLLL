@@ -35,6 +35,9 @@ public class InitializationManager : MonoBehaviour
         stats.maxEXP = 500;
         stats.maxLevel = 30;
         stats.invincibility = false;
+        stats.CurrentKills = 0;
+
+        stats.UpdateAllPlayerStats();
     }
 
 }

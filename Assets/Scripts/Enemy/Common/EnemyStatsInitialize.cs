@@ -13,7 +13,7 @@ public class EnemyStatsInitialize : MonoBehaviour
     public int _damage;
     public float _damageCooldown;
     public float _moveSpeed;
-    public int _experienceReward;
+    public int _experienceRewardMultiplier;
     public float _expOnDeath;
 
     public float _expSmallDropChance;
@@ -32,7 +32,7 @@ public class EnemyStatsInitialize : MonoBehaviour
         _damage = config._damage;
         _damageCooldown = config._cooldown;
         _moveSpeed = config._moveSpeed;
-        _experienceReward = config._experienceReward;
+        _experienceRewardMultiplier = config._experienceRewardMultiplier;
         _expOnDeath = config._expOnDeath;
         _expSmallDropChance = config._expSmallDropChance;
         _expMediumDropChance = config._expMediumDropChance;

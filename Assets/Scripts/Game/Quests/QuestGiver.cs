@@ -10,6 +10,8 @@ public class QuestGiver : EInteractable
     public ItemType _questType;
     public bool _transitionQuest = false;
 
+    public Animator _questAnimator;
+
     public void SetQuest(QuestData Quest)
     {
         _quest = Quest;
@@ -23,6 +25,7 @@ public class QuestGiver : EInteractable
     public override void MakeReady()
     {
         base.MakeReady();
+        _questAnimator.SetBool("IsPlayerNear", true);
         if (_questComplete)
         {
             GameMenuController.Instance.ShowQuestRewardInfo(transform, _quest.questRewardInfo);
@@ -36,6 +39,7 @@ public class QuestGiver : EInteractable
     public override void MakeNonReady()
     {
         base.MakeNonReady();
+        _questAnimator.SetBool("IsPlayerNear", false);
         GameMenuController.Instance.RemoveFromSceneQuestInfo();
         GameMenuController.Instance.RemoveFromSceneQuestRewardInfo();
     }
@@ -50,6 +54,7 @@ public class QuestGiver : EInteractable
             _quest.OnQuestStart();
             MakeNonReady();
             _canBeInteractedWith = false;
+            _questAnimator.SetBool("IsActive", true);
         }
         else
         {
@@ -66,12 +71,15 @@ public class QuestGiver : EInteractable
 
             MakeNonReady();
             _canBeInteractedWith = false;
+            _questAnimator.SetBool("IsActive", false);
+            
         }
     }
     public override void SetComplete()
     {
         _canBeInteractedWith = true;
         _questComplete = true;
+        _questAnimator.SetBool("IsFinished", true);
     }
 
 }
