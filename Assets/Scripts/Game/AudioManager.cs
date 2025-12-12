@@ -314,10 +314,14 @@ public class AudioManager : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            elapsedTime += Time.unscaledDeltaTime;
-            float t = elapsedTime / duration;
-            musicSource.pitch = Mathf.Lerp(startPitch, targetPitch, t);
-            yield return null;
+            try
+            {
+                elapsedTime += Time.unscaledDeltaTime;
+                float t = elapsedTime / duration;
+                musicSource.pitch = Mathf.Lerp(startPitch, targetPitch, t);
+                yield return null;
+            }
+            finally { }
         }
 
         musicSource.pitch = targetPitch;

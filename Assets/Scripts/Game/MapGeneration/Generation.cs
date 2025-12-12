@@ -99,7 +99,7 @@ public class Generation : MonoBehaviour
 
             for (int i = 0; i < MutationsAmount && i < allTiles.Count; i++)
             {
-                SpawnActivity tileSpawnActivity = allTiles[i].GetComponent<SpawnActivity>();
+                SpawnActivityOnTile tileSpawnActivity = allTiles[i].GetComponent<SpawnActivityOnTile>();
                 if (tileSpawnActivity != null)
                 {
                     tileSpawnActivity._objectsOnTile.Add(ActivityOnTileType.Mutation);
@@ -135,16 +135,16 @@ public class Generation : MonoBehaviour
             switch (transitionQuestSide)
             {
                 case 0:
-                    generation[0][Random.Range(0, _height)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    generation[0][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>().SpawnTransitionQuest(TransitionQuest);
                     break;
                 case 1:
-                    generation[_width-1][Random.Range(0, _height)].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    generation[_width-1][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>().SpawnTransitionQuest(TransitionQuest);
                     break;
                 case 2:
-                    generation[Random.Range(0, _width)][0].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    generation[Random.Range(0, _width)][0].GetComponent<SpawnActivityOnTile>().SpawnTransitionQuest(TransitionQuest);
                     break;
                 case 3:
-                    generation[Random.Range(0, _width)][_height - 1].GetComponent<SpawnActivity>().SpawnTransitionQuest(TransitionQuest);
+                    generation[Random.Range(0, _width)][_height - 1].GetComponent<SpawnActivityOnTile>().SpawnTransitionQuest(TransitionQuest);
                     break;
             }
 
@@ -176,7 +176,7 @@ public class Generation : MonoBehaviour
             for (int i = 0; i < QuestAmount; i++)
             {
                 GameObject tile = allTiles[i];
-                SpawnActivity tileSpawnActivity = tile.GetComponent<SpawnActivity>();
+                SpawnActivityOnTile tileSpawnActivity = tile.GetComponent<SpawnActivityOnTile>();
 
                 if (tileSpawnActivity != null && !tileSpawnActivity._objectsOnTile.Exists(activity => activity == ActivityOnTileType.Quest))
                 {

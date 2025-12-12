@@ -23,12 +23,17 @@ public class TransitionManager : MonoBehaviour
 
     public void TransitPlayerToNextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        TransitPlayerToLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void TransitPlayerToLevel(int i)
     {
         if (GameStateManager.Instance.IsPaused)
             GameStateManager.Instance.ResumeGame();
+
+        if(SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            EnemySpawnManager.Instance.enabled = true;
+        }
 
         if (i == 0) {
             GameObject[] bullshit = FindObjectsOfType<GameObject>();
@@ -41,9 +46,13 @@ public class TransitionManager : MonoBehaviour
                 }
             }
         }
+        else if (i == 3)
+        { 
+            EnemySpawnManager.Instance.enabled = false;
+        }
 
 
-        SceneManager.LoadScene(i);
+            SceneManager.LoadScene(i);
     }
 
 }

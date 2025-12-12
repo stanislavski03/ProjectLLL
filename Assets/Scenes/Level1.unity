@@ -9842,6 +9842,7 @@ GameObject:
   - component: {fileID: 500826774}
   - component: {fileID: 500826775}
   - component: {fileID: 500826776}
+  - component: {fileID: 500826777}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -10030,6 +10031,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73a416d7329a4394da61a6adb10b1924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &500826777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500826765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e675e0b5754f74b46bede93f5c863b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPatrolPeriod: 5
+  _spawnWavePeriod: 20
+  _difficulty: 0
+  _periodOfGettingPoints: 1
+  _points: 7
+  _pointsToGain: 2
 --- !u!1 &503263585
 GameObject:
   m_ObjectHideFlags: 0
@@ -24466,6 +24485,7 @@ GameObject:
   - component: {fileID: 1233524097}
   - component: {fileID: 1233524096}
   - component: {fileID: 1233524095}
+  - component: {fileID: 1233524100}
   m_Layer: 0
   m_Name: Cylinder (1)
   m_TagString: Untagged
@@ -24573,6 +24593,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1233524100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233524094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19293f937e9a0b4c8789cef54fb2ef8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transitionScene: 3
 --- !u!1 &1248231326
 GameObject:
   m_ObjectHideFlags: 0

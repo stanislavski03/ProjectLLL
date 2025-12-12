@@ -29,8 +29,13 @@ public class EXP : MonoBehaviour
     {
         while (_gathered)
         {
-            transform.position += ( Player.Instance.transform.position - transform.position).normalized * 15 * Time.deltaTime;
-            yield return new WaitForFixedUpdate();
+            if (Player.Instance != null)
+            {
+                transform.position += (Player.Instance.transform.position - transform.position).normalized * 15 * Time.deltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+            else
+                yield return null;
         }
     }
 }
