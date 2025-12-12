@@ -25,6 +25,7 @@ MonoBehaviour:
   _projectileLifetime: 0
   _prepareTime: 0
   _experienceRewardMultiplier: 1
+  _noExpDropChance: 25
   _expSmallPrefab: {fileID: 1627554565677760942, guid: e1eb3370df7dc8b45b7fb79e0472a778, type: 3}
   _expSmallDropChance: 50
   _expMediumPrefab: {fileID: 1627554565677760942, guid: 8a648a11417f01b4f93b101ca312f77d, type: 3}

@@ -7,6 +7,7 @@ public class QuestGiver : EInteractable
 {
     [SerializeField] private QuestData _quest;
     private bool _questComplete = false;
+    private bool _questTurnedIn = false;
     public ItemType _questType;
     public bool _transitionQuest = false;
 
@@ -34,8 +35,8 @@ public class QuestGiver : EInteractable
         {
             GameMenuController.Instance.ShowQuestInfo(transform, _quest.questInfo);
         }
-            
     }
+    
     public override void MakeNonReady()
     {
         base.MakeNonReady();
@@ -45,6 +46,8 @@ public class QuestGiver : EInteractable
     }
 
     public bool QuestComplete { get { return _questComplete; } }
+    public bool QuestTurnedIn { get { return _questTurnedIn; } }
+    
     public override void Interact()
     {
         AudioManager.Instance.PlayQuest(QuestManager.Instance.QuestClip);
@@ -52,6 +55,7 @@ public class QuestGiver : EInteractable
         {
             _quest._questGiver = this;
             _quest.OnQuestStart();
+            QuestManager.Instance.RegisterQuest(_quest);
             MakeNonReady();
             _canBeInteractedWith = false;
             _questAnimator.SetBool("IsActive", true);
@@ -68,18 +72,21 @@ public class QuestGiver : EInteractable
                 TransitionManager.Instance.TransitPlayerToNextLevel();
             }
 
-
+            // Отмечаем квест как сданный
+            _questTurnedIn = true;
+            _quest.OnQuestTurnedIn();
+            
             MakeNonReady();
             _canBeInteractedWith = false;
             _questAnimator.SetBool("IsActive", false);
-            
+            _questAnimator.SetBool("IsFinished", false);
         }
     }
+    
     public override void SetComplete()
     {
         _canBeInteractedWith = true;
         _questComplete = true;
         _questAnimator.SetBool("IsFinished", true);
     }
-
 }

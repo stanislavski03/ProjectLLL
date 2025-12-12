@@ -43,7 +43,6 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -51,148 +50,149 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // Инициализация источников звука
-        InitializeAudioSources();
+        // Настройка источников звука
+        ConfigureAudioSources();
 
         // Загрузка сохраненных настроек
         LoadVolumeSettings();
     }
 
-    void InitializeAudioSources()
+    void ConfigureAudioSources()
     {
-        // Создаем и настраиваем источники звука
+        // Настройка свойств
+        if (musicSource != null)
+            musicSource.loop = true;
+        
+        if (walkSource != null)
+            walkSource.loop = true;
+
+        // Устанавливаем всем playOnAwake = false и сохраняем начальные громкости
         AudioSource[] sources = new AudioSource[] {
             sfxSource, musicSource, uiClickSource, walkSource,
             hitSource, shootSource, openChestSource, QuestSource, levelUpSource
         };
 
-        for (int i = 0; i < sources.Length; i++)
+        foreach (var source in sources)
         {
-            if (sources[i] == null)
+            if (source != null)
             {
-                sources[i] = gameObject.AddComponent<AudioSource>();
+                source.playOnAwake = false;
+                // Сохраняем текущую громкость как базовую (по умолчанию 1)
+                if (!sourceBaseVolumes.ContainsKey(source))
+                {
+                    sourceBaseVolumes[source] = 1f;
+                }
             }
         }
 
-        // Сохраняем ссылки
-        sfxSource = sources[0];
-        musicSource = sources[1];
-        uiClickSource = sources[2];
-        walkSource = sources[3];
-        hitSource = sources[4];
-        shootSource = sources[5];
-        openChestSource = sources[6];
-        QuestSource = sources[7];
-        levelUpSource = sources[8];
-
-        // Настройка свойств
-        musicSource.loop = true;
-        walkSource.loop = true;
-
-        // Устанавливаем всем playOnAwake = false
-        foreach (var source in sources)
-        {
-            source.playOnAwake = false;
-            sourceBaseVolumes[source] = 1f; // Базовая громкость 1
-        }
+        // Применяем текущие настройки громкости
+        UpdateAllVolumes();
     }
 
     // === МЕТОДЫ ВОСПРОИЗВЕДЕНИЯ ===
 
     public void PlaySFX(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip != null)
+        if (clip != null && sfxSource != null)
         {
-            sfxSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+            // Используем только volumeScale, громкость регулируется через микшер
+            sfxSource.PlayOneShot(clip, volumeScale);
         }
     }
 
     public void PlaySFXAtPosition(AudioClip clip, Vector3 position, float volumeScale = 1f)
     {
         if (clip != null)
-            AudioSource.PlayClipAtPoint(clip, position, volumeScale * sfxVolume * masterVolume);
+        {
+            // Используем только volumeScale, громкость регулируется через микшер
+            AudioSource.PlayClipAtPoint(clip, position, volumeScale);
+        }
     }
 
     public void PlayWalk(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip != null && !walkSource.isPlaying)
+        if (clip != null && walkSource != null && !walkSource.isPlaying)
         {
             walkSource.clip = clip;
             sourceBaseVolumes[walkSource] = volumeScale;
-            walkSource.volume = volumeScale * sfxVolume * masterVolume;
+            walkSource.volume = volumeScale;
             walkSource.Play();
         }
     }
 
     public void StopWalk()
     {
-        if (walkSource.isPlaying)
+        if (walkSource != null && walkSource.isPlaying)
             walkSource.Stop();
     }
 
     public void PlayHit(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip != null)
+        if (clip != null && hitSource != null)
         {
             sourceBaseVolumes[hitSource] = volumeScale;
-            hitSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+            hitSource.PlayOneShot(clip, volumeScale);
         }
     }
 
     public void StopHit()
     {
-        hitSource.Stop();
+        if (hitSource != null)
+            hitSource.Stop();
     }
 
     public void PlayShoot(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip != null)
+        if (clip != null && shootSource != null)
         {
             sourceBaseVolumes[shootSource] = volumeScale;
-            shootSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+            shootSource.PlayOneShot(clip, volumeScale);
         }
     }
 
     public void StopShoot()
     {
-        shootSource.Stop();
+        if (shootSource != null)
+            shootSource.Stop();
     }
 
     public void PlayOpenChest(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip != null)
+        if (clip != null && openChestSource != null)
         {
             sourceBaseVolumes[openChestSource] = volumeScale;
-            openChestSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+            openChestSource.PlayOneShot(clip, volumeScale);
         }
     }
 
     public void PlayQuest(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip != null)
+        if (clip != null && QuestSource != null)
         {
             sourceBaseVolumes[QuestSource] = volumeScale;
-            QuestSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+            QuestSource.PlayOneShot(clip, volumeScale);
         }
     }
 
     public void PlayLevelUp(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip != null)
+        if (clip != null && levelUpSource != null)
         {
             sourceBaseVolumes[levelUpSource] = volumeScale;
-            levelUpSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+            levelUpSource.PlayOneShot(clip, volumeScale);
         }
     }
 
     public void PlayClick(AudioClip clip, float volumeScale = 1f)
     {
-        if (clip != null)
+        if (clip != null && uiClickSource != null)
         {
             sourceBaseVolumes[uiClickSource] = volumeScale;
-            uiClickSource.PlayOneShot(clip, volumeScale * sfxVolume * masterVolume);
+            uiClickSource.PlayOneShot(clip, volumeScale);
         }
     }
+
+    // === МУЗЫКА ===
 
     public void PauseMusic()
     {
@@ -200,23 +200,22 @@ public class AudioManager : MonoBehaviour
         {
             musicSource.Pause();
             isMusicPaused = true;
-            Debug.Log("Music paused");
         }
     }
 
     public void ResumeMusic()
     {
-        if (musicSource != null && isMusicPaused)
+        if (musicSource != null)
         {
-            musicSource.UnPause();
-            isMusicPaused = false;
-            Debug.Log("Music resumed");
-        }
-        else if (musicSource != null && !musicSource.isPlaying)
-        {
-            // Если музыка не играла (например, только запустили игру)
-            musicSource.Play();
-            Debug.Log("Music started (wasn't playing)");
+            if (isMusicPaused)
+            {
+                musicSource.UnPause();
+                isMusicPaused = false;
+            }
+            else if (!musicSource.isPlaying && musicSource.clip != null)
+            {
+                musicSource.Play();
+            }
         }
     }
 
@@ -231,16 +230,18 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(AudioClip clip, bool loop = true, float volumeScale = 1f)
     {
-        if (clip != null)
+        if (clip != null && musicSource != null)
         {
             sourceBaseVolumes[musicSource] = volumeScale;
             musicSource.clip = clip;
             musicSource.loop = loop;
-            musicSource.volume = volumeScale * musicVolume * masterVolume;
+            musicSource.volume = volumeScale;
             musicSource.Play();
             isMusicPaused = false;
         }
     }
+
+    // === DUCKING И PITCH ===
 
     public void DuckMusic(float duckAmount = 0.5f, float fadeDuration = 0.5f)
     {
@@ -261,7 +262,8 @@ public class AudioManager : MonoBehaviour
     private IEnumerator DuckMusicCoroutine(float targetDuckAmount, float duration)
     {
         float startVolume = musicSource.volume;
-        float targetVolume = startVolume * targetDuckAmount;
+        float baseVolume = sourceBaseVolumes.ContainsKey(musicSource) ? sourceBaseVolumes[musicSource] : 1f;
+        float targetVolume = baseVolume * targetDuckAmount;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -279,7 +281,7 @@ public class AudioManager : MonoBehaviour
     {
         float startVolume = musicSource.volume;
         float baseVolume = sourceBaseVolumes.ContainsKey(musicSource) ? sourceBaseVolumes[musicSource] : 1f;
-        float targetVolume = baseVolume * musicVolume * masterVolume;
+        float targetVolume = baseVolume;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -339,37 +341,35 @@ public class AudioManager : MonoBehaviour
     public void SetSFXVolume(float volume)
     {
         sfxVolume = Mathf.Clamp01(volume);
-        UpdateAllVolumes(); // Обновляем все объемы, включая SFX
+        UpdateAllVolumes();
         SaveVolumeSettings();
     }
 
     public void SetMusicVolume(float volume)
     {
         musicVolume = Mathf.Clamp01(volume);
-        UpdateAllVolumes(); // Обновляем все объемы, включая музыку
+        UpdateAllVolumes();
         SaveVolumeSettings();
     }
 
     private void UpdateAllVolumes()
     {
-        // Обновляем все активные источники звука немедленно
-        UpdateSourceVolume(sfxSource, sfxVolume * masterVolume);
-        UpdateSourceVolume(musicSource, musicVolume * masterVolume);
-        UpdateSourceVolume(uiClickSource, sfxVolume * masterVolume);
-        UpdateSourceVolume(walkSource, sfxVolume * masterVolume);
-        UpdateSourceVolume(hitSource, sfxVolume * masterVolume);
-        UpdateSourceVolume(shootSource, sfxVolume * masterVolume);
-        UpdateSourceVolume(openChestSource, sfxVolume * masterVolume);
-        UpdateSourceVolume(QuestSource, sfxVolume * masterVolume);
-        UpdateSourceVolume(levelUpSource, sfxVolume * masterVolume);
+        // Обновляем громкость только через микшер
+        UpdateMixerVolumes();
     }
 
-    private void UpdateSourceVolume(AudioSource source, float globalVolumeMultiplier)
+    private void UpdateMixerVolumes()
     {
-        if (source != null && sourceBaseVolumes.ContainsKey(source))
+        if (audioMixer != null)
         {
-            float baseVolume = sourceBaseVolumes[source];
-            source.volume = baseVolume * globalVolumeMultiplier;
+            // Конвертируем линейные значения (0-1) в децибелы (-80 до 0)
+            float masterDb = masterVolume > 0.0001f ? 20f * Mathf.Log10(masterVolume) : -80f;
+            float sfxDb = sfxVolume > 0.0001f ? 20f * Mathf.Log10(sfxVolume) : -80f;
+            float musicDb = musicVolume > 0.0001f ? 20f * Mathf.Log10(musicVolume) : -80f;
+
+            audioMixer.SetFloat("Master", masterDb);
+            audioMixer.SetFloat("SFXVolume", sfxDb);
+            audioMixer.SetFloat("MusicVolume", musicDb);
         }
     }
 
@@ -377,45 +377,17 @@ public class AudioManager : MonoBehaviour
 
     public void SetMasterVolumeMixer(float volume)
     {
-        if (audioMixer != null)
-        {
-            // Конвертируем линейное значение (0-1) в децибелы (-80 до 0)
-            float dbVolume = volume > 0.0001f ? 20f * Mathf.Log10(volume) : -80f;
-            audioMixer.SetFloat("Master", dbVolume);
-            SetMasterVolume(volume);
-        }
-        else
-        {
-            SetMasterVolume(volume);
-        }
+        SetMasterVolume(volume);
     }
 
     public void SetSFXVolumeMixer(float volume)
     {
-        if (audioMixer != null)
-        {
-            float dbVolume = volume > 0.0001f ? 20f * Mathf.Log10(volume) : -80f;
-            audioMixer.SetFloat("SFXVolume", dbVolume);
-            SetSFXVolume(volume);
-        }
-        else
-        {
-            SetSFXVolume(volume);
-        }
+        SetSFXVolume(volume);
     }
 
     public void SetMusicVolumeMixer(float volume)
     {
-        if (audioMixer != null)
-        {
-            float dbVolume = volume > 0.0001f ? 20f * Mathf.Log10(volume) : -80f;
-            audioMixer.SetFloat("MusicVolume", dbVolume);
-            SetMusicVolume(volume);
-        }
-        else
-        {
-            SetMusicVolume(volume);
-        }
+        SetMusicVolume(volume);
     }
 
     // === СОХРАНЕНИЕ НАСТРОЕК ===
@@ -438,8 +410,9 @@ public class AudioManager : MonoBehaviour
 
         if (PlayerPrefs.HasKey(MUSIC_VOL_KEY))
             musicVolume = PlayerPrefs.GetFloat(MUSIC_VOL_KEY);
-
-        UpdateAllVolumes();
+        
+        // Применяем загруженные настройки к микшеру
+        UpdateMixerVolumes();
     }
 
     // === ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ ===

@@ -10,7 +10,7 @@ public class EnemyHP : MonoBehaviour
     private float _expDropPercent;
     private float _expAutodropAmount;
 
-    [SerializeField] private EnemyConfig _initializedStats;
+    public EnemyConfig _initializedStats;
     [NonSerialized]public EnemyPool _pool;
 
     private PlayerEXP _playerEXP;
@@ -18,6 +18,8 @@ public class EnemyHP : MonoBehaviour
     private EnemyHitEffect hitEffect;
 
     public int EnemyType = 0;
+
+    public event Action EnemyHPCnanged;
 
     private void Start()
     {
@@ -43,8 +45,7 @@ public class EnemyHP : MonoBehaviour
     private void InitializeStats()
     {
         _maxHP = _initializedStats._maxHealth;
-        _expPrefab = _initializedStats._expSmallPrefab;
-        _expDropPercent = _initializedStats._expSmallDropChance;
+        _expPrefab = getExpPrefab();
         _expAutodropAmount = _initializedStats._expOnDeath;
         _currentHP = _maxHP;
     }
@@ -62,6 +63,7 @@ public class EnemyHP : MonoBehaviour
     public void Damage(float damageAmount)
     {
         _currentHP -= damageAmount;
+        EnemyHPCnanged?.Invoke();
         
         
         if (hitEffect != null && _currentHP > 0)
@@ -91,8 +93,41 @@ public class EnemyHP : MonoBehaviour
     
     private void ExpOnDeath() 
     {
-        if (UnityEngine.Random.Range(1f, 100f) <= _expDropPercent)
+        if (_expPrefab != null)
             Instantiate(_expPrefab, new Vector3(gameObject.transform.position.x, 0.2f, gameObject.transform.position.z), Quaternion.identity);
         _playerEXP.GetEXP(_expAutodropAmount);
+    }
+
+    private GameObject getExpPrefab()
+    {
+        float[] probabilities = new float[] { _initializedStats._expSmallDropChance, _initializedStats._expMediumDropChance, _initializedStats._expHugeDropChance, _initializedStats._noExpDropChance };
+
+        float totalProbability = 0f;
+        for (int i = 0; i < probabilities.Length; i++)
+        {
+            totalProbability += probabilities[i];
+        }
+
+        float randomValue = UnityEngine.Random.Range(0f, totalProbability);
+        float currentSum = 0f;
+        
+        for (int i = 0; i < probabilities.Length; i++)
+        {
+            currentSum += probabilities[i];
+            if (randomValue <= currentSum)
+            {
+                // 0-Small, 1-Medium, 2-Large, 3-None
+                switch (i)
+                {
+                    case 0: return _initializedStats._expSmallPrefab;
+                    case 1: return _initializedStats._expMediumPrefab;
+                    case 2: return _initializedStats._expHugePrefab;
+                    case 3: return null;
+                    default: return null;
+                }
+            }
+        }
+        return null;
+
     }
 }
