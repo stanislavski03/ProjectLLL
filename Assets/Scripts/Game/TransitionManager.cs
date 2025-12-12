@@ -30,10 +30,7 @@ public class TransitionManager : MonoBehaviour
         if (GameStateManager.Instance.IsPaused)
             GameStateManager.Instance.ResumeGame();
 
-        foreach(QuestData quest in QuestManager.Instance.activeQuests)
-        {
-            QuestManager.Instance.CancelQuest(quest);
-        }
+        
 
         if(SceneManager.GetActiveScene().buildIndex == 3)
         {
@@ -57,7 +54,11 @@ public class TransitionManager : MonoBehaviour
         }
 
 
-            SceneManager.LoadScene(i);
+        SceneManager.LoadScene(i);
+        foreach(QuestData quest in QuestManager.Instance.activeQuests)
+        {
+            QuestManager.Instance.CancelQuest(quest);
+        }
     }
 
 }

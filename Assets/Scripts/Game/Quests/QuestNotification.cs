@@ -47,8 +47,8 @@ public class QuestNotification : MonoBehaviour
         }
         
         // Инициализация позиций
-        hiddenPosition = new Vector2(0, 150);
-        shownPosition = new Vector2(0, -50);
+        hiddenPosition = new Vector2(-1150, -150);
+        shownPosition = new Vector2(-784, -150);
         
         // Скрываем панель при старте
         notificationPanel.anchoredPosition = hiddenPosition;

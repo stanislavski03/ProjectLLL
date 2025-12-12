@@ -51,17 +51,23 @@ public class QuestGiver : EInteractable
     public override void Interact()
     {
         AudioManager.Instance.PlayQuest(QuestManager.Instance.QuestClip);
+        
         if (!QuestComplete)
         {
-            _quest._questGiver = this;
-            _quest.OnQuestStart();
-            QuestManager.Instance.RegisterQuest(_quest);
-            MakeNonReady();
-            _canBeInteractedWith = false;
-            _questAnimator.SetBool("IsActive", true);
+            // Если это переходный квест, показываем окно подтверждения
+            if (_transitionQuest && TransitionQuestStartPanel.Instance != null)
+            {
+                TransitionQuestStartPanel.Instance.ShowTransitionQuestConfirmation(_quest, this);
+            }
+            else
+            {
+                // Обычный квест - начинаем сразу
+                StartRegularQuest();
+            }
         }
         else
         {
+            // Логика сдачи квеста
             ItemControllerSO.Instance.questType = _questType;
             if (!_transitionQuest)
             {
@@ -74,7 +80,11 @@ public class QuestGiver : EInteractable
 
             // Отмечаем квест как сданный
             _questTurnedIn = true;
-            _quest.OnQuestTurnedIn();
+            if (_quest != null)
+            {
+                _quest.turnedIn = true;
+                QuestManager.Instance?.TurnInQuest(_quest);
+            }
             
             MakeNonReady();
             _canBeInteractedWith = false;
@@ -83,10 +93,34 @@ public class QuestGiver : EInteractable
         }
     }
     
+    // Новый метод для начала обычного квеста
+    private void StartRegularQuest()
+    {
+        _quest._questGiver = this;
+        _quest.OnQuestStart();
+        
+        if (QuestManager.Instance != null)
+        {
+            QuestManager.Instance.RegisterQuest(_quest);
+        }
+        
+        MakeNonReady();
+        _canBeInteractedWith = false;
+        
+        if (_questAnimator != null)
+        {
+            _questAnimator.SetBool("IsActive", true);
+        }
+    }
+    
     public override void SetComplete()
     {
         _canBeInteractedWith = true;
         _questComplete = true;
-        _questAnimator.SetBool("IsFinished", true);
+        
+        if (_questAnimator != null)
+        {
+            _questAnimator.SetBool("IsFinished", true);
+        }
     }
 }

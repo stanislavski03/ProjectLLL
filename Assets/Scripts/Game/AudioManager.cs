@@ -120,6 +120,13 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void StopAllSFX()
+    {
+        StopWalk();
+        StopHit();
+        StopShoot();
+    }
+
     public void StopWalk()
     {
         if (walkSource != null && walkSource.isPlaying)
