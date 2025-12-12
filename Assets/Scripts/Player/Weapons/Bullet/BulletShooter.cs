@@ -140,11 +140,6 @@ public class BulletShooter : Weapon
 
     private void Shoot(Transform target)
     {
-        if (BulletPool.Instance == null)
-        {
-            return;
-        }
-
         GameObject bulletObj = BulletPool.Instance.GetBullet();
         if (bulletObj == null)
         {
