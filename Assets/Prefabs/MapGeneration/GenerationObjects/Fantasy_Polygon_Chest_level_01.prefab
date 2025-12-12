@@ -770,7 +770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mutation: {fileID: 11400000, guid: 07927f0b09b2c564eb2e9654995c6f14, type: 2}
-  moneyRequired: 100
+  moneyRequired: 228
 --- !u!23 &4280054860508178594
 MeshRenderer:
   m_ObjectHideFlags: 0

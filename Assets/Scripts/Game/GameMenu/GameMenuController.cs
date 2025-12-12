@@ -42,10 +42,11 @@ public class GameMenuController : MonoBehaviour
         
         _mutationChestCostPanel.SetActive(false);
     }
-    public void ShowCostOnMutatiOnChest( Transform _chestTransform)
+    public void ShowCostOnMutatiOnChest( Transform _chestTransform, string moneyRequired)
     {
         _mutationChestCostPanel.SetActive(true);
         _mutationChestCostPanel.transform.position = new Vector3(_chestTransform.position.x, _chestTransform.position.y + 3, _chestTransform.position.z);
+        _mutationChestCostPanel.GetComponentInChildren<TextMeshProUGUI>().text = moneyRequired;
     }
     public void RemoveFromSceneWarningOnMutatiOnChest()
     {
