@@ -10,7 +10,7 @@ public class DeathOrWinPanel : MonoBehaviour
     void OnEnable()
     {
         timerText.text = RaceStats.Instance.timerText.text;
-        coinsText.text = RaceStats.Instance.coinsText.text;
+        coinsText.text = PlayerStatsSO.Instance.MaxMoney.ToString();
         killsText.text = RaceStats.Instance.killsText.text;
     }
 

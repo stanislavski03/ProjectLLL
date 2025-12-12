@@ -18,6 +18,7 @@ public class PlayerStatsSO : SingletonScriptableObject<PlayerStatsSO>
     public float MoveSpeed = 10;
     public float SpeedMultiplier = 1;
     public long Money = 0;
+    public long MaxMoney = 0;
     public float Reputation = 50;
 
     public int maxEXP = 100;
@@ -114,6 +115,8 @@ public class PlayerStatsSO : SingletonScriptableObject<PlayerStatsSO>
     public void ChangeMoney(long value)
     {
         Money += value;
+        if(value > 0)
+            MaxMoney += value;
         _moneyChanged?.Invoke(Money);
     }
 
