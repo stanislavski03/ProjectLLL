@@ -123,4 +123,10 @@ public class DamageFieldTrigger : Weapon
         }
         return this?.GetItemDescription();
     }
+
+
+    private void Update()
+    {
+        transform.rotation = Quaternion.identity;
+    }
 }
