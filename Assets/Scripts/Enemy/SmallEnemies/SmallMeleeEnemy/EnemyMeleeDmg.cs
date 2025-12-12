@@ -75,9 +75,10 @@ public class EnemyMeleeDmg : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out PlayerHP player) && _cooldownTimer <= 0 && enabled)
         {
+            
+                player.Damage(_damage);
             try
             {
-                player.Damage(_damage);
                 StartCoroutine(DamageCooldown());
             }
             catch { }
