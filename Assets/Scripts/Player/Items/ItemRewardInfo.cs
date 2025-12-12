@@ -41,10 +41,18 @@ public class ItemRewardInfo : MonoBehaviour
             int _randIndex = Random.Range(0, _itemControllerSO.itemUniversalPool.Count);
             _universalItem = _itemControllerSO.itemUniversalPool[_randIndex];
 
-            if (_questGiverType == ItemType.Universal && _itemControllerSO.itemUniversalPool[1] != null)
+            if (_questGiverType == ItemType.Universal && _itemControllerSO.itemUniversalPool.Count > 1)
             {
-                int _randSpecialIndex = Random.Range(0, _itemControllerSO.itemUniversalPool.Count);
-                _specialisedItem = _itemControllerSO.itemUniversalPool[_randSpecialIndex];
+                List<ItemDataSO> _list = new List<ItemDataSO>();
+                foreach(ItemDataSO g in _itemControllerSO.itemUniversalPool)
+                {
+                    if(g != _universalItem)
+                    {
+                        _list.Add(g);
+                    }
+                }
+                int _randSpecialIndex = Random.Range(0, _list.Count);
+                _specialisedItem = _list[_randSpecialIndex];
             }
         }
         if (_questGiverType == ItemType.Tecno)
@@ -143,11 +151,12 @@ public class ItemRewardInfo : MonoBehaviour
             }
             else
             {
-                TMPSpecialisedItemTitle[0].text = "Мне нечего предложить";
-                TMPSpecialisedItemTitle[1].text = "";
-                ItemImage.sprite = null;
-                ItemButton.onClick.RemoveAllListeners();
-                ItemButton.onClick.AddListener(() => Skip());
+                ItemsList[1].SetActive(false);
+                // TMPSpecialisedItemTitle[0].text = "Мне нечего предложить";
+                // TMPSpecialisedItemTitle[1].text = "";
+                // ItemImage.sprite = null;
+                // ItemButton.onClick.RemoveAllListeners();
+                // ItemButton.onClick.AddListener(() => Skip());
             }
 
         }
