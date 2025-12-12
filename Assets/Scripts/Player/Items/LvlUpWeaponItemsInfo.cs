@@ -158,18 +158,27 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
             if (ItemsList[i] == null || _currentWeaponList[i] == null) continue;
 
             ItemsList[i].SetActive(true);
-
             TextMeshProUGUI[] TMPItemTitle = ItemsList[i].GetComponentsInChildren<TextMeshProUGUI>(true);
             Transform imageTransform = ItemsList[i].transform.Find("Image");
             Image ItemImage = imageTransform?.GetComponent<Image>();
             Button ItemButton = ItemsList[i].GetComponentInChildren<Button>(true);
-
+            Transform imageRepTransform = ItemsList[i].transform.Find("rep");
+            Image imageRep = imageRepTransform?.GetComponent<Image>();
             Weapon weapon = _currentWeaponList[i];
+
+            if (weapon.weaponData.weaponType == WeaponType.Magic)
+                imageRep.color = new Color32(0, 197, 255, 165);
+            else if (weapon.weaponData.weaponType == WeaponType.Tecno)
+                imageRep.color = new Color32(255, 227, 0, 165);
+            else
+                imageRep.color = new Color32(0, 0, 0, 0);
+
 
             if (ItemImage != null)
             {
                 ItemImage.preserveAspect = true;
                 ItemImage.type = Image.Type.Simple;
+
 
                 RectTransform rectTransform = ItemImage.GetComponent<RectTransform>();
                 if (rectTransform != null)

@@ -13,15 +13,19 @@ public class QuestManager : MonoBehaviour
 
     public AudioClip QuestClip;
 
+    // События
     public event Action _onQuestRegistered;
     public event Action _onQuestFinished;
+    public event Action _onQuestProgressUpdated;
+    public event Action _onQuestCanceled;
+    public event Action _onQuestTurnedIn;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -33,8 +37,16 @@ public class QuestManager : MonoBehaviour
     {
         if (!activeQuests.Contains(quest))
         {
-            _onQuestRegistered?.Invoke();
             activeQuests.Add(quest);
+            
+            // Вызываем событие
+            _onQuestRegistered?.Invoke();
+            
+            // Отправляем уведомление о принятии квеста
+            if (QuestNotification.Instance != null)
+            {
+                QuestNotification.Instance.ShowQuestAccepted(quest.QuestName);
+            }
         }
     }
 
@@ -42,9 +54,32 @@ public class QuestManager : MonoBehaviour
     {
         if (activeQuests.Contains(quest))
         {
-            _onQuestFinished?.Invoke();
             activeQuests.Remove(quest);
             completedQuests.Add(quest);
+            
+            // Вызываем событие
+            _onQuestFinished?.Invoke();
+            
+            // Отправляем уведомление о завершении квеста
+            if (QuestNotification.Instance != null)
+            {
+                QuestNotification.Instance.ShowQuestCompleted(quest.QuestName);
+            }
+        }
+    }
+
+    public void TurnInQuest(QuestData quest)
+    {
+        if (completedQuests.Contains(quest))
+        {
+            completedQuests.Remove(quest);
+            _onQuestTurnedIn?.Invoke();
+            
+            // Отправляем уведомление о сдаче квеста
+            if (QuestNotification.Instance != null)
+            {
+                QuestNotification.Instance.ShowQuestTurnedIn(quest.QuestName);
+            }
         }
     }
 
@@ -54,12 +89,33 @@ public class QuestManager : MonoBehaviour
         {
             canceledQuests.Add(quest);
             activeQuests.Remove(quest);
+            _onQuestCanceled?.Invoke();
+            
+            // Отправляем уведомление о провале квеста
+            if (QuestNotification.Instance != null)
+            {
+                QuestNotification.Instance.ShowQuestFailed(quest.QuestName);
+            }
+        }
+    }
+
+    public void OnQuestProgressUpdated(QuestData quest)
+    {
+        _onQuestProgressUpdated?.Invoke();
+        
+        // Отправляем уведомление о прогрессе (например, каждые 25%)
+        if (QuestNotification.Instance != null && quest.progress > 0 && quest.progress < 100)
+        {
+            // Отправляем уведомление только при достижении определенных процентов
+            if (quest.progress == 25 || quest.progress == 50 || quest.progress == 75 || quest.progress == 100)
+            {
+                QuestNotification.Instance.ShowQuestProgress(quest.QuestName, quest.progress);
+            }
         }
     }
 
     public void OnEnemyKilled(int enemyType = 0)
     {
-
         var questsToUpdate = activeQuests.ToList();
 
         foreach (var quest in questsToUpdate)
@@ -71,6 +127,9 @@ public class QuestManager : MonoBehaviour
                 if (enemyKillerQuest.TypesOfEnemy.Contains(enemyType))
                 {
                     quest.UpdateQuest(1);
+                    
+                    // Обновляем прогресс после изменения
+                    OnQuestProgressUpdated(quest);
                 }
             }
         }
@@ -86,30 +145,31 @@ public class QuestManager : MonoBehaviour
             if (quest is GatherGasQuest gatherGasQuest && quest.active && !quest.finished)
             {
                 quest.UpdateQuest(1);
+                OnQuestProgressUpdated(quest);
             }
         }
     }
+    
     public void BlizzardShieldProgressForOne()
     {
         var questsToUpdate = activeQuests.ToList();
         QuestData questNeeded = null;
-        if (questNeeded == null)
+        
+        foreach (var quest in questsToUpdate)
         {
-            foreach (var quest in questsToUpdate)
-            {
-                if (!activeQuests.Contains(quest)) continue;
+            if (!activeQuests.Contains(quest)) continue;
 
-                if (quest is MagicBlizzardQuest magicBlizzardQuest && quest.active && !quest.finished)
-                {
-                    questNeeded = quest;
-                }
+            if (quest is MagicBlizzardQuest magicBlizzardQuest && quest.active && !quest.finished)
+            {
+                questNeeded = quest;
+                break;
             }
         }
 
         if (questNeeded != null && questNeeded.active && !questNeeded.finished)
         {
             questNeeded.UpdateQuest(1);
+            OnQuestProgressUpdated(questNeeded);
         }
     }
-
 }

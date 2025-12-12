@@ -26,17 +26,42 @@ public class QuestPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        QuestManager.Instance._onQuestRegistered += SetQuestsInfo;
-        QuestManager.Instance._onQuestFinished += SetQuestsInfo;
+        if (QuestManager.Instance != null)
+        {
+            QuestManager.Instance._onQuestRegistered += SetQuestsInfo;
+            QuestManager.Instance._onQuestFinished += SetQuestsInfo;
+            QuestManager.Instance._onQuestProgressUpdated += SetQuestsInfo;
+            QuestManager.Instance._onQuestCanceled += SetQuestsInfo;
+        }
     }
 
     private void OnDisable()
     {
-        QuestManager.Instance._onQuestRegistered -= SetQuestsInfo;
-        QuestManager.Instance._onQuestFinished -= SetQuestsInfo;
+        if (QuestManager.Instance != null)
+        {
+            QuestManager.Instance._onQuestRegistered -= SetQuestsInfo;
+            QuestManager.Instance._onQuestFinished -= SetQuestsInfo;
+            QuestManager.Instance._onQuestProgressUpdated -= SetQuestsInfo;
+            QuestManager.Instance._onQuestCanceled -= SetQuestsInfo;
+        }
     }
 
+    // Старый метод без параметра (оставляем для обратной совместимости)
     public void SetQuestsInfo()
+    {
+        UpdateQuestsDisplay();
+    }
+
+    // Новый метод с параметром
+    public void SetQuestsInfo(QuestData quest)
+    {
+        UpdateQuestsDisplay();
+        
+        // Можно добавить дополнительную логику для конкретного квеста
+        // Например, подсветить изменившийся квест
+    }
+
+    private void UpdateQuestsDisplay()
     {
         ClearQuestList();
 
@@ -58,7 +83,7 @@ public class QuestPanel : MonoBehaviour
 
         int currentUIElementIndex = 0;
 
-        // Сначала отображаем активные квесты
+        // Отображаем только активные квесты и выполненные, но не сданные
         for (int i = 0; i < AllActiveQuests.Count; i++)
         {
             if (currentUIElementIndex >= quests.Length) break;
@@ -84,16 +109,46 @@ public class QuestPanel : MonoBehaviour
             UnityEngine.UI.Image panelImage = quests[currentUIElementIndex].GetComponent<UnityEngine.UI.Image>();
             if (panelImage != null)
             {
-                panelImage.color = Color.black;
+                if (AllActiveQuests[i].finished)
+                {
+                    // Выполненный, но не сданный квест - желтый цвет
+                    panelImage.color = Color.yellow;
+                }
+                else
+                {
+                    // Активный квест - черный цвет
+                    panelImage.color = Color.black;
+                }
             }
 
             quests[currentUIElementIndex].gameObject.SetActive(true);
             currentUIElementIndex++;
         }
 
-        // Затем отображаем завершенные квесты
+        // Отображаем только выполненные, но не сданные квесты из списка completedQuests
         for (int i = 0; i < CompletedQuests.Count; i++)
         {
+            // Пропускаем квесты, которые уже были отображены в списке активных
+            bool alreadyDisplayed = false;
+            foreach (var activeQuest in AllActiveQuests)
+            {
+                if (activeQuest.QuestId == CompletedQuests[i].QuestId)
+                {
+                    alreadyDisplayed = true;
+                    break;
+                }
+            }
+            
+            if (alreadyDisplayed) continue;
+            
+            // Проверяем, сдан ли квест
+            if (CompletedQuests[i]._questGiver != null && CompletedQuests[i]._questGiver.QuestTurnedIn ||
+                CompletedQuests[i].turnedIn)
+            {
+                // Квест сдан - пропускаем его
+                continue;
+            }
+
             if (currentUIElementIndex >= quests.Length) break;
             if (CompletedQuests[i] == null || quests[currentUIElementIndex] == null) continue;
 
@@ -117,7 +172,8 @@ public class QuestPanel : MonoBehaviour
             UnityEngine.UI.Image panelImage = quests[currentUIElementIndex].GetComponent<UnityEngine.UI.Image>();
             if (panelImage != null)
             {
-                panelImage.color = Color.green;
+                // Выполненный, но не сданный квест - желтый цвет
+                panelImage.color = Color.yellow;
             }
 
             quests[currentUIElementIndex].gameObject.SetActive(true);

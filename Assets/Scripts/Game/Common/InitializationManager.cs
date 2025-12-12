@@ -31,6 +31,7 @@ public class InitializationManager : MonoBehaviour
         stats.MoveSpeed = 15;
         stats.SpeedMultiplier = 1;
         stats.Money = 100;
+        stats.MaxMoney = stats.Money;
         stats.Reputation = 50;
         stats.maxEXP = 500;
         stats.maxLevel = 30;

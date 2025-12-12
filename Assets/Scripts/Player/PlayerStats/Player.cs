@@ -6,6 +6,9 @@ public class Player : MonoBehaviour
     public PlayerMovement playerMovement;
     public GameObject DamageGiveShield;
 
+    [SerializeField] private GameObject _deathPanel;
+    [SerializeField] private GameObject _winPanel;
+
     public static Player Instance { get; private set; }
 
     private void Awake()
@@ -29,5 +32,17 @@ public class Player : MonoBehaviour
     void Update()
     {
         animator.SetBool("IsMoving", playerMovement.IsMoving);
+    }
+
+    public void TriggerLoose()
+    {
+        _deathPanel.SetActive(true);
+        GameStateManager.Instance.PauseForLevelUp();
+    }
+
+    public void TriggerWin()
+    {
+        _winPanel.SetActive(true);
+        GameStateManager.Instance.PauseForLevelUp();
     }
 }

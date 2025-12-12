@@ -4,12 +4,12 @@ using TMPro;
 public class RaceStats : MonoBehaviour
 {
     [Header("Настройки таймера")]
-    [SerializeField] private TMP_Text timerText;
+    public TMP_Text timerText;
     [SerializeField] private bool autoStart = true;
 
     [Header("Настройки счётчиков")]
-    [SerializeField] private TMP_Text coinsText;
-    [SerializeField] private TMP_Text killsText;
+    public TMP_Text coinsText;
+    public TMP_Text killsText;
     
     private float currentTime = 0f;
     private bool isRunning = false;

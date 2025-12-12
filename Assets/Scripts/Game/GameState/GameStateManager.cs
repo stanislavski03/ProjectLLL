@@ -73,6 +73,8 @@ public class GameStateManager : MonoBehaviour
         CurrentPauseType = paused ? pauseType : PauseType.None;
 
         EnemySpawnManager.Instance.ChangeActiveEnemySpawn(!paused);
+
+        AudioManager.Instance.StopAllSFX();
         
         // Управление музыкой
         if (paused && pauseType == PauseType.EscPause)

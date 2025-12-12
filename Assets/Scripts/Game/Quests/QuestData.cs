@@ -11,12 +11,12 @@ public class QuestData : QuestSO
     public bool highLighted = false;
     public bool finished = false;
     public bool canceled = false;
+    public bool turnedIn = false; // Новый флаг
 
     public string questInfo = "Выполни для меня задание а я тебе заплачу";
     public string questRewardInfo = "Отличная работа, возьми награду";
 
     public QuestGiver _questGiver;
-
 
     private int currentGoalCount = 0;
 
@@ -50,6 +50,7 @@ public class QuestData : QuestSO
         currentGoalCount = 0;
         progress = 0;
         finished = false;
+        turnedIn = false;
     }
 
     public virtual void OnQuestFinish()
@@ -57,12 +58,19 @@ public class QuestData : QuestSO
         active = false;
         finished = true;
         progress = 100;
-        _questGiver.SetComplete();
+        _questGiver?.SetComplete();
+    }
+
+    public virtual void OnQuestTurnedIn()
+    {
+        turnedIn = true;
+        QuestManager.Instance?.TurnInQuest(this);
     }
 
     public virtual void OnQuestCancel()
     {
         canceled = true;
+        QuestManager.Instance?.CancelQuest(this);
     }
 
     public void OnSelect()

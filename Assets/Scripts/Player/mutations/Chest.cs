@@ -22,10 +22,8 @@ public class Chest : EInteractable
     public override void MakeReady()
     {
         _isReady = true;
-        _renderer.material.color += new Color(0.5f, 0.54f, 0);
-        //TextMeshProUGUI ChestCost = _cost.GetComponentInChildren<TextMeshProUGUI>();
-        //ChestCost.text = moneyRequired.ToString();
-        GameMenuController.Instance.ShowCostOnMutatiOnChest(transform);
+        _renderer.material.color += new Color(0.5f, 0.54f, 0);;
+        GameMenuController.Instance.ShowCostOnMutatiOnChest(transform, moneyRequired.ToString());
     }
     public override void MakeNonReady()
     {
@@ -60,7 +58,7 @@ public class Chest : EInteractable
             await UniTask.WaitForSeconds(1);
             GameMenuController.Instance.RemoveFromSceneWarningOnMutatiOnChest();
             if (_isReady)
-                GameMenuController.Instance.ShowCostOnMutatiOnChest(transform);
+                GameMenuController.Instance.ShowCostOnMutatiOnChest(transform, moneyRequired.ToString());
 
 
         }

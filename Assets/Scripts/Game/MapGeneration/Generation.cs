@@ -42,7 +42,7 @@ public class Generation : MonoBehaviour
                     allTiles.Add(tile);
             }
         }
-        for (int i = 0; i < allTiles.Count; i++)
+        for (int i = 0; i < amount; i++)
         {
             allTiles[Random.Range(0, allTiles.Count)].GetComponent<SpawnActivityOnTile>().SpawnGasTank();
         }

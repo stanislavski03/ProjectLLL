@@ -30,6 +30,8 @@ public class TransitionManager : MonoBehaviour
         if (GameStateManager.Instance.IsPaused)
             GameStateManager.Instance.ResumeGame();
 
+        
+
         if(SceneManager.GetActiveScene().buildIndex == 3)
         {
             EnemySpawnManager.Instance.enabled = true;
@@ -52,7 +54,11 @@ public class TransitionManager : MonoBehaviour
         }
 
 
-            SceneManager.LoadScene(i);
+        SceneManager.LoadScene(i);
+        foreach(QuestData quest in QuestManager.Instance.activeQuests)
+        {
+            QuestManager.Instance.CancelQuest(quest);
+        }
     }
 
 }

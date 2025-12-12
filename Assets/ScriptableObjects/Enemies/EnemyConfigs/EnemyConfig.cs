@@ -24,6 +24,7 @@ public class EnemyConfig : ScriptableObject
 
     [Header("Experience")]
     public int _experienceRewardMultiplier = 1;
+    public float _noExpDropChance = 0;
     [SerializeField] public GameObject _expSmallPrefab;
     public float _expSmallDropChance = 50;
     [SerializeField] public GameObject _expMediumPrefab;
