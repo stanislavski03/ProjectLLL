@@ -13,16 +13,12 @@ public class QuestManager : MonoBehaviour
 
     public AudioClip QuestClip;
 
-    // Старые события для совместимости
+    // События
     public event Action _onQuestRegistered;
     public event Action _onQuestFinished;
-    
-    // Новые события с параметрами
-    public event Action<QuestData> _onQuestRegisteredDetailed;
-    public event Action<QuestData> _onQuestFinishedDetailed;
-    public event Action<QuestData> _onQuestProgressUpdated;
-    public event Action<QuestData> _onQuestCanceled;
-    public event Action<QuestData> _onQuestTurnedIn;
+    public event Action _onQuestProgressUpdated;
+    public event Action _onQuestCanceled;
+    public event Action _onQuestTurnedIn;
 
     private void Awake()
     {
@@ -43,9 +39,8 @@ public class QuestManager : MonoBehaviour
         {
             activeQuests.Add(quest);
             
-            // Вызываем оба события для совместимости
+            // Вызываем событие
             _onQuestRegistered?.Invoke();
-            _onQuestRegisteredDetailed?.Invoke(quest);
             
             // Отправляем уведомление о принятии квеста
             if (QuestNotification.Instance != null)
@@ -62,9 +57,8 @@ public class QuestManager : MonoBehaviour
             activeQuests.Remove(quest);
             completedQuests.Add(quest);
             
-            // Вызываем оба события для совместимости
+            // Вызываем событие
             _onQuestFinished?.Invoke();
-            _onQuestFinishedDetailed?.Invoke(quest);
             
             // Отправляем уведомление о завершении квеста
             if (QuestNotification.Instance != null)
@@ -79,7 +73,7 @@ public class QuestManager : MonoBehaviour
         if (completedQuests.Contains(quest))
         {
             completedQuests.Remove(quest);
-            _onQuestTurnedIn?.Invoke(quest);
+            _onQuestTurnedIn?.Invoke();
             
             // Отправляем уведомление о сдаче квеста
             if (QuestNotification.Instance != null)
@@ -95,7 +89,7 @@ public class QuestManager : MonoBehaviour
         {
             canceledQuests.Add(quest);
             activeQuests.Remove(quest);
-            _onQuestCanceled?.Invoke(quest);
+            _onQuestCanceled?.Invoke();
             
             // Отправляем уведомление о провале квеста
             if (QuestNotification.Instance != null)
@@ -107,12 +101,16 @@ public class QuestManager : MonoBehaviour
 
     public void OnQuestProgressUpdated(QuestData quest)
     {
-        _onQuestProgressUpdated?.Invoke(quest);
+        _onQuestProgressUpdated?.Invoke();
         
         // Отправляем уведомление о прогрессе (например, каждые 25%)
-        if (QuestNotification.Instance != null && quest.progress % 25 == 0 && quest.progress > 0)
+        if (QuestNotification.Instance != null && quest.progress > 0 && quest.progress < 100)
         {
-            QuestNotification.Instance.ShowQuestProgress(quest.QuestName, quest.progress);
+            // Отправляем уведомление только при достижении определенных процентов
+            if (quest.progress == 25 || quest.progress == 50 || quest.progress == 75 || quest.progress == 100)
+            {
+                QuestNotification.Instance.ShowQuestProgress(quest.QuestName, quest.progress);
+            }
         }
     }
 
@@ -147,30 +145,31 @@ public class QuestManager : MonoBehaviour
             if (quest is GatherGasQuest gatherGasQuest && quest.active && !quest.finished)
             {
                 quest.UpdateQuest(1);
+                OnQuestProgressUpdated(quest);
             }
         }
     }
+    
     public void BlizzardShieldProgressForOne()
     {
         var questsToUpdate = activeQuests.ToList();
         QuestData questNeeded = null;
-        if (questNeeded == null)
+        
+        foreach (var quest in questsToUpdate)
         {
-            foreach (var quest in questsToUpdate)
-            {
-                if (!activeQuests.Contains(quest)) continue;
+            if (!activeQuests.Contains(quest)) continue;
 
-                if (quest is MagicBlizzardQuest magicBlizzardQuest && quest.active && !quest.finished)
-                {
-                    questNeeded = quest;
-                }
+            if (quest is MagicBlizzardQuest magicBlizzardQuest && quest.active && !quest.finished)
+            {
+                questNeeded = quest;
+                break;
             }
         }
 
         if (questNeeded != null && questNeeded.active && !questNeeded.finished)
         {
             questNeeded.UpdateQuest(1);
+            OnQuestProgressUpdated(questNeeded);
         }
     }
-
 }
