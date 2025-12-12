@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class BossHealth : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class BossHealth : MonoBehaviour
     [SerializeField] private EnemyHP _health;
     [SerializeField] private TextMeshProUGUI _healthText;
     [SerializeField] private Image _healthProgressBarImage;
+
+    public GameObject _portal;
 
 
     void Start()
@@ -37,5 +40,16 @@ public class BossHealth : MonoBehaviour
         {
             _healthProgressBarImage.fillAmount = Mathf.Clamp01(_health.GetHP() / _health.GetMaxHP());
         }
+
+        if(_health.GetHP() <= 0)
+        {
+            EndBossFight();
+        }
+    }
+
+    private async void EndBossFight()
+    {
+        await UniTask.WaitForSeconds(5);
+        Instantiate(_portal, new Vector3(50, 1, 50), Quaternion.identity);
     }
  }

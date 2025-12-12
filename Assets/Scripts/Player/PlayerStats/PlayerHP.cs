@@ -8,7 +8,6 @@ using UnityEditor;
 public class PlayerHP : MonoBehaviour
 {
     [SerializeField] private PlayerStatsSO _statsSO;
-    [SerializeField] private GameObject _deathPanel;
 
      public static PlayerHP Instance { get; private set; }
 
@@ -123,9 +122,7 @@ public class PlayerHP : MonoBehaviour
 
     private void Death()
     {
-        
-        _deathPanel.SetActive(true);
-        GameStateManager.Instance.PauseForLevelUp();
+        Player.Instance.TriggerLoose();
         Destroy(gameObject);
     }
 }

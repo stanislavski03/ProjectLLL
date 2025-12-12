@@ -659,7 +659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6442288734075925150, guid: 3315ceb0772fe5e4aa2e97565fbcc746, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6442288734075925150, guid: 3315ceb0772fe5e4aa2e97565fbcc746, type: 3}
       propertyPath: m_LocalPosition.y
@@ -667,7 +667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6442288734075925150, guid: 3315ceb0772fe5e4aa2e97565fbcc746, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6442288734075925150, guid: 3315ceb0772fe5e4aa2e97565fbcc746, type: 3}
       propertyPath: m_LocalRotation.w
@@ -812,7 +812,7 @@ Transform:
   m_GameObject: {fileID: 1073961311}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.5, y: 2.5, z: 29}
+  m_LocalPosition: {x: 50, y: 2.5, z: 50}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1000,6 +1000,7 @@ MonoBehaviour:
   _health: {fileID: 1073961316}
   _healthText: {fileID: 64425022}
   _healthProgressBarImage: {fileID: 50037053}
+  _portal: {fileID: 6465249256851274223, guid: 344cc928124e0ac43aedc632f6e8e49c, type: 3}
 --- !u!1 &1311372335
 GameObject:
   m_ObjectHideFlags: 0
