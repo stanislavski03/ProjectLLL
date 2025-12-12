@@ -75,4 +75,41 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+
+    public void GasTankGathered()
+    {
+        var questsToUpdate = activeQuests.ToList();
+        foreach (var quest in questsToUpdate)
+        {
+            if (!activeQuests.Contains(quest)) continue;
+
+            if (quest is GatherGasQuest gatherGasQuest && quest.active && !quest.finished)
+            {
+                quest.UpdateQuest(1);
+            }
+        }
+    }
+    public void BlizzardShieldProgressForOne()
+    {
+        var questsToUpdate = activeQuests.ToList();
+        QuestData questNeeded = null;
+        if (questNeeded == null)
+        {
+            foreach (var quest in questsToUpdate)
+            {
+                if (!activeQuests.Contains(quest)) continue;
+
+                if (quest is MagicBlizzardQuest magicBlizzardQuest && quest.active && !quest.finished)
+                {
+                    questNeeded = quest;
+                }
+            }
+        }
+
+        if (questNeeded != null && questNeeded.active && !questNeeded.finished)
+        {
+            questNeeded.UpdateQuest(1);
+        }
+    }
+
 }

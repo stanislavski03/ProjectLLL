@@ -51,6 +51,29 @@ public class PlayerHP : MonoBehaviour
         PlayerStatsSO.Instance._maxHpChanged -= maxHPChanged;
     }
 
+    public void DamageInPercent(float damageAmmount)
+    {
+        ItemControllerSO.Instance.ActivateOnDamageGiveEvent();
+        if (PlayerStatsSO.Instance.invincibility == false)
+        {
+            AudioManager.Instance.PlayHit(hitClip);
+            PlayerHitEffect.Instance.TakeHit();
+            _currentHP = Mathf.Clamp(_currentHP - damageAmmount/100 * MaxHP, 0, MaxHP);
+            Changed?.Invoke(_currentHP);
+            if (_currentHP / MaxHP * 100 <= 50)
+            {
+                AudioManager.Instance.SetMusicPitch(_currentHP / MaxHP + 0.4f);
+            }
+            else
+            {
+                AudioManager.Instance.ResetMusicPitch();
+            }
+            FindObjectOfType<FinalVignette>()?.TriggerDamageVignette();
+
+            if (_currentHP == 0) Death();
+        }
+    }
+
     public void Damage(float damageAmmount)
     {
         ItemControllerSO.Instance.ActivateOnDamageGiveEvent();

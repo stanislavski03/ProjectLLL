@@ -608,6 +608,37 @@ Transform:
   - {fileID: 454532873157161989}
   m_Father: {fileID: 273673660340441121}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6471999723602549579
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 921463529590670046}
+  m_Layer: 0
+  m_Name: AdditionalActivity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &921463529590670046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6471999723602549579}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 273673660340441121}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7116951833703154855
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,6 +864,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 921463529590670046}
   - {fileID: 4497726022808197313}
   - {fileID: 6236816220528375651}
   - {fileID: 2631118879440122034}
@@ -868,6 +900,8 @@ MonoBehaviour:
   _questGiverSpawnPoint: {fileID: 6236816220528375651}
   _mutationChest: {fileID: 7056306788243686916, guid: ce88085c07b5e3d4b8717cfb4a91f0b0, type: 3}
   _mutationChestSpawnPoint: {fileID: 2631118879440122034}
+  _gasTank: {fileID: 6278017564374790939, guid: 1bd2150121d5e0845a9fca8835ef6b39, type: 3}
+  _gasTankSpawnPoint: {fileID: 921463529590670046}
 --- !u!1001 &2418155024403593
 PrefabInstance:
   m_ObjectHideFlags: 0

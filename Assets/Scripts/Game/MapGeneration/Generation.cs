@@ -29,6 +29,28 @@ public class Generation : MonoBehaviour
     public int _mutationsOnMapMin = 3;
     public int _mutationsOnMapMax = 4;
 
+    
+    public void SpawnGasTanks(int amount)
+    {
+
+        List<GameObject> allTiles = new List<GameObject>();
+        foreach (var row in generation)
+        {
+            foreach (var tile in row)
+            {
+                if (tile != null)
+                    allTiles.Add(tile);
+            }
+        }
+        for (int i = 0; i < allTiles.Count; i++)
+        {
+            allTiles[Random.Range(0, allTiles.Count)].GetComponent<SpawnActivityOnTile>().SpawnGasTank();
+        }
+
+
+    }
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -130,23 +152,38 @@ public class Generation : MonoBehaviour
             int QuestAmount = Random.Range(QuestsMin, QuestsMax + 1);
 
 
+
+                           ////// Transition Quests //////
             int transitionQuestSide = Random.Range(0, 4);
             QuestData TransitionQuest = transitionQuests[Random.Range(0, transitionQuests.Count)];
             switch (transitionQuestSide)
             {
                 case 0:
-                    generation[0][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>().SpawnTransitionQuest(TransitionQuest);
+                    SpawnActivityOnTile transitionTile = generation[0][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>();
+                    transitionTile.SpawnTransitionQuest(TransitionQuest);
+                    transitionTile._objectsOnTile.Add(ActivityOnTileType.Quest);
                     break;
                 case 1:
-                    generation[_width-1][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>().SpawnTransitionQuest(TransitionQuest);
+                    SpawnActivityOnTile transitionTile2 = generation[_width - 1][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>();
+                    transitionTile2.SpawnTransitionQuest(TransitionQuest);
+                    transitionTile2._objectsOnTile.Add(ActivityOnTileType.Quest);
                     break;
                 case 2:
-                    generation[Random.Range(0, _width)][0].GetComponent<SpawnActivityOnTile>().SpawnTransitionQuest(TransitionQuest);
+                    SpawnActivityOnTile transitionTile3 = generation[Random.Range(0, _width)][0].GetComponent<SpawnActivityOnTile>();
+                    transitionTile3.SpawnTransitionQuest(TransitionQuest);
+                    transitionTile3._objectsOnTile.Add(ActivityOnTileType.Quest);
+
                     break;
                 case 3:
-                    generation[Random.Range(0, _width)][_height - 1].GetComponent<SpawnActivityOnTile>().SpawnTransitionQuest(TransitionQuest);
+                    SpawnActivityOnTile transitionTile4 = generation[Random.Range(0, _width)][_height - 1].GetComponent<SpawnActivityOnTile>();
+                    transitionTile4.SpawnTransitionQuest(TransitionQuest);
+                    transitionTile4._objectsOnTile.Add(ActivityOnTileType.Quest);
                     break;
             }
+
+
+
+
 
             List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
@@ -214,9 +251,9 @@ public class Generation : MonoBehaviour
 
         // Получаем границы карты
         float minX = generation[0][0].transform.position.x;
-        float maxX = generation[generation.Count - 1][generation.Count - 1].transform.position.x;
+        float maxX = generation[generation.Count - 1][generation[0].Count - 1].transform.position.x; 
         float minZ = generation[0][0].transform.position.z;
-        float maxZ = generation[0][generation.Count - 1].transform.position.z;
+        float maxZ = generation[0][generation[0].Count - 1].transform.position.z;
 
         foreach (List<GameObject> tileList in generation)
         {
