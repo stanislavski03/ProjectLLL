@@ -43,14 +43,8 @@ public class ItemRewardInfo : MonoBehaviour
 
             if (_questGiverType == ItemType.Universal && _itemControllerSO.itemUniversalPool[1] != null)
             {
-                List<ItemDataSO> _list = new List<ItemDataSO>();
-                foreach(ItemDataSO g in _itemControllerSO.itemUniversalPool)
-                {
-                    if(g != _universalItem)
-                        _list.Add(g);
-                }
-                int _randSpecialIndex = Random.Range(0, _list.Count);
-                _specialisedItem = _list[_randSpecialIndex];
+                int _randSpecialIndex = Random.Range(0, _itemControllerSO.itemUniversalPool.Count);
+                _specialisedItem = _itemControllerSO.itemUniversalPool[_randSpecialIndex];
             }
         }
         if (_questGiverType == ItemType.Tecno)
