@@ -41,14 +41,14 @@ MonoBehaviour:
   - level: 3
     areaBonus: 0
     damageBonus: 0
-    cooldownReduction: 1
+    cooldownReduction: 0.2
     lifetimeBonus: 0
     speedBonus: 0
     upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
       \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0441\u0442\u0440\u0435\u043B\u044C\u0431\u044B"
   - level: 4
     areaBonus: 0
-    damageBonus: 20
+    damageBonus: 8
     cooldownReduction: 0
     lifetimeBonus: 0
     speedBonus: 0

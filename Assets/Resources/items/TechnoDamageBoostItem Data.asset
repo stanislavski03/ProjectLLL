@@ -27,4 +27,4 @@ MonoBehaviour:
   HasOnLVLUpEvent: 0
   ReputationAmount: 15
   ItemController: {fileID: 11400000, guid: 97b34af25ad8de94db5c4409b170984d, type: 2}
-  DamageMultiplier: 1
+  DamageMultiplier: 0.7

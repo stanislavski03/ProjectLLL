@@ -54,7 +54,7 @@ public class PlayerStatsSO : SingletonScriptableObject<PlayerStatsSO>
 
     public void ExpandEXP()
     {
-        maxEXP += maxEXP / 2;
+        maxEXP += maxEXP / 3;
     }
 
     public void UpdateAllPlayerStats()

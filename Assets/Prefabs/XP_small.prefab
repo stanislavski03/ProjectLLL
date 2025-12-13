@@ -119,4 +119,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _EXPamount: 50
-  _moneyAmount: 10
+  _moneyAmount: 5
