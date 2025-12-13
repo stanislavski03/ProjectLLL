@@ -16,7 +16,7 @@ MonoBehaviour:
   _damage: 40
   _cooldown: 1
   _maxHealth: 250
-  _moveSpeed: 3
+  _moveSpeed: 7
   _moveSpeedDeviation: 0.1
   _expOnDeath: 40
   _size: 1.5
