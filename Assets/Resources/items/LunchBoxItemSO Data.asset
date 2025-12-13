@@ -25,4 +25,4 @@ MonoBehaviour:
   HasOnLVLUpEvent: 1
   ReputationAmount: 0
   ItemController: {fileID: 11400000, guid: 97b34af25ad8de94db5c4409b170984d, type: 2}
-  HPAddition: 0
+  HPAddition: 50
