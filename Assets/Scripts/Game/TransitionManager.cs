@@ -30,7 +30,7 @@ public class TransitionManager : MonoBehaviour
         if (GameStateManager.Instance != null && GameStateManager.Instance.IsPaused)
             GameStateManager.Instance.ResumeGame();
 
-
+        EnemyPoolList.instance.EnquePools();
 
         if (SceneManager.GetActiveScene().buildIndex == 3)
         {

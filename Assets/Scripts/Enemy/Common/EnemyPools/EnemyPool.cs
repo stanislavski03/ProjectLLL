@@ -11,7 +11,16 @@ public class EnemyPool : MonoBehaviour
     private Queue<GameObject> enemyPool = new Queue<GameObject>();
 
 
-
+    public void EnquePool()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                GetEnemyBackToPool(child.gameObject);
+            }
+        }
+    }
     public void GetEnemy(Vector3 position)
     {
         if (NavMesh.SamplePosition(position, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
@@ -30,8 +39,6 @@ public class EnemyPool : MonoBehaviour
                 enemy.GetComponent<EnemyHP>()._pool = gameObject.GetComponent<EnemyPool>();
             }
         }
-        
-
     }
 
     public void GetEnemyBackToPool(GameObject enemy)
