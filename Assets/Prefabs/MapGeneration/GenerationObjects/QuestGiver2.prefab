@@ -69,6 +69,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3623030001710804181}
   m_SourcePrefab: {fileID: 100100000, guid: 16d8a1a6fe34a41409ca94faed49b233, type: 3}
+--- !u!23 &7571540792050930845 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 682577659837690670, guid: 16d8a1a6fe34a41409ca94faed49b233, type: 3}
+  m_PrefabInstance: {fileID: 6947511609995388851}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7830613159317625570 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 16d8a1a6fe34a41409ca94faed49b233, type: 3}
@@ -111,6 +116,11 @@ MonoBehaviour:
   _questType: 0
   _transitionQuest: 0
   _questAnimator: {fileID: 8720181365979037091}
+  _questGiverHatchRenderer: {fileID: 7571540792050930845}
+  _techno: {fileID: 2100000, guid: 5bf0921509081dd4eba142181df6319d, type: 2}
+  _magic: {fileID: 2100000, guid: 5a3903c8bb1f80f42bb12f8bdbf4ac5b, type: 2}
+  _universal: {fileID: 2100000, guid: d4f189e08663a4d478076147c4ad63ab, type: 2}
+  _transition: {fileID: 2100000, guid: 2edcb0249807e0c4fa1f92b4b773e9b1, type: 2}
 --- !u!23 &7689976385872180246
 MeshRenderer:
   m_ObjectHideFlags: 0

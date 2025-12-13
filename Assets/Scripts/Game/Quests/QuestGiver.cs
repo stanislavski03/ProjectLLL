@@ -13,6 +13,14 @@ public class QuestGiver : EInteractable
 
     public Animator _questAnimator;
 
+    [SerializeField] private Renderer _questGiverHatchRenderer;
+
+    public Material _techno;
+    public Material _magic;
+    public Material _universal;
+    public Material _transition;
+
+
     public void SetQuest(QuestData Quest)
     {
         _quest = Quest;
@@ -21,6 +29,23 @@ public class QuestGiver : EInteractable
     public void SetQuestType(ItemType type)
     {
         _questType = type;
+        if(type == ItemType.Tecno)
+        {
+            _questGiverHatchRenderer.material = _techno;
+        }
+        else if (type == ItemType.Magic)
+        {
+            _questGiverHatchRenderer.material = _magic;
+        }
+        else if (type == ItemType.Universal)
+        {
+            _questGiverHatchRenderer.material = _universal;
+        }
+    }
+    public void SetQuestTransition()
+    {
+        _transitionQuest = true;
+        _questGiverHatchRenderer.material = _transition;
     }
 
     public override void MakeReady()
