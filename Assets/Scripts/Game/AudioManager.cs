@@ -109,7 +109,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayWalk(AudioClip clip, float volumeScale = 1f)
+    public void PlayWalk(AudioClip clip, float volumeScale = 0.7f)
     {
         if (clip != null && walkSource != null && !walkSource.isPlaying)
         {

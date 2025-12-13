@@ -9,15 +9,20 @@ public class MinotourBossUnickAttacks : MonoBehaviour
 {
     [SerializeField] private GameObject _explosionPrefab;
 
-
-
-
+    public AudioSource _audioSource;
+    public AudioSource _audioSource2;
+    public AudioClip _spawnAttackSound;
+    public AudioClip _slamAttackSound;
+    public AudioClip _rushAttackSound;
+    public AudioClip _prepareRushAttackSound;
 
     [SerializeField] private float cooldownTimer = 4;
     private float cooldown = 0;
     private bool isAttacking = false;
     NavMeshAgent NavMesh;
     EnemiesMover Mover;
+
+    [SerializeField] private Animator animator;
     private void Start()
     {
         NavMesh = GetComponent<NavMeshAgent>();
@@ -27,12 +32,13 @@ public class MinotourBossUnickAttacks : MonoBehaviour
 
     private void Update()
     {
-        if (cooldown >= cooldownTimer & !isAttacking)
+        if (cooldown >= cooldownTimer && !isAttacking)
         {
             isAttacking = true;
             Attack();
         }
-        cooldown += Time.fixedDeltaTime;
+        cooldown += Time.deltaTime;
+        Debug.Log(cooldown);
 
     }
     private void Attack()
@@ -53,7 +59,7 @@ public class MinotourBossUnickAttacks : MonoBehaviour
                 SpawnAttack();
                 break;
         }
-        
+
     }
 
 
@@ -61,8 +67,11 @@ public class MinotourBossUnickAttacks : MonoBehaviour
     {
         Debug.Log("SpawnAttack");
         NavMesh.isStopped = true;
+        _audioSource.PlayOneShot(_spawnAttackSound);
+        animator.SetBool("SpawnAttack", true);
         await UniTask.WaitForSeconds(1);
-        for (int i = 0; i<10; i++) {
+        for (int i = 0; i < 10; i++)
+        {
             EnemySpawner.Instance.SpawnFastMeleeEnemy();
             await UniTask.WaitForSeconds(0.02f);
             EnemySpawner.Instance.SpawnSmallMeleeEnemy();
@@ -75,12 +84,15 @@ public class MinotourBossUnickAttacks : MonoBehaviour
         NavMesh.isStopped = false;
         isAttacking = false;
         cooldown = 0;
+        animator.SetBool("SpawnAttack", false);
     }
 
     private async void SlamAttack()
     {
         Debug.Log("SlamAttack");
         NavMesh.isStopped = true;
+        _audioSource.PlayOneShot(_slamAttackSound);
+        animator.SetBool("SlamAttack", true);
         await UniTask.WaitForSeconds(1);
 
         cooldown = 0;
@@ -92,14 +104,15 @@ public class MinotourBossUnickAttacks : MonoBehaviour
         }
         NavMesh.isStopped = false;
         isAttacking = false;
-        
+        animator.SetBool("SlamAttack", false);
+
 
 
     }
 
     private Vector3 GetPositionAroundPlayer()
     {
-        Vector3 Rand =  new Vector3(Player.Instance.transform.position.x +Random.Range(-30f, 30f), 0, Player.Instance.transform.position.z + Random.Range(-30f, 30f));
+        Vector3 Rand = new Vector3(Player.Instance.transform.position.x + Random.Range(-30f, 30f), 0, Player.Instance.transform.position.z + Random.Range(-30f, 30f));
         return Rand;
     }
 
@@ -107,8 +120,17 @@ public class MinotourBossUnickAttacks : MonoBehaviour
     {
         Debug.Log("RushAttack");
         NavMesh.isStopped = true;
-        await UniTask.WaitForSeconds(1);
-        for (int i = 3; i >0; i-- ) {
+        
+        for (int i = 3; i > 0; i--)
+        {
+            animator.SetBool("RushAttack", false);
+            animator.SetBool("PreparingRushAttack", true);
+             _audioSource2.PlayOneShot(_prepareRushAttackSound);
+            await UniTask.WaitForSeconds(1);
+            animator.SetBool("PreparingRushAttack", false);
+            animator.SetBool("RushAttack", true);
+             _audioSource.PlayOneShot(_rushAttackSound);
+            
             Vector3 OldRunTowardsPosition;
             float timer = 1.5f;
             Vector3 PlayerPositionBeforeCheck = Player.Instance.transform.position;
@@ -120,8 +142,6 @@ public class MinotourBossUnickAttacks : MonoBehaviour
             {
                 if (OldRunTowardsPosition != (Player.Instance.transform.position - transform.position))
                 {
-
-
 
                     //Vector3 PositionDifference = Player.Instance.transform.position - PlayerPositionBeforeCheck;
 
@@ -136,7 +156,7 @@ public class MinotourBossUnickAttacks : MonoBehaviour
                         AngleDifference = 0.7f;
                     else if (AngleDifference < -0.7f)
                         AngleDifference = -0.7f;
-                        transform.Rotate(Vector3.up, AngleDifference);
+                    transform.Rotate(Vector3.up, AngleDifference);
                     //= Quaternion.AngleAxis(Vector3.AngleDifference(NewRunTowardsPosition, OldRunTowardsPosition) + transform.rotation.y, Vector3.up);
 
 
@@ -144,19 +164,19 @@ public class MinotourBossUnickAttacks : MonoBehaviour
 
 
                 transform.position += Time.fixedDeltaTime * transform.forward * 30;
-                
+
                 timer -= Time.fixedDeltaTime;
                 PlayerPositionBeforeCheck = Player.Instance.transform.position;
 
                 await UniTask.WaitForFixedUpdate();
 
             }
-            await UniTask.WaitForSeconds(1f);
         }
 
         NavMesh.isStopped = false;
         isAttacking = false;
         cooldown = 0;
+        animator.SetBool("RushAttack", false);
 
     }
 

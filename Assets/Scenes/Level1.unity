@@ -2425,7 +2425,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 500826774}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TransitionManager, Assembly-CSharp
         m_MethodName: TransitPlayerToLevel
         m_Mode: 3
@@ -2536,7 +2536,7 @@ MonoBehaviour:
     Description Description Description Description Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 612765287d8428e47ac89aabd080b0e3, type: 2}
-  m_sharedMaterial: {fileID: -8659249519157645431, guid: 16158eab99ca9684494145dd54b61715, type: 2}
+  m_sharedMaterial: {fileID: -904257157783168018, guid: 612765287d8428e47ac89aabd080b0e3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3873,6 +3873,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122425766}
   m_CullTransparentMesh: 1
+--- !u!1 &131953161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 131953162}
+  - component: {fileID: 131953163}
+  m_Layer: 0
+  m_Name: TransitionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &131953162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131953161}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 74.08918, y: -57.03936, z: 71.888954}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &131953163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131953161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80e4096bc761f7d438242fe948026bd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &133897382
 GameObject:
   m_ObjectHideFlags: 0
@@ -9062,7 +9106,7 @@ MonoBehaviour:
     Description Description Description Description Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 612765287d8428e47ac89aabd080b0e3, type: 2}
-  m_sharedMaterial: {fileID: -8659249519157645431, guid: 16158eab99ca9684494145dd54b61715, type: 2}
+  m_sharedMaterial: {fileID: -904257157783168018, guid: 612765287d8428e47ac89aabd080b0e3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10011,7 +10055,6 @@ GameObject:
   - component: {fileID: 500826771}
   - component: {fileID: 500826772}
   - component: {fileID: 500826773}
-  - component: {fileID: 500826774}
   - component: {fileID: 500826775}
   - component: {fileID: 500826776}
   - component: {fileID: 500826777}
@@ -10163,18 +10206,6 @@ MonoBehaviour:
   masterVolume: 0.5
   sfxVolume: 1
   musicVolume: 1
---- !u!114 &500826774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500826765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80e4096bc761f7d438242fe948026bd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &500826775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21143,7 +21174,7 @@ MonoBehaviour:
   m_text: Weapon
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 612765287d8428e47ac89aabd080b0e3, type: 2}
-  m_sharedMaterial: {fileID: -8659249519157645431, guid: 16158eab99ca9684494145dd54b61715, type: 2}
+  m_sharedMaterial: {fileID: -904257157783168018, guid: 612765287d8428e47ac89aabd080b0e3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -23590,6 +23621,7 @@ GameObject:
   - component: {fileID: 1083815084}
   - component: {fileID: 1083815086}
   - component: {fileID: 1083815085}
+  - component: {fileID: 1083815087}
   m_Layer: 5
   m_Name: AreUSurePanel
   m_TagString: Untagged
@@ -23656,6 +23688,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1083815083}
   m_CullTransparentMesh: 1
+--- !u!114 &1083815087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083815083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98b6daf9fcbf04a4aaed7e693fd0c37f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1093963648
 GameObject:
   m_ObjectHideFlags: 0
@@ -38273,7 +38317,7 @@ MonoBehaviour:
   m_text: Weapon
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 612765287d8428e47ac89aabd080b0e3, type: 2}
-  m_sharedMaterial: {fileID: -8659249519157645431, guid: 16158eab99ca9684494145dd54b61715, type: 2}
+  m_sharedMaterial: {fileID: -904257157783168018, guid: 612765287d8428e47ac89aabd080b0e3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -38430,9 +38474,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 500826774}
-        m_TargetAssemblyTypeName: TransitionManager, Assembly-CSharp
-        m_MethodName: TransitPlayerToLevel
+      - m_Target: {fileID: 1083815087}
+        m_TargetAssemblyTypeName: MenuScript, Assembly-CSharp
+        m_MethodName: Play
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -41571,7 +41615,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 500826774}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TransitionManager, Assembly-CSharp
         m_MethodName: TransitPlayerToLevel
         m_Mode: 3
@@ -44448,3 +44492,4 @@ SceneRoots:
   - {fileID: 388403315}
   - {fileID: 1143401783}
   - {fileID: 1233524099}
+  - {fileID: 131953162}
