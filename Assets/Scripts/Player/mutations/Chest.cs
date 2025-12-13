@@ -38,6 +38,7 @@ public class Chest : EInteractable
     {
         if (PlayerStatsSO.Instance.Money >= MutationControllerSO.Instance._startChestCost)
         {
+            _canBeInteractedWith = false;
             openChestAnimator.SetBool("IsOpen", true);
             AudioManager.Instance.PlayOpenChest(MutationControllerSO.Instance.SuccessfulOpenChest);
             PlayerStatsSO.Instance.ChangeMoney(-MutationControllerSO.Instance._startChestCost);
