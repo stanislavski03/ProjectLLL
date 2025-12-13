@@ -16,9 +16,9 @@ MonoBehaviour:
   description: "\u041D\u0430\u043D\u043E\u0441\u0438\u0442 \u0443\u0440\u043E\u043D
     \u0432\u043E\u043A\u0440\u0443\u0433 \u0438\u0433\u0440\u043E\u043A\u0430"
   icon: {fileID: 21300000, guid: 125d5bcb8cdc6c24aa5b70d5c7c5aecf, type: 3}
-  baseDamage: 10
+  baseDamage: 20
   baseCooldown: 1
-  maxLevel: 3
+  maxLevel: 4
   weaponType: 1
   reputationsAmount: -25
   levelUpgrades:
@@ -30,21 +30,29 @@ MonoBehaviour:
     speedBonus: 0
     upgradeDescription: 
   - level: 2
-    areaBonus: 20
-    damageBonus: 5
+    areaBonus: 10
+    damageBonus: 0
     cooldownReduction: 0
     lifetimeBonus: 0
     speedBonus: 0
     upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
       \u0440\u0430\u0437\u043C\u0435\u0440 \u0437\u043E\u043D\u044B"
   - level: 3
-    areaBonus: 30
-    damageBonus: 100
+    areaBonus: 0
+    damageBonus: 10
     cooldownReduction: 0
     lifetimeBonus: 0
     speedBonus: 0
     upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0440\u0430\u0437\u043C\u0435\u0440 \u0437\u043E\u043D\u044B +++"
+      \u0443\u0440\u043E\u043D"
+  - level: 4
+    areaBonus: 10
+    damageBonus: 10
+    cooldownReduction: 0
+    lifetimeBonus: 0
+    speedBonus: 0
+    upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
+      \u0440\u0430\u0437\u043C\u0435\u0440 \u0437\u043E\u043D\u044B \u0438 \u0443\u0440\u043E\u043D"
   ExstraLevelUpgrades: []
   currentWeapon: {fileID: 0}
   shootClip: {fileID: 0}

@@ -54,7 +54,7 @@ public class PlayerStatsSO : SingletonScriptableObject<PlayerStatsSO>
 
     public void ExpandEXP()
     {
-        maxEXP += 150;
+        maxEXP += maxEXP / 2;
     }
 
     public void UpdateAllPlayerStats()
@@ -138,7 +138,7 @@ public class PlayerStatsSO : SingletonScriptableObject<PlayerStatsSO>
         }
         if(Reputation <= 0 && _reputationMagicEffect == false)
         {
-            ChangeDamageMultiplier(20);
+            ChangeDamageMultiplier(2);
             _reputationMagicEffect = true;
             UniversalNotification.Instance.ShowNotification(
                 "БОНУС РЕПУТАЦИИ",

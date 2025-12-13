@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SmallRangedEnemyConfig
   m_EditorClassIdentifier: 
   _enemyName: Small Ranged Enemy
-  _damage: 10
+  _damage: 20
   _cooldown: 1
-  _maxHealth: 150
+  _maxHealth: 80
   _moveSpeed: 3.5
   _moveSpeedDeviation: 0.1
-  _expOnDeath: 10
+  _expOnDeath: 20
   _size: 2
   _range: 10
   _projectileSpeed: 15
@@ -32,3 +32,4 @@ MonoBehaviour:
   _expMediumDropChance: 30
   _expHugePrefab: {fileID: 1627554565677760942, guid: b2abd20cb108d864d9e7b1a5edd0a35d, type: 3}
   _expHugeDropChance: 5
+  _healSpherePrefab: {fileID: 7838381248513374378, guid: a0c54b05579ffea439abb9497ad7288a, type: 3}

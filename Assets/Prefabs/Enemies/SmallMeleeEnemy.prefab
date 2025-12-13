@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d7acff6e535bb734c8eba745713f4412, type: 3}
       propertyPath: m_Name
-      value: melee (1)
+      value: SmallMeleeEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d7acff6e535bb734c8eba745713f4412, type: 3}
       propertyPath: m_Layer
@@ -211,6 +211,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initializedStats: {fileID: 11400000, guid: 78a1d45110d9c694e8b703538496966f, type: 2}
   EnemyType: 1
+  _deathParticlePrefab: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
+  _particleOffset: {x: 0, y: 0.2, z: 0}
+  _particleLifetime: 2
 --- !u!114 &2349172874134896621
 MonoBehaviour:
   m_ObjectHideFlags: 0

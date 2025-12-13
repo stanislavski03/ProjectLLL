@@ -553,6 +553,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initializedStats: {fileID: 11400000, guid: a067a261d6fd4194eb58d5e585aa8452, type: 2}
   EnemyType: 4
+  _deathParticlePrefab: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
+  _particleOffset: {x: 0, y: 0.2, z: 0}
+  _particleLifetime: 2
 --- !u!114 &284805389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1019,8 +1022,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.6792453, g: 0.103969395, b: 0.07369172, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 0.9433962, g: 0.551918, b: 0.52954787, a: 1}
+  m_Intensity: 1.37
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

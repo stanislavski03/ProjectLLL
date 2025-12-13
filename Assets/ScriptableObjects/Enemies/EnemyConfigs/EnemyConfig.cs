@@ -32,5 +32,7 @@ public class EnemyConfig : ScriptableObject
     [SerializeField] public GameObject _expHugePrefab;
     public float _expHugeDropChance = 0;
 
-   
+    [Header("Heal")]
+    [SerializeField] public GameObject _healSpherePrefab;
+
 }

@@ -17,9 +17,9 @@ MonoBehaviour:
     \u0441 \u043D\u0435\u0431\u0430 \u043F\u043E \u0431\u043B\u0438\u0436\u0430\u0439\u0448\u0435\u043C\u0443
     \u0432\u0440\u0430\u0433\u0443"
   icon: {fileID: 21300000, guid: 194b6598e47928b4f9006912256a5dd2, type: 3}
-  baseDamage: 10
+  baseDamage: 15
   baseCooldown: 3
-  maxLevel: 3
+  maxLevel: 4
   weaponType: 1
   reputationsAmount: -25
   levelUpgrades:
@@ -31,16 +31,24 @@ MonoBehaviour:
     speedBonus: 0
     upgradeDescription: 
   - level: 2
-    areaBonus: 5
-    damageBonus: 0
+    areaBonus: 2
+    damageBonus: 10
     cooldownReduction: 0
-    lifetimeBonus: 3
+    lifetimeBonus: 0
     speedBonus: 0
     upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0440\u0430\u0437\u043C\u0435\u0440 \u0437\u043E\u043D\u044B"
+      \u0440\u0430\u0437\u043C\u0435\u0440 \u0437\u043E\u043D\u044B \u0438 \u0443\u0440\u043E\u043D"
   - level: 3
     areaBonus: 0
-    damageBonus: 10
+    damageBonus: 0
+    cooldownReduction: 0
+    lifetimeBonus: 2
+    speedBonus: 0
+    upgradeDescription: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
+      \u0432\u0440\u0435\u043C\u044F \u0436\u0438\u0437\u043D\u0438 \u0437\u043E\u043D\u044B"
+  - level: 4
+    areaBonus: 0
+    damageBonus: 0
     cooldownReduction: 0.5
     lifetimeBonus: 0
     speedBonus: 0

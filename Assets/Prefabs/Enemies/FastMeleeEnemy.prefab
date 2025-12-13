@@ -476,6 +476,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initializedStats: {fileID: 11400000, guid: 001ce3a6dc369534ea2e8531c99b1e75, type: 2}
   EnemyType: 0
+  _deathParticlePrefab: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
+  _particleOffset: {x: 0, y: 0.2, z: 0}
+  _particleLifetime: 2
 --- !u!114 &7768781768121669924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,6 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a32bb181e752942b7ba08395e9857b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   _initializedStats: {fileID: 11400000, guid: 001ce3a6dc369534ea2e8531c99b1e75, type: 2}
 --- !u!195 &2812838907967480350
 NavMeshAgent:

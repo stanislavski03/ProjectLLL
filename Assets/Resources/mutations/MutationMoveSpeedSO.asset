@@ -18,4 +18,4 @@ MonoBehaviour:
     \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0434\u0432\u0438\u0436\u0435\u043D\u0438\u044F"
   icon: {fileID: 21300000, guid: 4fc7c306817a8234a8fa690959053a7a, type: 3}
   chest: {fileID: 0}
-  bonus: 10
+  bonus: 3
