@@ -27,17 +27,18 @@ public class TransitionManager : MonoBehaviour
     }
     public void TransitPlayerToLevel(int i)
     {
-        if (GameStateManager.Instance.IsPaused)
+        if (GameStateManager.Instance != null && GameStateManager.Instance.IsPaused)
             GameStateManager.Instance.ResumeGame();
 
-        
 
-        if(SceneManager.GetActiveScene().buildIndex == 3)
+
+        if (SceneManager.GetActiveScene().buildIndex == 3)
         {
             EnemySpawnManager.Instance.enabled = true;
         }
 
-        if (i == 0) {
+        if (i == 0)
+        {
             GameObject[] bullshit = FindObjectsOfType<GameObject>();
 
             foreach (GameObject go in bullshit)
@@ -49,15 +50,18 @@ public class TransitionManager : MonoBehaviour
             }
         }
         else if (i == 3)
-        { 
+        {
             EnemySpawnManager.Instance.enabled = false;
         }
 
 
         SceneManager.LoadScene(i);
-        foreach(QuestData quest in QuestManager.Instance.activeQuests)
+        if (QuestManager.Instance != null && QuestManager.Instance.activeQuests.Count > 0)
         {
-            QuestManager.Instance.CancelQuest(quest);
+            foreach (QuestData quest in QuestManager.Instance.activeQuests)
+            {
+                QuestManager.Instance.CancelQuest(quest);
+            }
         }
     }
 
