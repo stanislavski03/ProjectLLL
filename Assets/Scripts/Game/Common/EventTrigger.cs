@@ -43,7 +43,7 @@ public class EventTrigger : MonoBehaviour
         else if (_events.Count > 1)
         {
             List<EInteractable> delete = new List<EInteractable>();
-            float minDistance = ((CapsuleCollider)gameObject.GetComponent<Collider>()).radius; // �� ������, ���� �������� ����� � ���������� ������, ����� �� ������ � ���������� ������ ���������, ���� �����
+            float minDistance = ((CapsuleCollider)gameObject.GetComponent<Collider>()).radius; 
             foreach (EInteractable e in _events)
             {
                 if (!e._canBeInteractedWith || e == null)

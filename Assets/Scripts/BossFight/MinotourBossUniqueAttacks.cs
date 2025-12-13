@@ -38,7 +38,6 @@ public class MinotourBossUnickAttacks : MonoBehaviour
             Attack();
         }
         cooldown += Time.deltaTime;
-        Debug.Log(cooldown);
 
     }
     private void Attack()
