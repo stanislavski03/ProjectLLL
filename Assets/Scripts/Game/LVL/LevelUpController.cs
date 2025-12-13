@@ -84,12 +84,12 @@ public class LevelUpController : MonoBehaviour
     public async UniTask ShowLevelUpOptionsAsync()
     {
         if (isLevelUpActive) return;
-
         isLevelUpActive = true;
         // Создание Моста unitask
         _levelUpCompletionSource = new UniTaskCompletionSource<bool>();
         
         GameStateManager.Instance.PauseForLevelUp();
+        
         
         itemsInfo.SetItemsInfo();
         lvlUpCanvasObject.SetActive(true);

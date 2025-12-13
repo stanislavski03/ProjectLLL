@@ -10,6 +10,7 @@ public class PlayerEXP : MonoBehaviour
     [SerializeField] private PlayerStatsSO _statsSO;
     [SerializeField] private Image _expProgressBarImage;
 
+    [SerializeField] private LvlUpWeaponItemsInfo _lvlUpGatherCanvasInfo;
     private float _currentEXP;
     private float _currentLVL = 1;
 
@@ -65,7 +66,10 @@ public class PlayerEXP : MonoBehaviour
                 LVLChanged?.Invoke(_currentLVL);
 
                 // Показываем окно выбора и ЖДЕМ, пока игрок не сделает выбор
-                await ShowLevelUpAndWait();
+                if (!_lvlUpGatherCanvasInfo.AllWeaponsGathered)
+                {
+                    await ShowLevelUpAndWait();
+                }
 
                 // Обновляем UI после каждого уровня
                 UpdateUI();

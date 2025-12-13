@@ -73,7 +73,6 @@ public class PlayerStatsSO : SingletonScriptableObject<PlayerStatsSO>
     {
         DamageMultiplier += value;
         _damageMultiplierChanged?.Invoke(DamageMultiplier);
-        Debug.Log("ChangeDamageMultiplier PlayerSO");
     }
 
     public void ChangeMagicDamageMultiplier(float value)

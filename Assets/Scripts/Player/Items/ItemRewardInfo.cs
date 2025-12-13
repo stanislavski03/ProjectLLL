@@ -14,6 +14,7 @@ public class ItemRewardInfo : MonoBehaviour
     public ItemType _questGiverType;
     [SerializeField] private GameObject _itemRewardCanvas;
 
+    [SerializeField] private Sprite NoItemsSprite;
 
 
     public int numberOfCurrentWeaponList = 2;
@@ -107,8 +108,6 @@ public class ItemRewardInfo : MonoBehaviour
                     ItemImage.sprite = _universalItem.icon;
                 }
 
-                ItemsList[1].SetActive(true);
-
                 ItemButton.onClick.RemoveAllListeners();
                 ItemButton.onClick.AddListener(() => OnItemSelected(_universalItem));
 
@@ -116,9 +115,11 @@ public class ItemRewardInfo : MonoBehaviour
             else
             {
                 ItemsList[0].SetActive(false);
-                ItemsList[1].SetActive(true);
+
 
             }
+            ItemsList[1].SetActive(true);
+
 
         }
         {
@@ -153,7 +154,28 @@ public class ItemRewardInfo : MonoBehaviour
             }
             else
             {
-                ItemsList[1].SetActive(false);
+                
+                if (_universalItem == null)
+                {
+                    TMPSpecialisedItemTitle[0].text = "Мне нечего предложить";
+                    TMPSpecialisedItemTitle[1].text = "По всему миру нехватка предметов. У меня не осталось ничего, что может тебе помочь";
+                    if (ItemImage != null)
+                    {
+                        ItemImage.preserveAspect = true;
+                        ItemImage.type = Image.Type.Simple;
+
+                        RectTransform rectTransform = ItemImage.GetComponent<RectTransform>();
+                        if (rectTransform != null)
+                        {
+                            rectTransform.sizeDelta = new Vector2(100, 100);
+                        }
+
+                        ItemImage.sprite = NoItemsSprite;
+                    }
+                    ItemButton.onClick.RemoveAllListeners();
+                    ItemButton.onClick.AddListener(() => Skip());
+                }else
+                    ItemsList[1].SetActive(false);
             }
 
         }

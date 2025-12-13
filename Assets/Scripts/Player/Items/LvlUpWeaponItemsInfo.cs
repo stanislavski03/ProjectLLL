@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class LvlUpWeaponItemsInfo : MonoBehaviour
 {
     public List<Weapon> _currentWeaponList = new List<Weapon>();
-    private List<Weapon> weaponList = new List<Weapon>();
+    [SerializeField]private List<Weapon> weaponList = new List<Weapon>();
 
     public List<GameObject> ItemsList;
     public List<Weapon> allWeaponList;
@@ -19,6 +19,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
     public LevelUpController levelUpController;
 
     public AudioClip lvlUpClip;
+    public bool AllWeaponsGathered = false;
 
     private void Start()
     {
@@ -101,7 +102,6 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
         // Если нет доступных оружий, выходим
         if (weaponList.Count == 0)
         {
-            Debug.LogWarning("No weapons available in weaponList!");
             return;
         }
 
@@ -111,7 +111,7 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
             // Перемешиваем список перед добавлением
             ShuffleWeaponList();
             _currentWeaponList.AddRange(weaponList);
-            weaponList.Clear();
+                weaponList.Clear();
         }
         else
         {
@@ -225,6 +225,10 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
             {
                 selectedWeapon.AddLevel(1);
             }
+            if (_currentWeaponList.Count == 0 && selectedWeapon.IsMaxLevel)
+            {
+                AllWeaponsGathered = true;
+            }
         }
 
         // Вызываем колбэк выбора предмета
@@ -234,6 +238,8 @@ public class LvlUpWeaponItemsInfo : MonoBehaviour
         }
 
         LevelUpController.Instance.UiClickSound();
+
+
     }
 
     // ДОБАВИМ метод для принудительного обновления UI

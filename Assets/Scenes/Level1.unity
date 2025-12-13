@@ -25684,6 +25684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _statsSO: {fileID: 11400000, guid: 50cdaffe215c046459138a7d1b170064, type: 2}
   _expProgressBarImage: {fileID: 1387297690}
+  _lvlUpGatherCanvasInfo: {fileID: 1796658685}
 --- !u!114 &1166782145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36879,6 +36880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentWeaponList: []
+  weaponList: []
   ItemsList:
   - {fileID: 1965825336}
   - {fileID: 1275776268}
@@ -36891,6 +36893,7 @@ MonoBehaviour:
   numberOfCurrentWeaponList: 3
   levelUpController: {fileID: 500826768}
   lvlUpClip: {fileID: 8300000, guid: 38a17a92b9d9748c6a1e67972041b833, type: 3}
+  AllWeaponsGathered: 0
 --- !u!114 &1796658686
 MonoBehaviour:
   m_ObjectHideFlags: 0

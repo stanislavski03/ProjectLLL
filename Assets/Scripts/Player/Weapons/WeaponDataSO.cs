@@ -18,6 +18,9 @@ public class WeaponDataSO : ScriptableObject
     [Header("Level Progression")]
     public LevelUpgrade[] levelUpgrades;
 
+    [Header("Extra Level Progression")]
+    public LevelUpgrade[] ExstraLevelUpgrades;
+
     [Header("Weapon")]
     public Weapon currentWeapon;
     public AudioClip shootClip;
