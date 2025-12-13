@@ -15,7 +15,7 @@ MonoBehaviour:
   _enemyName: "\u041C\u0438\u043D\u043E\u0442\u0430\u0432\u0440"
   _damage: 50
   _cooldown: 3
-  _maxHealth: 3000
+  _maxHealth: 7000
   _moveSpeed: 7
   _moveSpeedDeviation: 0
   _expOnDeath: 10

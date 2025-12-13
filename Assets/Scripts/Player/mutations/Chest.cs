@@ -11,7 +11,6 @@ public class Chest : EInteractable
 
     private Animator openChestAnimator;
 
-    public long moneyRequired;
 
     private void Start()
     {
@@ -23,7 +22,7 @@ public class Chest : EInteractable
     {
         _isReady = true;
         _renderer.material.color += new Color(0.5f, 0.54f, 0);;
-        GameMenuController.Instance.ShowCostOnMutatiOnChest(transform, moneyRequired.ToString());
+        GameMenuController.Instance.ShowCostOnMutatiOnChest(transform, MutationControllerSO.Instance._startChestCost.ToString());
     }
     public override void MakeNonReady()
     {
@@ -37,16 +36,17 @@ public class Chest : EInteractable
 
     public async override void Interact()
     {
-        if (PlayerStatsSO.Instance.Money >= moneyRequired)
+        if (PlayerStatsSO.Instance.Money >= MutationControllerSO.Instance._startChestCost)
         {
             openChestAnimator.SetBool("IsOpen", true);
             AudioManager.Instance.PlayOpenChest(MutationControllerSO.Instance.SuccessfulOpenChest);
-            PlayerStatsSO.Instance.ChangeMoney(-moneyRequired);
+            PlayerStatsSO.Instance.ChangeMoney(-MutationControllerSO.Instance._startChestCost);
             mutation.chest = this;
             GameMenuController.Instance.GiveMutationReward();
             GameMenuController.Instance.RemoveFromSceneCostOnMutatiOnChest();
             GameMenuController.Instance.RemoveFromSceneWarningOnMutatiOnChest();
             await UniTask.WaitForSeconds(1.5f);
+            MutationControllerSO.Instance.ExpandCost();
             Destroy(gameObject);
         }
         else
@@ -58,7 +58,7 @@ public class Chest : EInteractable
             await UniTask.WaitForSeconds(1);
             GameMenuController.Instance.RemoveFromSceneWarningOnMutatiOnChest();
             if (_isReady)
-                GameMenuController.Instance.ShowCostOnMutatiOnChest(transform, moneyRequired.ToString());
+                GameMenuController.Instance.ShowCostOnMutatiOnChest(transform, MutationControllerSO.Instance._startChestCost.ToString());
 
 
         }

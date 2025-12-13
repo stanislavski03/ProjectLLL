@@ -20,6 +20,8 @@ public class MutationControllerSO : SingletonScriptableObject<MutationController
         }
     }
 
+    public long _startChestCost;
+
     [Header("All Available Mutations")]
     public List<MutationDataSO> AllMutationsPool = new List<MutationDataSO>();
     
@@ -47,6 +49,11 @@ public class MutationControllerSO : SingletonScriptableObject<MutationController
 
     public AudioClip SuccessfulOpenChest;
     public AudioClip ErrorOpenChest;
+
+    public void ExpandCost()
+    {
+        _startChestCost += _startChestCost / 3;
+    }
 
     public void AddMutation(MutationDataSO mutation)
     {

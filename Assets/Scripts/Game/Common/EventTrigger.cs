@@ -70,7 +70,7 @@ public class EventTrigger : MonoBehaviour
         if (!_activeEvent._isReady && _activeEvent._canBeInteractedWith)
             _activeEvent.MakeReady();
 
-        if (Input.GetKeyDown(KeyCode.E) && _activeEvent != null)
+        if (Input.GetKeyDown(KeyCode.E) && _activeEvent != null && !GameStateManager.Instance.IsPaused)
         {
             _activeEvent.Interact();
         }
