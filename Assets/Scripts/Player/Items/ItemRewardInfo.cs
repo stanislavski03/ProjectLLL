@@ -20,6 +20,8 @@ public class ItemRewardInfo : MonoBehaviour
 
     public ItemControllerSO _itemControllerSO;
 
+
+
     private void OnEnable()
     {
         _questGiverType = ItemControllerSO.Instance.questType;
@@ -105,17 +107,17 @@ public class ItemRewardInfo : MonoBehaviour
                     ItemImage.sprite = _universalItem.icon;
                 }
 
+                ItemsList[1].SetActive(true);
+
                 ItemButton.onClick.RemoveAllListeners();
                 ItemButton.onClick.AddListener(() => OnItemSelected(_universalItem));
 
             }
             else
             {
-                TMPUniversalItemTitle[0].text = "Мне нечего предложить";
-                TMPUniversalItemTitle[1].text = "";
-                ItemImage.sprite = null;
-                ItemButton.onClick.RemoveAllListeners();
-                ItemButton.onClick.AddListener(() => Skip());
+                ItemsList[0].SetActive(false);
+                ItemsList[1].SetActive(true);
+
             }
 
         }
@@ -152,11 +154,6 @@ public class ItemRewardInfo : MonoBehaviour
             else
             {
                 ItemsList[1].SetActive(false);
-                // TMPSpecialisedItemTitle[0].text = "Мне нечего предложить";
-                // TMPSpecialisedItemTitle[1].text = "";
-                // ItemImage.sprite = null;
-                // ItemButton.onClick.RemoveAllListeners();
-                // ItemButton.onClick.AddListener(() => Skip());
             }
 
         }

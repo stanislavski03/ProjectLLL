@@ -64,6 +64,22 @@ public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
         }
     }
 
+    public bool CheckPool(ItemType itemType)
+    {
+        switch (itemType)
+        {
+            case ItemType.Universal:
+                return itemUniversalPool.Count != 0;
+            case ItemType.Magic:
+                return itemMagicPool.Count != 0;
+            case ItemType.Tecno:
+                return itemTecnoPool.Count != 0;
+            default:
+                return false; 
+        }
+    }
+
+
     private void Awake()
     {
         ClearAllPools();

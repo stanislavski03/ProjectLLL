@@ -287,15 +287,18 @@ MonoBehaviour:
   _generationHeight: 4
   _generationWidth: 4
   transitionQuests:
-  - {fileID: 11400000, guid: 13844d2f07929a2488264fccb59c01e5, type: 2}
+  - {fileID: 11400000, guid: dea8f3bf29c1ee340b1ebd4764499faf, type: 2}
+  - {fileID: 11400000, guid: c9e530bdfe184d444813df52b0f12b65, type: 2}
   _availableQuests:
   - {fileID: 11400000, guid: 3d1d465283233a1438acf9c9190a4ebc, type: 2}
   - {fileID: 11400000, guid: 13844d2f07929a2488264fccb59c01e5, type: 2}
+  - {fileID: 11400000, guid: a64e97d5fc7a30f4797ecf28cd1ea6ab, type: 2}
   _allQuests: []
   _questsOnMapMin: 99
   _questsOnMapMax: 99
   _mutationsOnMapMin: 99
   _mutationsOnMapMax: 99
+  _itemController: {fileID: 11400000, guid: 97b34af25ad8de94db5c4409b170984d, type: 2}
 --- !u!4 &1094048595
 Transform:
   m_ObjectHideFlags: 0

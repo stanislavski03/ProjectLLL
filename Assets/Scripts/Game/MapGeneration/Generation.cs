@@ -29,6 +29,11 @@ public class Generation : MonoBehaviour
     public int _mutationsOnMapMin = 3;
     public int _mutationsOnMapMax = 4;
 
+
+    [SerializeField] private ItemControllerSO _itemController;
+
+
+
     
     public void SpawnGasTanks(int amount)
     {
@@ -152,39 +157,6 @@ public class Generation : MonoBehaviour
             int QuestAmount = Random.Range(QuestsMin, QuestsMax + 1);
 
 
-
-                           ////// Transition Quests //////
-            int transitionQuestSide = Random.Range(0, 4);
-            QuestData TransitionQuest = transitionQuests[Random.Range(0, transitionQuests.Count)];
-            switch (transitionQuestSide)
-            {
-                case 0:
-                    SpawnActivityOnTile transitionTile = generation[0][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>();
-                    transitionTile.SpawnTransitionQuest(TransitionQuest);
-                    transitionTile._objectsOnTile.Add(ActivityOnTileType.Quest);
-                    break;
-                case 1:
-                    SpawnActivityOnTile transitionTile2 = generation[_width - 1][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>();
-                    transitionTile2.SpawnTransitionQuest(TransitionQuest);
-                    transitionTile2._objectsOnTile.Add(ActivityOnTileType.Quest);
-                    break;
-                case 2:
-                    SpawnActivityOnTile transitionTile3 = generation[Random.Range(0, _width)][0].GetComponent<SpawnActivityOnTile>();
-                    transitionTile3.SpawnTransitionQuest(TransitionQuest);
-                    transitionTile3._objectsOnTile.Add(ActivityOnTileType.Quest);
-
-                    break;
-                case 3:
-                    SpawnActivityOnTile transitionTile4 = generation[Random.Range(0, _width)][_height - 1].GetComponent<SpawnActivityOnTile>();
-                    transitionTile4.SpawnTransitionQuest(TransitionQuest);
-                    transitionTile4._objectsOnTile.Add(ActivityOnTileType.Quest);
-                    break;
-            }
-
-
-
-
-
             List<GameObject> allTiles = new List<GameObject>();
             foreach (var row in generation)
             {
@@ -194,6 +166,44 @@ public class Generation : MonoBehaviour
                         allTiles.Add(tile);
                 }
             }
+
+            ////// Transition Quests //////
+            int transitionQuestSide = Random.Range(0, 4);
+            QuestData TransitionQuest = transitionQuests[Random.Range(0, transitionQuests.Count)];
+            switch (transitionQuestSide)
+            {
+                case 0:
+                    SpawnActivityOnTile transitionTile = generation[0][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>();
+                    transitionTile.SpawnTransitionQuest(TransitionQuest);
+                    transitionTile._objectsOnTile.Add(ActivityOnTileType.Quest);
+                    allTiles.Remove(transitionTile.gameObject);
+                    break;
+                case 1:
+                    SpawnActivityOnTile transitionTile2 = generation[_width - 1][Random.Range(0, _height)].GetComponent<SpawnActivityOnTile>();
+                    transitionTile2.SpawnTransitionQuest(TransitionQuest);
+                    transitionTile2._objectsOnTile.Add(ActivityOnTileType.Quest);
+                    allTiles.Remove(transitionTile2.gameObject);
+                    break;
+                case 2:
+                    SpawnActivityOnTile transitionTile3 = generation[Random.Range(0, _width)][0].GetComponent<SpawnActivityOnTile>();
+                    transitionTile3.SpawnTransitionQuest(TransitionQuest);
+                    transitionTile3._objectsOnTile.Add(ActivityOnTileType.Quest);
+                    allTiles.Remove(transitionTile3.gameObject);
+
+                    break;
+                case 3:
+                    SpawnActivityOnTile transitionTile4 = generation[Random.Range(0, _width)][_height - 1].GetComponent<SpawnActivityOnTile>();
+                    transitionTile4.SpawnTransitionQuest(TransitionQuest);
+                    transitionTile4._objectsOnTile.Add(ActivityOnTileType.Quest);
+                    allTiles.Remove(transitionTile4.gameObject);
+                    break;
+            }
+
+
+
+
+
+            
 
             if (_availableQuests.Count <= 0 || allTiles.Count <= 0)
             {
@@ -218,18 +228,21 @@ public class Generation : MonoBehaviour
                 if (tileSpawnActivity != null && !tileSpawnActivity._objectsOnTile.Exists(activity => activity == ActivityOnTileType.Quest))
                 {
                     ItemType QuestRewardType;
-                    switch (Random.Range(0, 3))
+                    List<ItemType> questTypeList = new List<ItemType>();
+                    if (_itemController.CheckPool(ItemType.Tecno))
                     {
-                        case 0:
-                            QuestRewardType = ItemType.Tecno;
-                            break;
-                        case 1:
-                            QuestRewardType = ItemType.Magic;
-                            break;
-                        default:
-                            QuestRewardType = ItemType.Universal;
-                            break;
+                        questTypeList.Add(ItemType.Tecno);
                     }
+                    if (_itemController.CheckPool(ItemType.Magic))
+                    {
+                        questTypeList.Add(ItemType.Magic);
+                    }
+                    if (_itemController.CheckPool(ItemType.Universal))
+                    {
+                        questTypeList.Add(ItemType.Universal);
+                    }
+
+                    QuestRewardType = questTypeList[Random.Range(0,questTypeList.Count)];
 
                     QuestData questData = _availableQuests[Random.Range(0, _availableQuests.Count)];
                     _availableQuests.Remove(questData);
@@ -237,11 +250,12 @@ public class Generation : MonoBehaviour
                     tileSpawnActivity._objectsOnTile.Add(ActivityOnTileType.Quest);
                     tileSpawnActivity.SpawnQuestGiverOfType(questData, QuestRewardType);
                 }
+                
             }
         }
-        catch (System.Exception e)
+        catch
         {
-            Debug.LogError($"AddQuestsToTiles error: {e.Message}");
+            
         }
     }
 

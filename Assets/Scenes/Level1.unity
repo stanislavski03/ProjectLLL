@@ -4154,6 +4154,7 @@ MonoBehaviour:
   _questsOnMapMax: 99
   _mutationsOnMapMin: 99
   _mutationsOnMapMax: 99
+  _itemController: {fileID: 11400000, guid: 97b34af25ad8de94db5c4409b170984d, type: 2}
 --- !u!114 &147502947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27067,7 +27068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19293f937e9a0b4c8789cef54fb2ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transitionScene: 3
+  _transitionScene: 2
 --- !u!1 &1248231326
 GameObject:
   m_ObjectHideFlags: 0
