@@ -52,7 +52,7 @@ public class SpawnActivityOnTile : MonoBehaviour
             new Vector3(_questGiverSpawnPoint.position.x, _questGiver.transform.position.y, _questGiverSpawnPoint.position.z),
             Quaternion.Euler(0,180,0),
             transform);
-        QuestGiverSpawned.GetComponent<QuestGiver>()._transitionQuest = true;
+        QuestGiverSpawned.GetComponent<QuestGiver>().SetQuestTransition();
         QuestGiverSpawned.GetComponent<QuestGiver>().SetQuest(Quest);
     }
 
