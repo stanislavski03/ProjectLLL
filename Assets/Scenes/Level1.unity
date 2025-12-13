@@ -26164,11 +26164,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2075086262667562075, guid: 8a648a11417f01b4f93b101ca312f77d, type: 3}
       propertyPath: _EXPamount
-      value: 99999
+      value: 1150
       objectReference: {fileID: 0}
     - target: {fileID: 2075086262667562075, guid: 8a648a11417f01b4f93b101ca312f77d, type: 3}
       propertyPath: _moneyAmount
-      value: 9999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7606136911078393922, guid: 8a648a11417f01b4f93b101ca312f77d, type: 3}
       propertyPath: m_LocalPosition.x
