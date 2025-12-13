@@ -100,6 +100,12 @@ public class QuestGiver : EInteractable
             }
             else
             {
+                _questTurnedIn = true;
+                if (_quest != null)
+                {
+                    _quest.turnedIn = true;
+                    QuestManager.Instance?.TurnInQuest(_quest);
+                }
                 TransitionManager.Instance.TransitPlayerToNextLevel();
             }
 
