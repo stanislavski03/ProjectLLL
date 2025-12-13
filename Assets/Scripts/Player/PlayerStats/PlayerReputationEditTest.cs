@@ -15,6 +15,7 @@ public class PlayerReputationEditTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             PlayerStatsSO.Instance.ChangeReputation(-10);
+            
         }
     }
- }
+}

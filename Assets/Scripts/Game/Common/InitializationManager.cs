@@ -37,6 +37,8 @@ public class InitializationManager : MonoBehaviour
         stats.maxLevel = 30;
         stats.invincibility = false;
         stats.CurrentKills = 0;
+        stats._reputationTecnoEffect = false;
+        stats._reputationMagicEffect = false;
 
         stats.UpdateAllPlayerStats();
     }

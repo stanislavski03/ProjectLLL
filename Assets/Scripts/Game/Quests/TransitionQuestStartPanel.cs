@@ -66,8 +66,8 @@ public class TransitionQuestStartPanel : MonoBehaviour
         panel.SetActive(true);
         
         // Активируем курсор
-        //Cursor.visible = true;
-        //Cursor.lockState = CursorLockMode.None;
+        // Cursor.visible = true;
+        // Cursor.lockState = CursorLockMode.None;
     }
 
     private void AcceptQuest()

@@ -38,10 +38,10 @@ public class QuestManager : MonoBehaviour
         if (!activeQuests.Contains(quest))
         {
             activeQuests.Add(quest);
-            
+
             // Вызываем событие
             _onQuestRegistered?.Invoke();
-            
+
             // Отправляем уведомление о принятии квеста
             if (QuestNotification.Instance != null)
             {
@@ -56,10 +56,10 @@ public class QuestManager : MonoBehaviour
         {
             activeQuests.Remove(quest);
             completedQuests.Add(quest);
-            
+
             // Вызываем событие
             _onQuestFinished?.Invoke();
-            
+
             // Отправляем уведомление о завершении квеста
             if (QuestNotification.Instance != null)
             {
@@ -74,7 +74,7 @@ public class QuestManager : MonoBehaviour
         {
             completedQuests.Remove(quest);
             _onQuestTurnedIn?.Invoke();
-            
+
             // Отправляем уведомление о сдаче квеста
             if (QuestNotification.Instance != null)
             {
@@ -85,12 +85,15 @@ public class QuestManager : MonoBehaviour
 
     public void CancelQuest(QuestData quest)
     {
-        if (!canceledQuests.Contains(quest) && activeQuests.Contains(quest))
+        if (!canceledQuests.Contains(quest) && (activeQuests.Contains(quest) || completedQuests.Contains(quest)))
         {
             canceledQuests.Add(quest);
-            activeQuests.Remove(quest);
+            if (activeQuests.Contains(quest))
+                activeQuests.Remove(quest);
+            if (completedQuests.Contains(quest))
+                completedQuests.Remove(quest);
             _onQuestCanceled?.Invoke();
-            
+
             // Отправляем уведомление о провале квеста
             if (QuestNotification.Instance != null)
             {
@@ -102,7 +105,7 @@ public class QuestManager : MonoBehaviour
     public void OnQuestProgressUpdated(QuestData quest)
     {
         _onQuestProgressUpdated?.Invoke();
-        
+
         // Отправляем уведомление о прогрессе (например, каждые 25%)
         if (QuestNotification.Instance != null && quest.progress > 0 && quest.progress < 100)
         {
@@ -127,7 +130,7 @@ public class QuestManager : MonoBehaviour
                 if (enemyKillerQuest.TypesOfEnemy.Contains(enemyType))
                 {
                     quest.UpdateQuest(1);
-                    
+
                     // Обновляем прогресс после изменения
                     OnQuestProgressUpdated(quest);
                 }
@@ -149,12 +152,12 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-    
+
     public void BlizzardShieldProgressForOne()
     {
         var questsToUpdate = activeQuests.ToList();
         QuestData questNeeded = null;
-        
+
         foreach (var quest in questsToUpdate)
         {
             if (!activeQuests.Contains(quest)) continue;

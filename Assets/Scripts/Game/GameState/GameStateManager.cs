@@ -68,30 +68,37 @@ public class GameStateManager : MonoBehaviour
     public void SetPaused(bool paused, PauseType pauseType = PauseType.EscPause)
     {
         if (IsPaused == paused && CurrentPauseType == pauseType) return;
-        
+
         IsPaused = paused;
         CurrentPauseType = paused ? pauseType : PauseType.None;
 
         EnemySpawnManager.Instance.ChangeActiveEnemySpawn(!paused);
 
         AudioManager.Instance.StopAllSFX();
-        
+
+        // Cursor.visible = true;
+        // Cursor.lockState = CursorLockMode.None;
+
         // Управление музыкой
         if (paused && pauseType == PauseType.EscPause)
         {
             AudioManager.Instance.DuckMusic();
         }
+
+
         else if (!paused)
         {
             // Возобновляем музыку при снятии ЛЮБОЙ паузы
             AudioManager.Instance.UnduckMusic();
+            // Cursor.visible = false;
+            // Cursor.lockState = CursorLockMode.Locked;
         }
-        
+
         if (!IsInCountdown)
         {
             Time.timeScale = paused ? 0f : 1f;
         }
-        
+
         OnPauseStateChanged?.Invoke(IsPaused, CurrentPauseType);
     }
 

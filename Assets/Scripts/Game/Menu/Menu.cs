@@ -13,6 +13,6 @@ public class Menu : MonoBehaviour
 
     public void QuitGame()
     {
-        SceneManager.LoadScene(0);
+        TransitionManager.Instance.TransitPlayerToLevel(0);
     }
 }

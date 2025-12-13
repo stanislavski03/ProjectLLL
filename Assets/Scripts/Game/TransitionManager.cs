@@ -54,7 +54,8 @@ public class TransitionManager : MonoBehaviour
             EnemySpawnManager.Instance.enabled = false;
         }
 
-
+        // Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
         SceneManager.LoadScene(i);
         if (QuestManager.Instance != null && QuestManager.Instance.activeQuests.Count > 0)
         {
@@ -62,6 +63,18 @@ public class TransitionManager : MonoBehaviour
             {
                 QuestManager.Instance.CancelQuest(quest);
             }
+        }
+        if (QuestManager.Instance != null && QuestManager.Instance.completedQuests.Count > 0)
+        {
+            foreach (QuestData quest in QuestManager.Instance.completedQuests)
+            {
+                QuestManager.Instance.CancelQuest(quest);
+            }
+        }
+        if (i == 0)
+        {
+            // Cursor.visible = true;
+            // Cursor.lockState = CursorLockMode.None;
         }
     }
 

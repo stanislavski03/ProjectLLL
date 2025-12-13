@@ -27,6 +27,9 @@ public class PlayerStatsSO : SingletonScriptableObject<PlayerStatsSO>
     public bool invincibility = false;
 
     public float CurrentKills = 0;
+
+    public bool _reputationTecnoEffect;
+    public bool _reputationMagicEffect;
     
     public event Action<float> _damageMultiplierChanged;
     public event Action<float> _magicDamageMultiplierChanged;
@@ -123,6 +126,44 @@ public class PlayerStatsSO : SingletonScriptableObject<PlayerStatsSO>
     {
         Reputation = Mathf.Clamp(Reputation + value, 0, 100);
         _reputationChanged?.Invoke(Reputation);
+
+        if(Reputation >= 100 && _reputationTecnoEffect == false)
+        {
+            ChangeCooldownReduction(0.5f);
+            _reputationTecnoEffect = true;
+            UniversalNotification.Instance.ShowNotification(
+                "БОНУС РЕПУТАЦИИ",
+                "Вы стали истинным технарём\nПолучен бонус к скорости атаки"
+            );
+        }
+        if(Reputation <= 0 && _reputationMagicEffect == false)
+        {
+            ChangeDamageMultiplier(20);
+            _reputationMagicEffect = true;
+            UniversalNotification.Instance.ShowNotification(
+                "БОНУС РЕПУТАЦИИ",
+                "Вы стали истинным магом\nПолучен бонус к урону"
+            );
+        }
+
+        if(Reputation < 100 && _reputationTecnoEffect == true)
+        {
+            ChangeCooldownReduction(-0.5f);
+            _reputationTecnoEffect = false;
+            UniversalNotification.Instance.ShowNotification(
+                "БОНУС РЕПУТАЦИИ ПОТЕРЯН",
+                "Вы перестали быть истинным технарём\nБонус к скорости атаки потерян"
+            );
+        }
+        if(Reputation > 0 && _reputationMagicEffect == true)
+        {
+            ChangeDamageMultiplier(-20);
+            _reputationMagicEffect = false;
+            UniversalNotification.Instance.ShowNotification(
+                "БОНУС РЕПУТАЦИИ ПОТЕРЯН",
+                "Вы перестали быть истинным магом\nБонус к урону потерян"
+            );
+        }
     }
 
     public void ChangeMoveSpeed(float value)
