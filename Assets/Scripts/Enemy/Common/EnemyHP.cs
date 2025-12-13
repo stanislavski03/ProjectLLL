@@ -7,17 +7,27 @@ public class EnemyHP : MonoBehaviour
 {
     private float _maxHP;
     private GameObject _expPrefab;
+    private GameObject _healSpherePrefab;
     private float _expDropPercent;
     private float _expAutodropAmount;
 
     public EnemyConfig _initializedStats;
-    [NonSerialized]public EnemyPool _pool;
+    [NonSerialized] public EnemyPool _pool;
 
     private PlayerEXP _playerEXP;
     private float _currentHP;
     private EnemyHitEffect hitEffect;
 
     public int EnemyType = 0;
+
+    // Префаб с партикл эффектом смерти
+    [SerializeField] private GameObject _deathParticlePrefab;
+    
+    // Смещение для спавна партикла
+    [SerializeField] private Vector3 _particleOffset = new Vector3(0, 0.2f, 0);
+    
+    // Время жизни партикла после спавна
+    [SerializeField] private float _particleLifetime = 2f;
 
     public event Action EnemyHPCnanged;
 
@@ -28,7 +38,7 @@ public class EnemyHP : MonoBehaviour
         {
             _playerEXP = player.GetComponent<PlayerEXP>();
         }
-        
+
         // Получаем компонент эффекта
         hitEffect = GetComponent<EnemyHitEffect>();
     }
@@ -46,6 +56,7 @@ public class EnemyHP : MonoBehaviour
     {
         _maxHP = _initializedStats._maxHealth;
         _expPrefab = getExpPrefab();
+        _healSpherePrefab = _initializedStats._healSpherePrefab;
         _expAutodropAmount = _initializedStats._expOnDeath;
         _currentHP = _maxHP;
     }
@@ -54,7 +65,7 @@ public class EnemyHP : MonoBehaviour
     {
         return _currentHP;
     }
-    
+
     public float GetMaxHP()
     {
         return _maxHP;
@@ -64,12 +75,11 @@ public class EnemyHP : MonoBehaviour
     {
         _currentHP -= damageAmount;
         EnemyHPCnanged?.Invoke();
-        
-        
+
         if (hitEffect != null && _currentHP > 0)
             hitEffect.TakeHit();
-            
-        if (_currentHP <= 0) 
+
+        if (_currentHP <= 0)
             Death();
     }
 
@@ -80,27 +90,103 @@ public class EnemyHP : MonoBehaviour
 
     private void Death()
     {
+        // Спавним партикл эффект смерти
+        SpawnDeathParticle();
+        
         ExpOnDeath();
+        
+        // Спавним хил сферу
+        if (_healSpherePrefab != null)
+        {
+            if (UnityEngine.Random.Range(0, 100) <= 5)
+                Instantiate(_healSpherePrefab, new Vector3(transform.position.x, 0.2f, transform.position.z), Quaternion.identity);
+        }
+        
+        // Возвращаем в пул или уничтожаем
         if (_pool != null)
             _pool.GetEnemyBackToPool(gameObject);
-        else 
+        else
             Destroy(gameObject);
 
-        ItemControllerSO.Instance.ActivateOnEnemyDeathEvent(gameObject);
+        // Вызываем события
+        ItemControllerSO.Instance?.ActivateOnEnemyDeathEvent(gameObject);
         QuestManager.Instance?.OnEnemyKilled(EnemyType);
-        PlayerStatsSO.Instance.ChangeKills(1);
+        PlayerStatsSO.Instance?.ChangeKills(1);
     }
-    
-    private void ExpOnDeath() 
+
+    // Метод для спавна партикл эффекта смерти
+    private void SpawnDeathParticle()
     {
+        if (_deathParticlePrefab != null)
+        {
+            // Спавним префаб с партиклом
+            GameObject deathParticle = Instantiate(
+                _deathParticlePrefab, 
+                transform.position + _particleOffset, 
+                Quaternion.identity
+            );
+            
+            // Автоматически уничтожаем через заданное время
+            Destroy(deathParticle, _particleLifetime);
+            
+            // Если в префабе есть ParticleSystem, убедимся что он воспроизводится
+            ParticleSystem particleSystem = deathParticle.GetComponent<ParticleSystem>();
+            if (particleSystem != null)
+            {
+                particleSystem.Play();
+            }
+            else
+            {
+                // Проверяем в дочерних объектах
+                particleSystem = deathParticle.GetComponentInChildren<ParticleSystem>();
+                if (particleSystem != null)
+                {
+                    particleSystem.Play();
+                }
+            }
+        }
+    }
+
+    // Альтернативный метод с кастомной логикой уничтожения
+    private IEnumerator SpawnDeathParticleWithCoroutine()
+    {
+        if (_deathParticlePrefab != null)
+        {
+            GameObject deathParticle = Instantiate(
+                _deathParticlePrefab, 
+                transform.position + _particleOffset, 
+                Quaternion.identity
+            );
+            
+            // Ждем указанное время
+            yield return new WaitForSeconds(_particleLifetime);
+            
+            // Уничтожаем если еще существует
+            if (deathParticle != null)
+            {
+                Destroy(deathParticle);
+            }
+        }
+    }
+
+    private void ExpOnDeath()
+    {
+        // Спавним опыт
         if (_expPrefab != null)
-            Instantiate(_expPrefab, new Vector3(gameObject.transform.position.x, 0.2f, gameObject.transform.position.z), Quaternion.identity);
-        _playerEXP.GetEXP(_expAutodropAmount);
+            Instantiate(_expPrefab, new Vector3(transform.position.x, 0.2f, transform.position.z), Quaternion.identity);
+        
+        // Даем опыт игроку
+        _playerEXP?.GetEXP(_expAutodropAmount);
     }
 
     private GameObject getExpPrefab()
     {
-        float[] probabilities = new float[] { _initializedStats._expSmallDropChance, _initializedStats._expMediumDropChance, _initializedStats._expHugeDropChance, _initializedStats._noExpDropChance };
+        float[] probabilities = new float[] { 
+            _initializedStats._expSmallDropChance, 
+            _initializedStats._expMediumDropChance, 
+            _initializedStats._expHugeDropChance, 
+            _initializedStats._noExpDropChance 
+        };
 
         float totalProbability = 0f;
         for (int i = 0; i < probabilities.Length; i++)
@@ -110,7 +196,7 @@ public class EnemyHP : MonoBehaviour
 
         float randomValue = UnityEngine.Random.Range(0f, totalProbability);
         float currentSum = 0f;
-        
+
         for (int i = 0; i < probabilities.Length; i++)
         {
             currentSum += probabilities[i];
@@ -128,6 +214,5 @@ public class EnemyHP : MonoBehaviour
             }
         }
         return null;
-
     }
 }

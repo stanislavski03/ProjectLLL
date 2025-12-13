@@ -1376,7 +1376,7 @@ MonoBehaviour:
   _questGiverSpawnPoint: {fileID: 6236816220528375651}
   _mutationChest: {fileID: 7056306788243686916, guid: ce88085c07b5e3d4b8717cfb4a91f0b0, type: 3}
   _mutationChestSpawnPoint: {fileID: 2631118879440122034}
-  _gasTank: {fileID: 6278017564374790939, guid: 1bd2150121d5e0845a9fca8835ef6b39, type: 3}
+  _gasTank: {fileID: 1750252651803067726, guid: a058a9830e7b54e4bbdb3bc7ddaa25d0, type: 3}
   _gasTankSpawnPoint: {fileID: 4067110266386058838}
 --- !u!1001 &2418155024403593
 PrefabInstance:

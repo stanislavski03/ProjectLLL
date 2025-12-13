@@ -474,6 +474,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initializedStats: {fileID: 11400000, guid: 5d2dc328d5b07334b8b44d2e43c9a0ce, type: 2}
   EnemyType: 2
+  _deathParticlePrefab: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
+  _particleOffset: {x: 0, y: 0.2, z: 0}
+  _particleLifetime: 2
 --- !u!114 &7828161826167623882
 MonoBehaviour:
   m_ObjectHideFlags: 0

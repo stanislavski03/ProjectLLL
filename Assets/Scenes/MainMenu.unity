@@ -5480,10 +5480,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e4096bc761f7d438242fe948026bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeInDuration: 0.5
-  fadeOutDuration: 0.5
-  fadeColor: {r: 0, g: 0, b: 0, a: 1}
-  freezeTimeDuringTransition: 1
 --- !u!4 &1240487296
 Transform:
   m_ObjectHideFlags: 0

@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 035e94afc8b932e489e1f038d4c46866, type: 3}
   m_Name: Boss
   m_EditorClassIdentifier: 
-  _enemyName: Minotaur
+  _enemyName: "\u041C\u0438\u043D\u043E\u0442\u0430\u0432\u0440"
   _damage: 50
   _cooldown: 3
-  _maxHealth: 1
-  _moveSpeed: 5
+  _maxHealth: 3000
+  _moveSpeed: 7
   _moveSpeedDeviation: 0
   _expOnDeath: 10
-  _size: 2
+  _size: 3
   _range: 10
   _projectileSpeed: 5
   _projectileLifetime: 3
@@ -32,3 +32,4 @@ MonoBehaviour:
   _expMediumDropChance: 0
   _expHugePrefab: {fileID: 1627554565677760942, guid: b2abd20cb108d864d9e7b1a5edd0a35d, type: 3}
   _expHugeDropChance: 100
+  _healSpherePrefab: {fileID: 7838381248513374378, guid: a0c54b05579ffea439abb9497ad7288a, type: 3}

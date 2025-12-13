@@ -15,4 +15,5 @@ MonoBehaviour:
   mutationTitle: "\u041C\u0443\u0442\u0430\u0446\u0438\u044F \u041E\u0431\u043B\u0430\u0441\u0442\u0438"
   description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u0435 \u041E\u0431\u043B\u0430\u0441\u0442\u0438"
   icon: {fileID: 21300000, guid: 8904c44e85928ca43aa57e140f7a69b3, type: 3}
-  bonus: 2
+  chest: {fileID: 0}
+  bonus: 0.2

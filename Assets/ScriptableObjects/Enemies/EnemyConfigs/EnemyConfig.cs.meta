@@ -6,7 +6,8 @@ MonoImporter:
   defaultReferences:
   - _expSmallPrefab: {fileID: 1627554565677760942, guid: e1eb3370df7dc8b45b7fb79e0472a778, type: 3}
   - _expMediumPrefab: {fileID: 1627554565677760942, guid: 8a648a11417f01b4f93b101ca312f77d, type: 3}
-  - _expHugePrefab: {instanceID: 0}
+  - _expHugePrefab: {fileID: 1627554565677760942, guid: b2abd20cb108d864d9e7b1a5edd0a35d, type: 3}
+  - _healSpherePrefab: {fileID: 7838381248513374378, guid: a0c54b05579ffea439abb9497ad7288a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
