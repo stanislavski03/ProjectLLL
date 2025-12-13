@@ -13,7 +13,6 @@ public class UniversalDamageGiveShieldItemSO : ItemDataSO
 
     public override void OnDamageGive()
     {
-        base.OnDamageGive();
 
         if(OnDelay == false)
             StartInvincibilityTimer();

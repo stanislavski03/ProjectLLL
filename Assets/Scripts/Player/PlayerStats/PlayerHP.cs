@@ -110,6 +110,20 @@ public class PlayerHP : MonoBehaviour
             FindObjectOfType<FinalVignette>()?.TriggerHealVignette();
         Changed?.Invoke(_currentHP);
     }
+    public void HealInProcent(float healAmmount)
+    {
+        _currentHP = Mathf.Clamp(_currentHP + healAmmount/100*MaxHP, 0, MaxHP);
+        if (_currentHP / MaxHP * 100 <= 50)
+        {
+            AudioManager.Instance.SetMusicPitch(_currentHP / MaxHP + 0.4f);
+        }
+        else
+        {
+            AudioManager.Instance.ResetMusicPitch();
+        }
+        FindObjectOfType<FinalVignette>()?.TriggerHealVignette();
+        Changed?.Invoke(_currentHP);
+    }
 
     public void maxHPChanged(float maxHP)
     {

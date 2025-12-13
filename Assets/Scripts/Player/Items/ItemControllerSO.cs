@@ -36,6 +36,7 @@ public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
     public List<ItemDataSO> itemPassivePool = new List<ItemDataSO>();
 
     public List<ItemDataSO> OnEnemyDeathPool = new List<ItemDataSO>();
+    public List<ItemDataSO> OnLVLUpEventPool = new List<ItemDataSO>();
     public List<ItemDataSO> OnSceneChangePool = new List<ItemDataSO>();
     public List<ItemDataSO> OnDamageGivePool = new List<ItemDataSO>();
 
@@ -56,6 +57,7 @@ public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
                     itemActivePool,
                     itemPassivePool,
                     OnEnemyDeathPool,
+                    OnLVLUpEventPool,
                     OnSceneChangePool,
                     OnDamageGivePool
                 };
@@ -146,6 +148,10 @@ public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
         {
             OnDamageGivePool.Add(item);
         }
+        if (item.HasOnLVLUpEvent)
+        {
+            OnLVLUpEventPool.Add(item);
+        }
     }
 
     public void ActivateOnEnemyDeathEvent(GameObject enemy)
@@ -156,6 +162,14 @@ public class ItemControllerSO : SingletonScriptableObject<ItemControllerSO>
             {
                 item.OnEnemyDeath(enemy);
             }
+        }
+    }
+
+    public void ActivateOnLVLUpEvent()
+    {
+        foreach (ItemDataSO item in OnLVLUpEventPool)
+        {
+            item.OnLVLUp();
         }
     }
 

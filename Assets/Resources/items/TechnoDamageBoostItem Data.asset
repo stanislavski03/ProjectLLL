@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d25fa1d6d4541984aaf495a963389d78, type: 3}
   m_Name: TechnoDamageBoostItem Data
   m_EditorClassIdentifier: 
-  itemTitle: "\u0422\u0435\u0445\u043D\u0430\u0440\u0441\u043A\u0438\u0439 \u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0442\u0435\u043B\u044C
-    \u0443\u0440\u043E\u043D\u0430"
+  itemTitle: "\u0422\u0435\u0445\u043D\u0438\u0447\u0435\u0441\u043A\u0438\u0439
+    \u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0442\u0435\u043B\u044C \u0443\u0440\u043E\u043D\u0430"
   description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-    \u0443\u0440\u043E\u043D \u0442\u0435\u0445\u043D\u0430\u0440\u0441\u043A\u0438\u043C
+    \u0443\u0440\u043E\u043D \u0442\u0435\u0445\u043D\u0438\u0447\u0435\u0441\u043A\u0438\u043C\u0438\u043C
     \u043E\u0440\u0443\u0436\u0438\u044F\u043C"
   icon: {fileID: 21300000, guid: 8372e6c19cf62b044b37da08be111c0e, type: 3}
   isActiveItem: 0
@@ -24,6 +24,7 @@ MonoBehaviour:
   HasOnEnemyDeathEvent: 0
   HasOnSceneChangeEvent: 0
   HasOnDamageGiveEvent: 0
+  HasOnLVLUpEvent: 0
   ReputationAmount: 15
   ItemController: {fileID: 11400000, guid: 97b34af25ad8de94db5c4409b170984d, type: 2}
   DamageMultiplier: 15
