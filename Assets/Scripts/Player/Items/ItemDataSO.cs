@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 [CreateAssetMenu(fileName = "New Item Data", menuName = "Items/Item Data")]
 public class ItemDataSO : ScriptableObject
@@ -14,6 +15,7 @@ public class ItemDataSO : ScriptableObject
     public bool HasOnEnemyDeathEvent;
     public bool HasOnSceneChangeEvent;
     public bool HasOnDamageGiveEvent;
+    public bool HasOnLVLUpEvent;
 
     public float ReputationAmount = 0;
 
@@ -26,6 +28,9 @@ public class ItemDataSO : ScriptableObject
         PlayerStatsSO.Instance.ChangeReputation(ReputationAmount);
         // ItemsPanel.Instance.ClearItemList();
     }
+
+
+
 
     public virtual void OnEnemyDeath(GameObject enemy)
     {
@@ -40,6 +45,11 @@ public class ItemDataSO : ScriptableObject
     public virtual void OnDamageGive()
     {
         Debug.Log("OnDamageGive");
+    }
+
+    public virtual void OnLVLUp()
+    {
+        Debug.Log("OnLevelUp");
     }
 
 }

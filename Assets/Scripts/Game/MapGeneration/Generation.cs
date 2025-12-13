@@ -49,7 +49,10 @@ public class Generation : MonoBehaviour
         }
         for (int i = 0; i < amount; i++)
         {
-            allTiles[Random.Range(0, allTiles.Count)].GetComponent<SpawnActivityOnTile>().SpawnGasTank();
+            int rand = Random.Range(0, allTiles.Count);
+            allTiles[rand].GetComponent<SpawnActivityOnTile>().SpawnGasTank();
+            allTiles.Remove(allTiles[rand]);
+
         }
 
 

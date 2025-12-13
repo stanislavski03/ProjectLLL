@@ -19,26 +19,30 @@ MonoBehaviour:
   itemUniversalStartPool:
   - {fileID: 11400000, guid: 22028401d1f02d44593c878868c6befd, type: 2}
   - {fileID: 11400000, guid: a8a4584b19731704aaa65639ea9a0039, type: 2}
+  - {fileID: 11400000, guid: 828859503de8efe409a3be77bf86ff8d, type: 2}
   itemMagicStartPool:
   - {fileID: 11400000, guid: 031fb9b300117b646af8ff07fa3c1bbe, type: 2}
   itemTecnoStartPool:
   - {fileID: 11400000, guid: 34274e79db6576a40b775660062f0cd9, type: 2}
+  - {fileID: 11400000, guid: 4081d7496ff0a1e40b3830b9eb15b1a9, type: 2}
   ItemInventory:
+  - {fileID: 11400000, guid: 4081d7496ff0a1e40b3830b9eb15b1a9, type: 2}
+  AllItemsPool:
+  - {fileID: 11400000, guid: 031fb9b300117b646af8ff07fa3c1bbe, type: 2}
+  - {fileID: 11400000, guid: 34274e79db6576a40b775660062f0cd9, type: 2}
+  - {fileID: 11400000, guid: 22028401d1f02d44593c878868c6befd, type: 2}
+  itemUniversalPool:
   - {fileID: 11400000, guid: 22028401d1f02d44593c878868c6befd, type: 2}
   - {fileID: 11400000, guid: a8a4584b19731704aaa65639ea9a0039, type: 2}
+  - {fileID: 11400000, guid: 828859503de8efe409a3be77bf86ff8d, type: 2}
+  itemMagicPool:
   - {fileID: 11400000, guid: 031fb9b300117b646af8ff07fa3c1bbe, type: 2}
-  AllItemsPool:
-  - {fileID: 11400000, guid: 34274e79db6576a40b775660062f0cd9, type: 2}
-  itemUniversalPool: []
-  itemMagicPool: []
   itemTecnoPool:
   - {fileID: 11400000, guid: 34274e79db6576a40b775660062f0cd9, type: 2}
   itemActivePool: []
   itemPassivePool:
-  - {fileID: 11400000, guid: 22028401d1f02d44593c878868c6befd, type: 2}
-  - {fileID: 11400000, guid: a8a4584b19731704aaa65639ea9a0039, type: 2}
-  - {fileID: 11400000, guid: 031fb9b300117b646af8ff07fa3c1bbe, type: 2}
+  - {fileID: 11400000, guid: 4081d7496ff0a1e40b3830b9eb15b1a9, type: 2}
   OnEnemyDeathPool: []
+  OnLVLUpEventPool: []
   OnSceneChangePool: []
-  OnDamageGivePool:
-  - {fileID: 11400000, guid: a8a4584b19731704aaa65639ea9a0039, type: 2}
+  OnDamageGivePool: []

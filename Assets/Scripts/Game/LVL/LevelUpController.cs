@@ -11,7 +11,6 @@ public class LevelUpController : MonoBehaviour
     [SerializeField] private GameObject panelItems;
 
     public AudioClip uiClickClip;
-
     private LvlUpWeaponItemsInfo itemsInfo;
     private bool isLevelUpActive = false;
     // Инициализация Моста unitask

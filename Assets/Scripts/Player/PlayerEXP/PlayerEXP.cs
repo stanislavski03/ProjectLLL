@@ -11,6 +11,10 @@ public class PlayerEXP : MonoBehaviour
     [SerializeField] private Image _expProgressBarImage;
 
     [SerializeField] private LvlUpWeaponItemsInfo _lvlUpGatherCanvasInfo;
+
+    public static PlayerEXP Instance { get; private set; }
+
+
     private float _currentEXP;
     private float _currentLVL = 1;
 
@@ -21,6 +25,10 @@ public class PlayerEXP : MonoBehaviour
     public event Action<float> EXPChanged;
     public event Action<float> LVLChanged;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         UpdateUI();
@@ -62,8 +70,11 @@ public class PlayerEXP : MonoBehaviour
                 _currentEXP -= MaxEXP;
 
                 _statsSO.ExpandEXP();
+
                 _currentLVL += 1;
                 LVLChanged?.Invoke(_currentLVL);
+
+                ItemControllerSO.Instance.ActivateOnLVLUpEvent();
 
                 // Показываем окно выбора и ЖДЕМ, пока игрок не сделает выбор
                 if (!_lvlUpGatherCanvasInfo.AllWeaponsGathered)
@@ -83,6 +94,35 @@ public class PlayerEXP : MonoBehaviour
 
         }
     }
+
+    public async UniTaskVoid HandleMultipleLevelUpsWithNoCheck(int countOfLevelUps)
+    {
+        for (int i = 0; i < countOfLevelUps; i++)
+        {
+
+
+            _statsSO.ExpandEXP();
+
+            _currentLVL += 1;
+            LVLChanged?.Invoke(_currentLVL);
+
+            ItemControllerSO.Instance.ActivateOnLVLUpEvent();
+
+            // Показываем окно выбора и ЖДЕМ, пока игрок не сделает выбор
+            if (!_lvlUpGatherCanvasInfo.AllWeaponsGathered)
+            {
+                await ShowLevelUpAndWait();
+            }
+
+            // Обновляем UI после каждого уровня
+            UpdateUI();
+
+            await UniTask.Delay(100); 
+
+
+        }
+    }
+
 
     private async UniTask ShowLevelUpAndWait()
     {
