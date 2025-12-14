@@ -36,6 +36,11 @@ public class UniversalNotification : MonoBehaviour
         // Скрываем панель при старте
         notificationPanel.anchoredPosition = hiddenPosition;
         notificationPanel.gameObject.SetActive(false);
+        UniversalNotification.Instance.ShowNotification(
+                "УПРАВЛЕНИЕ",
+                "Ходьба - WASD\nВзаимодействие - E\nПоказать/скрыть интерфейс - TAB",
+                5
+            );
     }
     
     // Основной метод для показа уведомления

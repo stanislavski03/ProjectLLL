@@ -76,8 +76,8 @@ public class GameStateManager : MonoBehaviour
 
         AudioManager.Instance.StopAllSFX();
 
-        // Cursor.visible = true;
-        // Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
         // Управление музыкой
         if (paused && pauseType == PauseType.EscPause)
@@ -90,8 +90,8 @@ public class GameStateManager : MonoBehaviour
         {
             // Возобновляем музыку при снятии ЛЮБОЙ паузы
             AudioManager.Instance.UnduckMusic();
-            // Cursor.visible = false;
-            // Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         if (!IsInCountdown)
