@@ -32,13 +32,13 @@ public class CountdownController : MonoBehaviour
 
         float timer = countdownDuration;
         
-        //while (timer > 3f)
-        //{
-        //    timer -= Time.unscaledDeltaTime;
-        //    int seconds = Mathf.CeilToInt(timer);
-        //    countdownText.text = seconds.ToString();
-        //    yield return null;
-        //}
+        while (timer > 0)
+        {
+           timer -= Time.unscaledDeltaTime;
+           int seconds = Mathf.CeilToInt(timer);
+           countdownText.text = seconds.ToString();
+           yield return null;
+        }
 
         countdownText.text = "GO!";
         yield return new WaitForSecondsRealtime(0.5f);
