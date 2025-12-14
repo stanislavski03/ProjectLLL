@@ -31,11 +31,13 @@ public class LevelUpController : MonoBehaviour
         }
     }
 
-    private void Start()
+    private async void Start()
     {
         FindComponents();
         InitializeUI();
         itemsInfo.SetWeaponList();
+        await UniTask.WaitForSeconds(1);
+        PlayerEXP.Instance.HandleMultipleLevelUpsWithNoCheck(1).Forget();
     }
 
     private void FindComponents()
