@@ -13,7 +13,7 @@ public class GatherGasQuest : QuestData
         base.OnQuestStart();
         Generation.Instance.SpawnGasTanks(goal);
         QuestManager.Instance?.RegisterQuest(this);
-
+        EnemySpawnManager.Instance.GainPoints(25);
     }
 
     public override void OnQuestFinish()
@@ -21,6 +21,7 @@ public class GatherGasQuest : QuestData
         base.OnQuestFinish();
         QuestManager.Instance?.UnregisterQuest(this);
 
+        EnemySpawnManager.Instance.GainDifficulty(1);
     }
     
     public override void OnQuestCancel()

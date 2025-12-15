@@ -23,9 +23,7 @@ public class UniversalDamageGiveShieldItemSO : ItemDataSO
         PlayerStatsSO.Instance.invincibility = true;
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
         Player.Instance.DamageGiveShield.SetActive(true);
-        Debug.Log("timer start");
         await UniTask.WaitForSeconds(5);
-        Debug.Log("timer end");
         Player.Instance.DamageGiveShield.SetActive(false);
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
         PlayerStatsSO.Instance.invincibility = false;
@@ -36,9 +34,7 @@ public class UniversalDamageGiveShieldItemSO : ItemDataSO
     private async void StartInvincibilityTimerDelay()
     {
         OnDelay = true;
-        Debug.Log("OnDelay = true");
         await UniTask.WaitForSeconds(5);
-        Debug.Log("OnDelay = false");
         OnDelay = false;
     }
 }

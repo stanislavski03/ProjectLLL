@@ -30,6 +30,8 @@ public class TransitionManager : MonoBehaviour
         if (GameStateManager.Instance != null && GameStateManager.Instance.IsPaused)
             GameStateManager.Instance.ResumeGame();
 
+
+
         if (EnemyPoolList.instance != null)
             EnemyPoolList.instance.EnquePools();
 
@@ -49,6 +51,8 @@ public class TransitionManager : MonoBehaviour
                     Destroy(go);
                 }
             }
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
         else if (i == 3)
         {
@@ -73,11 +77,6 @@ public class TransitionManager : MonoBehaviour
             }
         }
 
-        if (i == 0)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
     }
 
 }

@@ -19,6 +19,7 @@ public class Bullet : MonoBehaviour
         if (hasTarget && target != null && target.gameObject.activeInHierarchy)
         {
             Vector3 direction = (target.position - transform.position).normalized;
+            direction = new Vector3(direction.x, 0, direction.z);
             transform.position += direction * currentSpeed * Time.deltaTime;
             lastDirection = direction;
         }

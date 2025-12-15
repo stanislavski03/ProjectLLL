@@ -18,6 +18,7 @@ public class MagicBlizzardQuest : QuestData
         ShieldRef.GetComponent<BlizzardFieldTrigger>().damage = damage;
         ShieldRef.GetComponent<BlizzardFieldTrigger>().damagePeriod = damagePeriod;
         QuestManager.Instance?.RegisterQuest(this);
+        EnemySpawnManager.Instance.GainPoints(25);
 
     }
 
@@ -26,6 +27,9 @@ public class MagicBlizzardQuest : QuestData
         base.OnQuestFinish();
         Destroy(ShieldRef);
         QuestManager.Instance?.UnregisterQuest(this);
+
+            EnemySpawnManager.Instance.GainDifficulty(1);
+
 
 
     }

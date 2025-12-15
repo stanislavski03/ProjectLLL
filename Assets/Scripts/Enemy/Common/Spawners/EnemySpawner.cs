@@ -21,26 +21,26 @@ public class EnemySpawner : MonoBehaviour
         _spawnCamera = Camera.main;
     }
 
-    //void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        SpawnSmallMeleeEnemy(GetRandomEdgePoint());
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.Q))
-    //    {
-    //        SpawnSmallRangedEnemy(GetRandomEdgePoint());
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.T))
-    //    {
-    //        SpawnFastMeleeEnemy(GetRandomEdgePoint());
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        SpawnStrongMeleeEnemy(GetRandomEdgePoint());
-    //    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SpawnSmallMeleeEnemy(GetRandomEdgePoint());
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SpawnSmallRangedEnemy(GetRandomEdgePoint());
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SpawnFastMeleeEnemy(GetRandomEdgePoint());
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            SpawnStrongMeleeEnemy(GetRandomEdgePoint());
+        }
 
-    //}
+    }
 
     public Vector3 GetRandomEdgePoint()
     {
@@ -53,9 +53,9 @@ public class EnemySpawner : MonoBehaviour
         {
             case 0:
                 randomPoint = new Vector3(
-                    _playerTransform.position.x + Random.Range(-_cameraWidth / 2f, _cameraWidth / 2f),
+                    _playerTransform.position.x + Random.Range(-(10 + _cameraWidth) / 2f, (10 + _cameraWidth) / 2f),
                     _playerTransform.position.y,
-                    _playerTransform.position.z + (_cameraHeight / 2f) + 3);
+                    _playerTransform.position.z + (_cameraHeight / 2f) + 12);
                 break;
             case 1:
                 randomPoint = new Vector3(
@@ -65,15 +65,15 @@ public class EnemySpawner : MonoBehaviour
                 break;
             case 2:
                 randomPoint = new Vector3(
-                    _playerTransform.position.x + (-_cameraWidth / 2f) - 3,
+                    _playerTransform.position.x + (-_cameraWidth / 2f) - 10,
                     _playerTransform.position.y,
-                    _playerTransform.position.z + Random.Range(-_cameraHeight / 2f, _cameraHeight / 2f));
+                    _playerTransform.position.z + Random.Range(-(10 + _cameraHeight) / 2f, (10 + _cameraHeight) / 2f));
                 break;
             case 3:
                 randomPoint = new Vector3(
-                    _playerTransform.position.x + (_cameraWidth / 2f) + 3,
+                    _playerTransform.position.x + (_cameraWidth / 2f) + 10,
                     _playerTransform.position.y,
-                    _playerTransform.position.z + Random.Range(-_cameraHeight / 2f, _cameraHeight / 2f));
+                    _playerTransform.position.z + Random.Range(-(10 + _cameraHeight) / 2f, (10 + _cameraHeight) / 2f));
                 break;
         }
 

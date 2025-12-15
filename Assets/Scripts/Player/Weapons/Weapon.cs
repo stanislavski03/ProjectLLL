@@ -85,9 +85,7 @@ public abstract class Weapon : MonoBehaviour
 
     private void OnDamageMultiplierChanged(float damageMultiplier)
     {
-        Debug.Log("OnDamageMultiplierChanged");
         CalculateAllStats();
-        Debug.Log("OnDamageMultiplierChanged");
     }
 
     // ГЛАВНЫЙ МЕТОД: РАСЧЕТ ВСЕХ СТАТОВ
