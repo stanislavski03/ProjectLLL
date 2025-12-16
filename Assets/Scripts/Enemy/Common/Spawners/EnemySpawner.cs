@@ -21,26 +21,26 @@ public class EnemySpawner : MonoBehaviour
         _spawnCamera = Camera.main;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpawnSmallMeleeEnemy(GetRandomEdgePoint());
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            SpawnSmallRangedEnemy(GetRandomEdgePoint());
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            SpawnFastMeleeEnemy(GetRandomEdgePoint());
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            SpawnStrongMeleeEnemy(GetRandomEdgePoint());
-        }
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        SpawnSmallMeleeEnemy(GetRandomEdgePoint());
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Q))
+    //    {
+    //        SpawnSmallRangedEnemy(GetRandomEdgePoint());
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.T))
+    //    {
+    //        SpawnFastMeleeEnemy(GetRandomEdgePoint());
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.F))
+    //    {
+    //        SpawnStrongMeleeEnemy(GetRandomEdgePoint());
+    //    }
 
-    }
+    //}
 
     public Vector3 GetRandomEdgePoint()
     {

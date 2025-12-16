@@ -51,8 +51,6 @@ public class TransitionManager : MonoBehaviour
                     Destroy(go);
                 }
             }
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
         }
         else if (i == 3)
         {
@@ -75,6 +73,11 @@ public class TransitionManager : MonoBehaviour
             {
                 QuestManager.Instance.CancelQuest(quest);
             }
+        }
+        if (i == 0)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
 
     }
