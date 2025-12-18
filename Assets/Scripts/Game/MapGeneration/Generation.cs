@@ -59,6 +59,16 @@ public class Generation : MonoBehaviour
     }
 
 
+    public bool CheckPointForLegitment(Vector3 point)
+    {
+        if (point.z < 0 || point.x < 0 || point.z > (_generationHeight * 50) || point.x > (_generationWidth * 50))
+        {
+            return false;
+        }
+        else
+            return true;
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

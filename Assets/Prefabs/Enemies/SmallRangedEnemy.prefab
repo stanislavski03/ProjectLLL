@@ -520,6 +520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initializedStats: {fileID: 11400000, guid: 5d2dc328d5b07334b8b44d2e43c9a0ce, type: 2}
+  shouldReposition: 0
 --- !u!136 &3120862991628474150
 CapsuleCollider:
   m_ObjectHideFlags: 0

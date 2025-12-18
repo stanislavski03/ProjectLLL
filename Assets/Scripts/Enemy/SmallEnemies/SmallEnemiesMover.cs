@@ -11,27 +11,15 @@ public class EnemiesMover : MonoBehaviour
     private bool isReady = false;
     private float _moveSpeedDeviation;
     private Rigidbody rb;
+    [SerializeField] private bool shouldReposition = true;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        FindPlayer();
         InitializeAgent();
+        _playerTransform = Player.Instance.transform;
     }
 
-    private void FindPlayer()
-    {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-        {
-            _playerTransform = player.transform;
-        }
-        else
-        {
-            enabled = false;
-            return;
-        }
-    }
 
     private void InitializeAgent()
     {
@@ -65,8 +53,40 @@ public class EnemiesMover : MonoBehaviour
         rb.maxLinearVelocity = 0;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
+        if (shouldReposition)
+        {
+
+            if (transform.position.z > Player.Instance.transform.position.z + 30)
+            {
+                Vector3 position = new Vector3(transform.position.x - 2 * (transform.position.x - Player.Instance.transform.position.x), transform.position.y, Player.Instance.transform.position.z - 15);
+                if (Generation.Instance.CheckPointForLegitment(position)) 
+                    transform.position = position;
+            }
+            else if (transform.position.z < Player.Instance.transform.position.z - 15)
+            {
+                Vector3 position = new Vector3(transform.position.x - 2 * (transform.position.x - Player.Instance.transform.position.x), transform.position.y, Player.Instance.transform.position.z + 30);
+                if (Generation.Instance.CheckPointForLegitment(position))
+                    transform.position = position;
+
+            }
+            else if (transform.position.x > Player.Instance.transform.position.x + 30)
+            {
+                Vector3 position = new Vector3(Player.Instance.transform.position.x - 30, transform.position.y, transform.position.z - 2 * (transform.position.z - Player.Instance.transform.position.z));
+                if (Generation.Instance.CheckPointForLegitment(position))
+                    transform.position = position;
+            }
+            else if (transform.position.x < Player.Instance.transform.position.x - 30)
+            {
+                Vector3 position = new Vector3(Player.Instance.transform.position.x + 30, transform.position.y, transform.position.z - 2 * (transform.position.z - Player.Instance.transform.position.z));
+                if (Generation.Instance.CheckPointForLegitment(position))
+                    transform.position = position;
+            }
+        }
+
+
+
         if (!isReady || !CanSetDestination()) return;
 
         agent.SetDestination(_playerTransform.position);

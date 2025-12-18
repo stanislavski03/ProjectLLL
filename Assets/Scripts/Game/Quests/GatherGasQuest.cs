@@ -21,7 +21,7 @@ public class GatherGasQuest : QuestData
         base.OnQuestFinish();
         QuestManager.Instance?.UnregisterQuest(this);
 
-        EnemySpawnManager.Instance.GainDifficulty(1);
+        EnemySpawnManager.Instance.GainDifficulty(0.2f);
     }
     
     public override void OnQuestCancel()
